@@ -19,4 +19,16 @@ class ArkCourseUseCase {
   Future<Either<Failure, CurriculumEntity>> getCurriculums(
           String courseId, String token) async =>
       await repository.getCurriculums(courseId, token);
+
+  Future<Either<Failure, List<String>>> getListIdSimiliarClass(
+          String categoryId) async =>
+      await repository.getListIdSimiliarClass(categoryId);
+
+  Future<Either<Failure, List<CourseParseEntity>>> getSimiliarClass(
+          List<String> listId) async =>
+      await repository.getSimiliarClass(listId);
+
+  Future<Either<Failure, UlasanEntity>> getUlasan(
+          String courseId, int page) async =>
+      await repository.getUlasan(courseId, page);
 }

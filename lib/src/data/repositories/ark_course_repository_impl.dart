@@ -43,4 +43,40 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       return ExceptionHandleResponse.execute(e);
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getListIdSimiliarClass(
+      String categoryId) async {
+    try {
+      final listId = await dataSource.getListIdSimiliarClass(categoryId);
+      return Right(listId);
+    } catch (e) {
+      log("ERROR HOME REPO GET LIST ID TRENDING COURSE: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CourseParseEntity>>> getSimiliarClass(
+      List<String> listId) async {
+    try {
+      final course = await dataSource.getSimiliarClass(listId);
+      return Right(course);
+    } catch (e) {
+      log("ERROR HOME REPO GET COURSE FROM LIST: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, UlasanEntity>> getUlasan(
+      String courseId, int page) async {
+    try {
+      final ulasan = await dataSource.getUlasan(courseId, page);
+      return Right(ulasan);
+    } catch (e) {
+      log("ERROR HOME REPO GET ULASAN: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
 }

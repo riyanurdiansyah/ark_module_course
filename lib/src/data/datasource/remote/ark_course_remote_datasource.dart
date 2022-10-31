@@ -6,4 +6,10 @@ abstract class ArkCourseRemoteDataSource {
   Future<UserStatusDTO> getUserStatus(String slug, String token);
 
   Future<CurriculumDTO> getCurriculums(String courseId, String token);
+
+  Future<List<String>> getListIdSimiliarClass(String categoryId);
+
+  Future<List<CourseParseDTO>> getSimiliarClass(List<String> listId);
+
+  Future<UlasanDTO> getUlasan(String courseId, int page);
 }

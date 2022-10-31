@@ -49,23 +49,25 @@ class ArkCoursePage extends StatelessWidget {
           () => ListView(
             shrinkWrap: true,
             children: [
-              _courseC.isLoading.value
-                  ? AppShimmer.loadImage(Get.width, 200)
-                  : _courseC.isHaveVideo.value && _courseC.splitVid.length > 1
-                      ? YoutubePlayerIFrame(
-                          controller: _courseC.ytController,
-                          aspectRatio: 16 / 9,
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: _courseC.detailCourse.value.featuredImage,
-                          width: Get.width,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) =>
-                              const ErrorImageWidget(
-                            isImage: false,
-                            height: 200,
+              Obx(
+                () => _courseC.isLoading.value
+                    ? AppShimmer.loadImage(Get.width, 200)
+                    : _courseC.isHaveVideo.value && _courseC.splitVid.length > 1
+                        ? YoutubePlayerIFrame(
+                            controller: _courseC.ytController,
+                            aspectRatio: 16 / 9,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: _courseC.detailCourse.value.featuredImage,
+                            width: Get.width,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) =>
+                                const ErrorImageWidget(
+                              isImage: false,
+                              height: 200,
+                            ),
                           ),
-                        ),
+              ),
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -108,8 +110,11 @@ class ArkCoursePage extends StatelessWidget {
                                 itemSize:
                                     Get.size.shortestSide < 600 ? 14.5 : 20,
                                 ignoreGestures: true,
-                                initialRating: double.parse(
-                                    _courseC.detailCourse.value.averageRating),
+                                initialRating: _courseC.detailCourse.value
+                                        .averageRating.isEmpty
+                                    ? 5
+                                    : double.parse(_courseC
+                                        .detailCourse.value.averageRating),
                                 allowHalfRating: true,
                                 itemPadding:
                                     const EdgeInsets.symmetric(horizontal: 0.2),
@@ -138,11 +143,13 @@ class ArkCoursePage extends StatelessWidget {
                             ),
                             ArkRowWithWidgetAndString(
                               expandedRightString: true,
-                              leftWidget: Image.network(
-                                  _courseC
-                                      .detailCourse.value.instructor.avatar.url,
-                                  width: 15,
-                                  height: 15),
+                              leftWidget: CachedNetworkImage(
+                                imageUrl: _courseC
+                                    .detailCourse.value.instructor.avatar.url,
+                                width: 15,
+                                height: 15,
+                                errorWidget: (_, __, ___) => const SizedBox(),
+                              ),
                               rightString:
                                   _courseC.detailCourse.value.instructor.name,
                             )
@@ -244,7 +251,7 @@ class ArkCoursePage extends StatelessWidget {
               ),
               Obx(() {
                 if (_courseC.indexTabCourse.value == 0) {
-                  return const ArkIkhtisarSection();
+                  return ArkIkhtisarSection();
                 }
 
                 if (_courseC.indexTabCourse.value == 1) {
@@ -254,21 +261,78 @@ class ArkCoursePage extends StatelessWidget {
                   );
                 }
 
-                return const ArkUlasanSection();
+                return ArkUlasanSection(
+                  isLoading: _courseC.isLoadingUlasan.value,
+                  course: _courseC.detailCourse.value,
+                  ulasan: _courseC.ulasan.value,
+                  ratingPage: _courseC.ratingPage.value,
+                  onPrevPage: () => _courseC.onPrevUlasan(),
+                  onNextPage: () => _courseC.onNextUlasan(),
+                  userStatus: _courseC.userStatus.value,
+                );
               }),
-              // Obx(
-              //   () => IndexedStack(
-              //     index: _courseC.indexTabCourse.value,
-              //     children: [
-              //       const ArkIkhtisarSection(),
-              //       ArkKurikulumSection(
-              //         curriculums: _courseC.curriculum.value.data,
-              //         isLoading: _courseC.isLoadingCurriculums.value,
-              //       ),
-              //       const ArkUlasanSection(),
-              //     ],
-              //   ),
-              // ),
+              const SizedBox(
+                height: 35,
+              ),
+              Obx(
+                () => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text("Kelas Serupa",
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w800)
+                          //Theme.of(context).textTheme.headline1,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (_courseC.isLoadingSimiliar.value)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Row(
+                            children: List.generate(
+                              5,
+                              (index) => Padding(
+                                padding: const EdgeInsets.only(right: 6),
+                                child: AppShimmer.loadImage(
+                                  Get.size.width * 0.44,
+                                  200,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (!_courseC.isLoadingSimiliar.value)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Row(
+                            children: List.generate(
+                              _courseC.similiarClass.length < 6
+                                  ? _courseC.similiarClass.length
+                                  : 6,
+                              (index) => ArkClassCard(
+                                course: _courseC.similiarClass[index].course,
+                                onTapClass: () => _courseC.changeSourceCourse(
+                                    _courseC.similiarClass[index]),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),

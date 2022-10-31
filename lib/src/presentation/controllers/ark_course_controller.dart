@@ -6,41 +6,62 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class ArkCourseController extends GetxController {
-  final ArkCourseUseCase _useCase = ArkCourseUseCase(
-      ArkCourseRepositoryImpl(ArkCourseRemoteDataSourceImpl()));
+  // final ArkCourseUseCase _useCase = ArkCourseUseCase(
+  //     ArkCourseRepositoryImpl(ArkCourseRemoteDataSourceImpl()));
   final Rx<CourseDataEntity> _detailCourse = CourseDataEntity(
-      status: "",
-      averageRating: "",
-      courseSlug: "",
-      description: "",
-      descriptionInstruktur: "",
-      enableFaceRecog: 0,
-      featuredImage: "",
+    categories: const [],
+    status: "",
+    averageRating: "",
+    courseSlug: "",
+    description: "",
+    descriptionInstruktur: "",
+    enableFaceRecog: 0,
+    featuredImage: "",
+    id: 0,
+    iosPrice: "0",
+    name: "",
+    price: "0",
+    regularPrice: "0",
+    salePrice: "0",
+    totalStudents: 0,
+    instructor: const InstructorEntity(
+        id: "", name: "", avatar: AvatarEntity(url: ""), sub: ""),
+    coinCashback: "0",
+    discount: 0.0,
+    courseFlag: CourseFlagEntity(
+        whatsapp: "", prakerja: "", revamp: "", jrc: "", group: ""),
+    mpLinks: const [],
+    peluangKarir: const [],
+    ratingCount: "",
+    lowongan: LowonganEntity(
       id: 0,
-      iosPrice: "0",
-      name: "",
-      price: "0",
-      regularPrice: "0",
-      salePrice: "0",
-      totalStudents: 0,
-      instructor: const InstructorEntity(
-          id: "", name: "", avatar: AvatarEntity(url: ""), sub: ""),
-      coinCashback: "0",
-      discount: 0.0,
-      courseFlag: CourseFlagEntity(
-          whatsapp: "", prakerja: "", revamp: "", jrc: "", group: ""),
-      mpLinks: const [],
-      peluangKarir: const []).obs;
+      courseId: "",
+      categoryJob: "",
+      endDateLowongan: DateTime.now(),
+      startDateLowongan: DateTime.now(),
+      gajiMax: "",
+      gajiMin: "",
+      jumlahLowongan: "0",
+      reference: "",
+    ),
+    ygAkanDipelajariWeb: const [],
+  ).obs;
   Rx<CourseDataEntity> get detailCourse => _detailCourse;
 
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
+
+  final Rx<bool> _isLoadingUlasan = true.obs;
+  Rx<bool> get isLoadingUlasan => _isLoadingUlasan;
 
   final Rx<bool> _isLoadingUserStatus = true.obs;
   Rx<bool> get isLoadingUserStatus => _isLoadingUserStatus;
 
   final Rx<bool> _isLoadingCurriculums = true.obs;
   Rx<bool> get isLoadingCurriculums => _isLoadingCurriculums;
+
+  final Rx<bool> _isLoadingSimiliar = true.obs;
+  Rx<bool> get isLoadingSimiliar => _isLoadingSimiliar;
 
   final Rx<bool> _isLogin = false.obs;
   Rx<bool> get isLogin => _isLogin;
@@ -58,6 +79,9 @@ class ArkCourseController extends GetxController {
   RxList<String> get splitVid => _splitVid;
 
   late SharedPreferences _prefs;
+
+  final RxList<CourseParseEntity> _similiarClass = <CourseParseEntity>[].obs;
+  RxList<CourseParseEntity> get similiarClass => _similiarClass;
 
   final Rx<CourseJrcEntity> _detailCourseJRC = CourseJrcEntity(
     success: false,
@@ -101,6 +125,34 @@ class ArkCourseController extends GetxController {
 
   late YoutubePlayerController ytController;
 
+  var cek = const LowonganEntity();
+
+  final Rx<UlasanEntity> _ulasan = UlasanEntity(
+          success: false,
+          data: UlasanParseDataEntity(
+              currentPage: 0,
+              data: [],
+              firstPageUrl: "",
+              from: 0,
+              lastPage: 0,
+              lastPageUrl: "",
+              links: "",
+              nextPageUrl: "",
+              path: "",
+              perPage: 0,
+              prevPageUrl: 0,
+              to: 0,
+              total: 0))
+      .obs;
+  Rx<UlasanEntity> get ulasan => _ulasan;
+
+  final Rx<int> _ratingPage = 1.obs;
+  Rx<int> get ratingPage => _ratingPage;
+
+  late ArkCourseUseCase _useCase;
+  late ArkCourseRepositoryImpl _repository;
+  late ArkCourseRemoteDataSourceImpl _dataSource;
+
   @override
   void onInit() async {
     await _setup();
@@ -109,6 +161,8 @@ class ArkCourseController extends GetxController {
     }
     fetchUserStatus();
     fetchCurriculums();
+    fetchUlasan(_ratingPage.value);
+    _fetchListIdSimiliarClass();
     await _changeLoading(false);
     super.onInit();
   }
@@ -117,6 +171,41 @@ class ArkCourseController extends GetxController {
   void onClose() {
     ytController.close();
     super.onClose();
+  }
+
+  void fetchUlasan(int page) async {
+    _changeLoadingUlasan(true);
+    final response =
+        await _useCase.getUlasan(_detailCourse.value.id.toString(), page);
+
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) => ExceptionHandle.execute(fail),
+
+      ///IF RESPONSE SUCCESS
+      (data) => _ulasan.value = data,
+    );
+    await _changeLoadingUlasan(false);
+  }
+
+  void changeSourceCourse(CourseParseEntity simClass) async {
+    _changeLoading(true);
+    _ratingPage.value = 1;
+    _detailCourse.value = simClass.course;
+    _isHaveVideo.value = checkVideoOrImage;
+    if (_isHaveVideo.value) {
+      ytController.load(_splitVid[0]);
+      ytController.stop();
+      _ytListen();
+    }
+    if (_detailCourse.value.courseFlag.jrc == "1") {
+      _getCourseDetailJRC();
+    }
+    fetchUserStatus();
+    fetchCurriculums();
+    fetchUlasan(_ratingPage.value);
+    _fetchListIdSimiliarClass();
+    await _changeLoading(false);
   }
 
   Future _getCourseDetailJRC() async {
@@ -134,6 +223,13 @@ class ArkCourseController extends GetxController {
   }
 
   Future _setup() async {
+    //INITIALIZE DATASOURCE
+    _dataSource = ArkCourseRemoteDataSourceImpl();
+    //INITIALIZE REPOSITORY
+    _repository = ArkCourseRepositoryImpl(_dataSource);
+    //INITIALIZE USECASE
+    _useCase = ArkCourseUseCase(_repository);
+
     _prefs = await SharedPreferences.getInstance();
     _token.value = _prefs.getString('token_access') ?? '';
     _isLogin.value = _prefs.getBool('user_login') ?? false;
@@ -161,6 +257,14 @@ class ArkCourseController extends GetxController {
 
   Future _changeLoadingCurriculum(bool val) async {
     _isLoadingCurriculums.value = val;
+  }
+
+  Future _changeLoadingSimiliar(bool val) async {
+    _isLoadingSimiliar.value = val;
+  }
+
+  Future _changeLoadingUlasan(bool val) async {
+    _isLoadingUlasan.value = val;
   }
 
   void _ytListen() {
@@ -235,5 +339,44 @@ class ArkCourseController extends GetxController {
       (data) => _curriculum.value = data,
     );
     await _changeLoadingCurriculum(false);
+  }
+
+  void _fetchListIdSimiliarClass() async {
+    _changeLoadingSimiliar(true);
+    final response = await _useCase.getListIdSimiliarClass(
+        _detailCourse.value.categories.isEmpty
+            ? "0"
+            : _detailCourse.value.categories[0].id.toString());
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) => ExceptionHandle.execute(fail),
+
+      ///IF RESPONSE SUCCESS
+      (data) => _fetchSimiliarClass(data),
+    );
+  }
+
+  void _fetchSimiliarClass(List<String> listId) async {
+    final response = await _useCase.getSimiliarClass(listId);
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) => ExceptionHandle.execute(fail),
+
+      ///IF RESPONSE SUCCESS
+      (data) => _similiarClass.value =
+          data.where((e) => e.course.id != _detailCourse.value.id).toList(),
+    );
+
+    await _changeLoadingSimiliar(false);
+  }
+
+  void onPrevUlasan() {
+    _ratingPage.value--;
+    fetchUlasan(_ratingPage.value);
+  }
+
+  void onNextUlasan() {
+    _ratingPage.value++;
+    fetchUlasan(_ratingPage.value);
   }
 }

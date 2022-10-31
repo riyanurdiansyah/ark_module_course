@@ -9,4 +9,12 @@ abstract class ArkCourseRepository {
 
   Future<Either<Failure, CurriculumEntity>> getCurriculums(
       String courseId, String token);
+
+  Future<Either<Failure, List<String>>> getListIdSimiliarClass(
+      String categoryId);
+
+  Future<Either<Failure, List<CourseParseEntity>>> getSimiliarClass(
+      List<String> listId);
+
+  Future<Either<Failure, UlasanEntity>> getUlasan(String courseId, int page);
 }

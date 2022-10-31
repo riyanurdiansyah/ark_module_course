@@ -57,4 +57,67 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       'Failed Get User Status... Please try again',
     );
   }
+
+  @override
+  Future<List<String>> getListIdSimiliarClass(String categoryId) async {
+    List<String> listId = [];
+    final response = await dio.get(
+        "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak");
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      for (var data in response.data["data"]) {
+        ///response data id yg lowercase
+        if (data["ID"] == null) {
+          listId.add(data["id"].toString());
+        }
+
+        ///response data id yg uppercase
+        if (data["id"] == null) {
+          listId.add(data["ID"].toString());
+        }
+      }
+
+      return listId;
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get List Id Newest Course... failed connect to server',
+      'Failed Get List Id Newest Course... Please try again',
+    );
+  }
+
+  @override
+  Future<List<CourseParseDTO>> getSimiliarClass(List<String> listId) async {
+    final List<CourseParseDTO> listCourse = [];
+    for (int i = 0; i < listId.length; i++) {
+      final response = await dio.get("$courseUrl/${listId[i]}");
+      int code = response.statusCode ?? 500;
+      if (code == 200) {
+        for (var data in response.data['data']) {
+          listCourse.add(CourseParseDTO.fromJson(data));
+        }
+      }
+    }
+    return listCourse;
+  }
+
+  @override
+  Future<UlasanDTO> getUlasan(String courseId, int page) async {
+    final response =
+        await dio.get("$courseUrl/$courseId/reviews", queryParameters: {
+      "page": page,
+    });
+    int code = response.statusCode ?? 500;
+    log("CHECK RES ULASAN : ${response.data}");
+    if (code == 200) {
+      return UlasanDTO.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get User Status... failed connect to server',
+      'Failed Get User Status... Please try again',
+    );
+  }
 }
