@@ -21,7 +21,6 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get Detail Course JRC... failed connect to server',
-      'Failed Get Detail Course JRC... Please try again',
     );
   }
 
@@ -37,7 +36,6 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get User Status... failed connect to server',
-      'Failed Get User Status... Please try again',
     );
   }
 
@@ -54,7 +52,6 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get User Status... failed connect to server',
-      'Failed Get User Status... Please try again',
     );
   }
 
@@ -83,7 +80,6 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get List Id Newest Course... failed connect to server',
-      'Failed Get List Id Newest Course... Please try again',
     );
   }
 
@@ -117,7 +113,6 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get User Status... failed connect to server',
-      'Failed Get User Status... Please try again',
     );
   }
 }
