@@ -47,6 +47,7 @@ class ArkCoursePage extends StatelessWidget {
         onlineCallback: () {},
         child: Obx(
           () => ListView(
+            controller: _courseC.scrollControllerPage,
             shrinkWrap: true,
             children: [
               Obx(

@@ -1,5 +1,6 @@
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -153,6 +154,8 @@ class ArkCourseController extends GetxController {
   late ArkCourseRepositoryImpl _repository;
   late ArkCourseRemoteDataSourceImpl _dataSource;
 
+  late ScrollController scrollControllerPage;
+
   @override
   void onInit() async {
     await _setup();
@@ -190,6 +193,13 @@ class ArkCourseController extends GetxController {
 
   void changeSourceCourse(CourseParseEntity simClass) async {
     _changeLoading(true);
+
+    ///SCROLL PAGE TO TOP
+    scrollControllerPage.animateTo(
+      scrollControllerPage.position.minScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
     _ratingPage.value = 1;
     _detailCourse.value = simClass.course;
     _isHaveVideo.value = checkVideoOrImage;
@@ -229,6 +239,8 @@ class ArkCourseController extends GetxController {
     _repository = ArkCourseRepositoryImpl(_dataSource);
     //INITIALIZE USECASE
     _useCase = ArkCourseUseCase(_repository);
+
+    scrollControllerPage = ScrollController();
 
     _prefs = await SharedPreferences.getInstance();
     _token.value = _prefs.getString('token_access') ?? '';
