@@ -130,7 +130,8 @@ class ArkJoinClassBtm extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () => Get.toNamed('/ark-checkout'),
+                  onPressed: () => Get.toNamed('/ark-checkout',
+                      arguments: _courseC.detailCourse.value),
                   child: const Text(
                     "GABUNG KE PELATIHAN",
                     style: TextStyle(
