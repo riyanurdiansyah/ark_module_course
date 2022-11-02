@@ -132,7 +132,7 @@ class ArkJoinClassBtm extends StatelessWidget {
                   ),
                   onPressed: () => Get.toNamed('/ark-checkout'),
                   child: const Text(
-                    "GABUNG KE PELATIHAN",
+                    "GABUNG KE PELATIHANs",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15.5,
