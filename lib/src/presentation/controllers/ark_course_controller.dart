@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/services/firebase_analytics.dart';
 import 'package:ark_module_course/src/core/exception_handling.dart';
@@ -201,13 +199,6 @@ class ArkCourseController extends GetxController {
 
   void changeSourceCourse(CourseParseEntity simClass) async {
     _changeLoading(true);
-
-    ///SCROLL PAGE TO TOP
-    scrollControllerPage.animateTo(
-      scrollControllerPage.position.minScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
     _ratingPage.value = 1;
     _detailCourse.value = simClass.course;
     _isHaveVideo.value = checkVideoOrImage;
@@ -254,11 +245,9 @@ class ArkCourseController extends GetxController {
     _token.value = _prefs.getString('token_access') ?? '';
     _isLogin.value = _prefs.getBool('user_login') ?? false;
     if (Get.arguments != null) {
-      // _detailCourse.value = Get.arguments;
-      var data = Get.arguments;
-      // final cek = json.encode(data);
-      log("CEK : $data");
-      _detailCourse.value = CourseDataDTO.fromJson(data);
+      if (Get.arguments is Map<String, dynamic>) {
+        _detailCourse.value = CourseDataDTO.fromJson(Get.arguments);
+      }
     }
     _isHaveVideo.value = checkVideoOrImage;
     if (_isHaveVideo.value) {
@@ -387,8 +376,11 @@ class ArkCourseController extends GetxController {
       (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
-      (data) => _similiarClass.value =
-          data.where((e) => e.course.id != _detailCourse.value.id).toList(),
+      (data) {
+        _similiarClass.value = data;
+        _similiarClass
+            .removeWhere((e) => e.course.id == _detailCourse.value.id);
+      },
     );
 
     await _changeLoadingSimiliar(false);

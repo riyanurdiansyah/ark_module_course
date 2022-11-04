@@ -56,7 +56,9 @@ class ArkCoursePage extends StatelessWidget {
               Obx(
                 () => _courseC.isLoading.value
                     ? AppShimmer.loadImage(Get.width, 200)
-                    : _courseC.isHaveVideo.value && _courseC.splitVid.length > 1
+                    : _courseC.splitVid.isNotEmpty &&
+                            _courseC.isHaveVideo.value &&
+                            _courseC.splitVid.length > 1
                         ? YoutubePlayerIFrame(
                             controller: _courseC.ytController,
                             aspectRatio: 16 / 9,
