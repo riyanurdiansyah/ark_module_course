@@ -1,5 +1,11 @@
+import 'package:ark_module_course/src/core/failures.dart';
+import 'package:ark_module_course/src/domain/entities/course_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
+import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
+import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
 import 'package:ark_module_course/src/domain/repositories/ark_course_repository.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+
 import 'package:dartz/dartz.dart';
 
 class ArkCourseUseCase {

@@ -1,5 +1,19 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/services/firebase_analytics.dart';
+import 'package:ark_module_course/src/core/exception_handling.dart';
+import 'package:ark_module_course/src/data/dto/course_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_flag_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
+import 'package:ark_module_course/src/domain/entities/fasilitator_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/instructor_entity.dart';
+import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
+import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
+import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -170,12 +184,6 @@ class ArkCourseController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    ytController.close();
-    super.onClose();
-  }
-
   void fetchUlasan(int page) async {
     _changeLoadingUlasan(true);
     final response =
@@ -206,7 +214,7 @@ class ArkCourseController extends GetxController {
     if (_isHaveVideo.value) {
       ytController.load(_splitVid[0]);
       ytController.stop();
-      _ytListen();
+      // _ytListen();
     }
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
@@ -246,7 +254,11 @@ class ArkCourseController extends GetxController {
     _token.value = _prefs.getString('token_access') ?? '';
     _isLogin.value = _prefs.getBool('user_login') ?? false;
     if (Get.arguments != null) {
-      _detailCourse.value = Get.arguments;
+      // _detailCourse.value = Get.arguments;
+      var data = Get.arguments;
+      // final cek = json.encode(data);
+      log("CEK : $data");
+      _detailCourse.value = CourseDataDTO.fromJson(data);
     }
     _isHaveVideo.value = checkVideoOrImage;
     if (_isHaveVideo.value) {

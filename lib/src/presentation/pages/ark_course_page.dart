@@ -1,8 +1,11 @@
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_begin_class_btm.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_join_class_btm.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
-import 'package:ark_module_setup/utils/app_shimmer.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+import 'package:ark_module_course/utils/app_constanta.dart';
+import 'package:ark_module_course/utils/app_shimmer.dart';
+import 'package:ark_module_course/widgets/ark_class_card.dart';
+import 'package:ark_module_course/widgets/error_image_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -272,25 +275,27 @@ class ArkCoursePage extends StatelessWidget {
                   userStatus: _courseC.userStatus.value,
                 );
               }),
-              const SizedBox(
-                height: 35,
-              ),
-              Obx(
-                () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text("Kelas Serupa",
+              Obx(() {
+                if (_courseC.isLoadingSimiliar.value) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          "Kelas Serupa",
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w800)
-                          //Theme.of(context).textTheme.headline1,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
                           ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (_courseC.isLoadingSimiliar.value)
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Padding(
@@ -309,7 +314,32 @@ class ArkCoursePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                    if (!_courseC.isLoadingSimiliar.value)
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  );
+                }
+                if (_courseC.similiarClass.isNotEmpty) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          "Kelas Serupa",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Padding(
@@ -328,12 +358,16 @@ class ArkCoursePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox(
+                  height: 25,
+                );
+              }),
             ],
           ),
         ),

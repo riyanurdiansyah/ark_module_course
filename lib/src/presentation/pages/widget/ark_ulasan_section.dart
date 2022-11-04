@@ -1,5 +1,8 @@
-import 'package:ark_module_setup/ark_module_setup.dart';
-import 'package:ark_module_setup/utils/app_shimmer.dart';
+import 'package:ark_module_course/src/domain/entities/course_entity.dart';
+import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
+import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+import 'package:ark_module_course/utils/app_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -44,7 +47,7 @@ class ArkUlasanSection extends StatelessWidget {
         height: 200,
         child: Text(
           "Belum ada review",
-          style: AppStyleText.styleMontserrat(
+          style: TextStyle(
             fontSize: 12,
             color: Colors.grey.shade400,
           ),

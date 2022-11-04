@@ -1,5 +1,6 @@
-import 'package:ark_module_setup/ark_module_setup.dart';
-import 'package:ark_module_setup/utils/app_shimmer.dart';
+import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+import 'package:ark_module_course/utils/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 

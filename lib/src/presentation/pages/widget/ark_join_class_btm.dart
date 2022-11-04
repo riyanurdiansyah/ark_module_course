@@ -1,5 +1,7 @@
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+import 'package:ark_module_course/utils/app_constanta.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +22,7 @@ class ArkJoinClassBtm extends StatelessWidget {
           if (_courseC.detailCourse.value.discount.round() != 0)
             Text(
               "Diskon ${_courseC.detailCourse.value.discount.round()}%",
-              style: AppStyleText.styleMontserrat(
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,

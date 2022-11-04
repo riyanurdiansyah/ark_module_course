@@ -1,7 +1,16 @@
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/src/core/exception_handling.dart';
+import 'package:ark_module_course/src/core/interceptor.dart';
+import 'package:ark_module_course/src/data/dto/course_dto.dart';
+import 'package:ark_module_course/src/data/dto/course_jrc_dto.dart';
+import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
+import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
+import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
+import 'package:ark_module_course/utils/app_constanta.dart';
+import 'package:ark_module_course/utils/app_url.dart';
+
 import 'package:dio/dio.dart';
 
 class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
@@ -42,7 +51,10 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
   @override
   Future<CurriculumDTO> getCurriculums(String courseId, String token) async {
     await dioInterceptor(dio, token);
-    final response = await dio.get("$courseUrl/$courseId/curriculums");
+    final response = await dio.get(
+      "$courseUrl/$courseId/curriculums",
+      options: globalOptions(),
+    );
     log("CHECK CURRICULUM : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
@@ -57,9 +69,13 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
   @override
   Future<List<String>> getListIdSimiliarClass(String categoryId) async {
+    log("CHECK ID : $categoryId");
     List<String> listId = [];
     final response = await dio.get(
-        "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak");
+      "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak",
+      options: globalOptions(),
+    );
+    log("RES : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
       for (var data in response.data["data"]) {
@@ -73,14 +89,8 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
           listId.add(data["ID"].toString());
         }
       }
-
-      return listId;
     }
-    return ExceptionHandleResponseAPI.execute(
-      code,
-      response,
-      'Error Get List Id Newest Course... failed connect to server',
-    );
+    return listId;
   }
 
   @override
