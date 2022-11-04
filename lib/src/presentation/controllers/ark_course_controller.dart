@@ -3,14 +3,12 @@ import 'package:ark_module_course/services/firebase_analytics.dart';
 import 'package:ark_module_course/src/core/exception_handling.dart';
 import 'package:ark_module_course/src/data/dto/course_dto.dart';
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
-import 'package:ark_module_course/src/domain/entities/course_flag_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
-import 'package:ark_module_course/src/domain/entities/fasilitator_jrc_entity.dart';
-import 'package:ark_module_course/src/domain/entities/instructor_entity.dart';
 import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
+import 'package:ark_module_course/utils/app_empty_entity.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,44 +19,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class ArkCourseController extends GetxController {
   // final ArkCourseUseCase _useCase = ArkCourseUseCase(
   //     ArkCourseRepositoryImpl(ArkCourseRemoteDataSourceImpl()));
-  final Rx<CourseDataEntity> _detailCourse = CourseDataEntity(
-    categories: const [],
-    status: "",
-    averageRating: "",
-    courseSlug: "",
-    description: "",
-    descriptionInstruktur: "",
-    enableFaceRecog: 0,
-    featuredImage: "",
-    id: 0,
-    iosPrice: "0",
-    name: "",
-    price: "0",
-    regularPrice: "0",
-    salePrice: "0",
-    totalStudents: 0,
-    instructor: const InstructorEntity(
-        id: "", name: "", avatar: AvatarEntity(url: ""), sub: ""),
-    coinCashback: "0",
-    discount: 0.0,
-    courseFlag: CourseFlagEntity(
-        whatsapp: "", prakerja: "", revamp: "", jrc: "", group: ""),
-    mpLinks: const [],
-    peluangKarir: const [],
-    ratingCount: "",
-    lowongan: LowonganEntity(
-      id: 0,
-      courseId: "",
-      categoryJob: "",
-      endDateLowongan: DateTime.now(),
-      startDateLowongan: DateTime.now(),
-      gajiMax: "",
-      gajiMin: "",
-      jumlahLowongan: "0",
-      reference: "",
-    ),
-    ygAkanDipelajariWeb: const [],
-  ).obs;
+  final Rx<CourseDataEntity> _detailCourse = courseEmpty.obs;
   Rx<CourseDataEntity> get detailCourse => _detailCourse;
 
   final Rx<bool> _isLoading = true.obs;
@@ -96,33 +57,8 @@ class ArkCourseController extends GetxController {
   final RxList<CourseParseEntity> _similiarClass = <CourseParseEntity>[].obs;
   RxList<CourseParseEntity> get similiarClass => _similiarClass;
 
-  final Rx<CourseJrcEntity> _detailCourseJRC = CourseJrcEntity(
-    success: false,
-    data: CourseJrcDataEntity(
-      courseId: "",
-      subCategory: "",
-      subjudul: "",
-      sasaran: [],
-      hardSkill: [],
-      softSkill: [],
-      sertiPenyelesaian: "",
-      sertiKelulusan: "",
-      totalLowongan: 0,
-      maxGaji: "0",
-      minGaji: "0",
-      fasilitator: FasilitatorJrcEntity(
-        userId: "",
-        name: "",
-        avatar: "",
-        namaPerusahaan: "",
-        deskripsi: "",
-        instagram: "",
-        linkedin: "",
-      ),
-      instruktur: [],
-      daftarLoker: [],
-    ),
-  ).obs;
+  final Rx<CourseJrcEntity> _detailCourseJRC = courseJrcEmpty.obs;
+  Rx<CourseJrcEntity> get detailCourseJRC => _detailCourseJRC;
 
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;

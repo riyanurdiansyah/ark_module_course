@@ -29,7 +29,7 @@ class InstructorEntity extends Equatable {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "avatar": avatar,
+        "avatar": avatar.toJson(),
         "sub": sub,
       };
 

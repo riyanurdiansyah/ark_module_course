@@ -37,14 +37,18 @@ class LowonganEntity extends Equatable {
       ];
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "course_id": courseId,
-        "jumlah_lowongan": jumlahLowongan,
-        "startdate_lowongan": startDateLowongan!.toIso8601String(),
-        "enddate_lowongan": endDateLowongan!.toIso8601String(),
-        "category_job": categoryJob,
-        "gaji_min": gajiMin,
-        "gaji_max": gajiMax,
-        "reference": reference,
+        "id": id ?? 0,
+        "course_id": courseId ?? "",
+        "jumlah_lowongan": jumlahLowongan ?? "0",
+        "startdate_lowongan": startDateLowongan == null
+            ? DateTime.now().toIso8601String()
+            : startDateLowongan!.toIso8601String(),
+        "enddate_lowongan": endDateLowongan == null
+            ? DateTime.now().toIso8601String()
+            : endDateLowongan!.toIso8601String(),
+        "category_job": categoryJob ?? "",
+        "gaji_min": gajiMin ?? "",
+        "gaji_max": gajiMax ?? "",
+        "reference": reference ?? "",
       };
 }
