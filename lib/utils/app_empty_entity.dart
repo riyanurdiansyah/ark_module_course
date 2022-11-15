@@ -1,6 +1,7 @@
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_flag_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
 import 'package:ark_module_course/src/domain/entities/fasilitator_jrc_entity.dart';
 import 'package:ark_module_course/src/domain/entities/instructor_entity.dart';
 import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
@@ -42,6 +43,29 @@ final CourseDataEntity courseEmpty = CourseDataEntity(
     reference: "",
   ),
   ygAkanDipelajariWeb: const [],
+);
+
+final CourseRevampEntity courseRevampEmpty = CourseRevampEntity(
+  success: false,
+  data: CourseRevampDataEntity(
+      slug: '',
+      slugLama: '',
+      idKomentar: '0',
+      stringSertifikat: '',
+      kategoriUtama: '',
+      pekerjaan:
+          Pekerjaan(lowongan: '', gajiRendah: '', gajiTinggi: '', hari: ''),
+      rating: Rating(rating: '', jmlMurid: ''),
+      judul: '',
+      subJudul: '',
+      fasilitatorAtas: '',
+      peluangKarir: <String>[],
+      testimoni: <Testimoni>[],
+      instruktur: <Instruktur>[],
+      sertifikasi: '',
+      video: <Video>[],
+      intro: '',
+      isiFaq: <IsiFaq>[]),
 );
 
 final CourseJrcEntity courseJrcEmpty = CourseJrcEntity(

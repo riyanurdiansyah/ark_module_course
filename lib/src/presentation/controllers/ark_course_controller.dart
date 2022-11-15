@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/services/firebase_analytics.dart';
 import 'package:ark_module_course/src/core/exception_handling.dart';
 import 'package:ark_module_course/src/data/dto/course_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
@@ -60,6 +65,12 @@ class ArkCourseController extends GetxController {
   final Rx<CourseJrcEntity> _detailCourseJRC = courseJrcEmpty.obs;
   Rx<CourseJrcEntity> get detailCourseJRC => _detailCourseJRC;
 
+  final Rx<CourseRevampEntity> _courseRevamp = courseRevampEmpty.obs;
+  Rx<CourseRevampEntity> get courseRevamp => _courseRevamp;
+
+  final Rx<CourseRevampDetailEntity> _detailCourseRevamp =
+      CourseRevampDetailEntity().obs;
+
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;
 
@@ -110,6 +121,9 @@ class ArkCourseController extends GetxController {
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
     }
+
+    _getCourseRevamp();
+
     fetchUserStatus();
     fetchCurriculums();
     fetchUlasan(_ratingPage.value);
@@ -146,11 +160,39 @@ class ArkCourseController extends GetxController {
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
     }
+    if (_detailCourse.value.courseFlag.revamp == "1") {
+      _getCourseRevamp();
+    }
     fetchUserStatus();
     fetchCurriculums();
     fetchUlasan(_ratingPage.value);
     _fetchListIdSimiliarClass();
     await _changeLoading(false);
+  }
+
+  Future _getCourseRevamp() async {
+    final response =
+        await _useCase.getCourseRevamp(_detailCourse.value.courseSlug);
+    response.fold(
+      (l) => ExceptionHandle.execute(l),
+      (r) {
+        log('RESPONSE COURSE REVAMP $r');
+        _getCourseRevampDetail();
+        return _courseRevamp.value = r;
+      },
+    );
+  }
+
+  Future _getCourseRevampDetail() async {
+    final response =
+        await _useCase.getDetailCourseRevamp(_detailCourse.value.courseSlug);
+    response.fold((l) {
+      log('ERROR DETAIL COURSE $l');
+      return ExceptionHandle.execute(l);
+    }, (r) {
+      log('RESPONSE DETAIL COURSE REVAMP $r');
+      return _detailCourseRevamp.value = r;
+    });
   }
 
   Future _getCourseDetailJRC() async {

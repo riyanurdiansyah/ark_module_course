@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_begin_class_btm.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_join_class_btm.dart';
@@ -351,11 +353,14 @@ class ArkCoursePage extends StatelessWidget {
                               _courseC.similiarClass.length < 6
                                   ? _courseC.similiarClass.length
                                   : 6,
-                              (index) => ArkClassCard(
-                                course: _courseC.similiarClass[index].course,
-                                onTapClass: () => _courseC.changeSourceCourse(
-                                    _courseC.similiarClass[index]),
-                              ),
+                              (index) {
+                                log('PRESSED');
+                                return ArkClassCard(
+                                  course: _courseC.similiarClass[index].course,
+                                  onTapClass: () => _courseC.changeSourceCourse(
+                                      _courseC.similiarClass[index]),
+                                );
+                              },
                             ),
                           ),
                         ),

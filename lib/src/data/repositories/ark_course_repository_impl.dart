@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/core/exception_handling.dart';
 import 'package:ark_module_course/src/core/failures.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
@@ -83,6 +85,31 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       return Right(ulasan);
     } catch (e) {
       log("ERROR HOME REPO GET ULASAN: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CourseRevampEntity>> getCourseRevamp(
+      String slug) async {
+    try {
+      final courseRevamp = await dataSource.getCourseRevamp(slug);
+      return Right(courseRevamp);
+    } catch (e) {
+      log("ERROR COURSE REPO GET COURSE REVAMP: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CourseRevampDetailEntity>> getDetailCourseRevamp(
+      String slug) async {
+    try {
+      final response = await dataSource.getDetailCourseRevamp(slug);
+      return Right(response);
+    } catch (e) {
+      log("ERROR COURSE REPO GET COURSE REVAMP DETAIL: ${e.toString()}");
+
       return ExceptionHandleResponse.execute(e);
     }
   }

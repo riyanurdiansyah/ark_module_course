@@ -5,9 +5,11 @@ import 'package:ark_module_course/src/core/exception_handling.dart';
 import 'package:ark_module_course/src/core/interceptor.dart';
 import 'package:ark_module_course/src/data/dto/course_dto.dart';
 import 'package:ark_module_course/src/data/dto/course_jrc_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entity.dart';
 import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
 import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
 import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
 import 'package:ark_module_course/utils/app_url.dart';
 
@@ -24,6 +26,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
     final response = await dio.get("$courseUrl/$slug/jrc");
     int code = response.statusCode ?? 500;
     if (code == 200) {
+      log('RESPONSE FROM COURSE REVAMP ${response.data}');
       return CourseJrcDTO.fromJson(response.data);
     }
     return ExceptionHandleResponseAPI.execute(
@@ -123,6 +126,40 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get User Status... failed connect to server',
+    );
+  }
+
+  @override
+  Future<CourseRevampEntity> getCourseRevamp(String slug) async {
+    final response = await dio.get(
+      "$courseUrl/$slug/revamp",
+    );
+    int code = response.statusCode ?? 500;
+    log("CHECK RES COURSE REVAMP : ${response.data}");
+    if (code == 200) {
+      return CourseRevampEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get CourseRevamp... failed connect to server',
+    );
+  }
+
+  @override
+  Future<CourseRevampDetailEntity> getDetailCourseRevamp(String slug) async {
+    final response = await dio.get(
+      '$courseUrl/$slug/detail',
+    );
+    int code = response.statusCode ?? 500;
+    log("CHECK RES DETAIL COURSE REVAMP : ${response.data}");
+    if (code == 200) {
+      return CourseRevampDetailEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get Detail Course Revamp ... failed connect to server',
     );
   }
 }
