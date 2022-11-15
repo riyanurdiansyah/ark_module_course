@@ -69,8 +69,8 @@ class ArkCourseController extends GetxController {
   Rx<CourseRevampEntity> get courseRevamp => _courseRevamp;
 
   final Rx<CourseRevampDetailEntity> _detailCourseRevamp =
-      CourseRevampDetailEntity().obs;
-
+      courseRevampDetailEntity.obs;
+  Rx<CourseRevampDetailEntity> get detailCourseRevamp => _detailCourseRevamp;
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;
 
@@ -123,6 +123,7 @@ class ArkCourseController extends GetxController {
     }
 
     _getCourseRevamp();
+    _getCourseRevampDetail();
 
     fetchUserStatus();
     fetchCurriculums();
@@ -177,7 +178,6 @@ class ArkCourseController extends GetxController {
       (l) => ExceptionHandle.execute(l),
       (r) {
         log('RESPONSE COURSE REVAMP $r');
-        _getCourseRevampDetail();
         return _courseRevamp.value = r;
       },
     );
@@ -190,7 +190,7 @@ class ArkCourseController extends GetxController {
       log('ERROR DETAIL COURSE $l');
       return ExceptionHandle.execute(l);
     }, (r) {
-      log('RESPONSE DETAIL COURSE REVAMP $r');
+      log('RESPONSE DETAIL COURSE REVAMP ${r.data}');
       return _detailCourseRevamp.value = r;
     });
   }

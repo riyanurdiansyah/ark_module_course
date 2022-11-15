@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
@@ -58,7 +59,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       "$courseUrl/$courseId/curriculums",
       options: globalOptions(),
     );
-    log("CHECK CURRICULUM : ${response.data}");
+    // log("CHECK CURRICULUM : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
       return CurriculumDTO.fromJson(response.data);
@@ -78,7 +79,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak",
       options: globalOptions(),
     );
-    log("RES : ${response.data}");
+    // log("RES : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
       for (var data in response.data["data"]) {
@@ -118,7 +119,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       "page": page,
     });
     int code = response.statusCode ?? 500;
-    log("CHECK RES ULASAN : ${response.data}");
+    // log("CHECK RES ULASAN : ${response.data}");
     if (code == 200) {
       return UlasanDTO.fromJson(response.data);
     }
@@ -135,7 +136,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       "$courseUrl/$slug/revamp",
     );
     int code = response.statusCode ?? 500;
-    log("CHECK RES COURSE REVAMP : ${response.data}");
+    // log("CHECK RES COURSE REVAMP : ${response.data}");
     if (code == 200) {
       return CourseRevampEntity.fromJson(response.data);
     }
@@ -152,8 +153,8 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       '$courseUrl/$slug/detail',
     );
     int code = response.statusCode ?? 500;
-    log("CHECK RES DETAIL COURSE REVAMP : ${response.data}");
     if (code == 200) {
+      log('RESPONSE FROM GET DETAIL COURSE REVAMP ${response.data}');
       return CourseRevampDetailEntity.fromJson(response.data);
     }
     return ExceptionHandleResponseAPI.execute(
