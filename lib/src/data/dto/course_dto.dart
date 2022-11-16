@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ark_module_course/src/data/dto/course_category_dto.dart';
+import 'package:ark_module_course/src/data/dto/course_coin_dto.dart';
 import 'package:ark_module_course/src/data/dto/course_flag_dto.dart';
 import 'package:ark_module_course/src/data/dto/instructor_dto.dart';
 import 'package:ark_module_course/src/data/dto/lowongan_dto.dart';
@@ -64,6 +65,7 @@ class CourseDataDTO extends CourseDataEntity {
     required super.ratingCount,
     required super.lowongan,
     required super.ygAkanDipelajariWeb,
+    required super.coin,
   });
 
   factory CourseDataDTO.fromJson(Map<String, dynamic> json) => CourseDataDTO(
@@ -150,5 +152,8 @@ class CourseDataDTO extends CourseDataEntity {
                 json["yg_akan_dipelajari_web"] == null
             ? []
             : List<String>.from(json["yg_akan_dipelajari_web"].map((x) => x)),
+        coin: json['coin'] == null
+            ? CourseCoinDTO(coinFlag: "1", coinDescription: "", coinValue: "")
+            : CourseCoinDTO.fromJson(json["coin"]),
       );
 }
