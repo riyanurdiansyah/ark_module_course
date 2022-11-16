@@ -1,5 +1,6 @@
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

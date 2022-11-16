@@ -1,7 +1,19 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/src/core/exception_handling.dart';
+import 'package:ark_module_course/src/core/interceptor.dart';
+import 'package:ark_module_course/src/data/dto/course_dto.dart';
+import 'package:ark_module_course/src/data/dto/course_jrc_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entity.dart';
+import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
+import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
+import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/utils/app_constanta.dart';
+import 'package:ark_module_course/utils/app_url.dart';
+
 import 'package:dio/dio.dart';
 
 class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
@@ -15,6 +27,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
     final response = await dio.get("$courseUrl/$slug/jrc");
     int code = response.statusCode ?? 500;
     if (code == 200) {
+      log('RESPONSE FROM COURSE REVAMP ${response.data}');
       return CourseJrcDTO.fromJson(response.data);
     }
     return ExceptionHandleResponseAPI.execute(
@@ -42,8 +55,11 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
   @override
   Future<CurriculumDTO> getCurriculums(String courseId, String token) async {
     await dioInterceptor(dio, token);
-    final response = await dio.get("$courseUrl/$courseId/curriculums");
-    log("CHECK CURRICULUM : ${response.data}");
+    final response = await dio.get(
+      "$courseUrl/$courseId/curriculums",
+      options: globalOptions(),
+    );
+    // log("CHECK CURRICULUM : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
       return CurriculumDTO.fromJson(response.data);
@@ -57,9 +73,13 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
   @override
   Future<List<String>> getListIdSimiliarClass(String categoryId) async {
+    log("CHECK ID : $categoryId");
     List<String> listId = [];
     final response = await dio.get(
-        "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak");
+      "$courseUrl/category/$categoryId/coursesids?urutan=siswa-terbanyak",
+      options: globalOptions(),
+    );
+    // log("RES : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code == 200) {
       for (var data in response.data["data"]) {
@@ -73,14 +93,8 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
           listId.add(data["ID"].toString());
         }
       }
-
-      return listId;
     }
-    return ExceptionHandleResponseAPI.execute(
-      code,
-      response,
-      'Error Get List Id Newest Course... failed connect to server',
-    );
+    return listId;
   }
 
   @override
@@ -105,7 +119,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       "page": page,
     });
     int code = response.statusCode ?? 500;
-    log("CHECK RES ULASAN : ${response.data}");
+    // log("CHECK RES ULASAN : ${response.data}");
     if (code == 200) {
       return UlasanDTO.fromJson(response.data);
     }
@@ -113,6 +127,40 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get User Status... failed connect to server',
+    );
+  }
+
+  @override
+  Future<CourseRevampEntity> getCourseRevamp(String slug) async {
+    final response = await dio.get(
+      "$courseUrl/$slug/revamp",
+    );
+    int code = response.statusCode ?? 500;
+    // log("CHECK RES COURSE REVAMP : ${response.data}");
+    if (code == 200) {
+      return CourseRevampEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get CourseRevamp... failed connect to server',
+    );
+  }
+
+  @override
+  Future<CourseRevampDetailEntity> getDetailCourseRevamp(String slug) async {
+    final response = await dio.get(
+      '$courseUrl/$slug/detail',
+    );
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM GET DETAIL COURSE REVAMP ${response.data}');
+      return CourseRevampDetailEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get Detail Course Revamp ... failed connect to server',
     );
   }
 }

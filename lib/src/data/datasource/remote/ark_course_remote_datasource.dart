@@ -1,7 +1,17 @@
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/src/data/dto/course_dto.dart';
+import 'package:ark_module_course/src/data/dto/course_jrc_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entity.dart';
+import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
+import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
+import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
+import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
 
 abstract class ArkCourseRemoteDataSource {
   Future<CourseJrcDTO> getDetailCourseJRC(String slug);
+
+  Future<CourseRevampEntity> getCourseRevamp(String slug);
+
+  Future<CourseRevampDetailEntity> getDetailCourseRevamp(String slug);
 
   Future<UserStatusDTO> getUserStatus(String slug, String token);
 

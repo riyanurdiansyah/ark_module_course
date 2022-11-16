@@ -1,5 +1,6 @@
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,9 @@ class ArkCourseJrcPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Text(
+        title: const Text(
           'Kelas',
-          style: AppStyleText.styleMontserrat(
+          style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14,
             color: Colors.white,
@@ -170,12 +171,13 @@ class ArkCourseJrcPage extends StatelessWidget {
                                             ? 12.5
                                             : 18,
                                         ignoreGestures: true,
-                                        initialRating: _courseC.detailCourse
-                                                    .value.averageRating ==
-                                                '0'
-                                            ? 5.0
-                                            : double.parse(_courseC.detailCourse
-                                                .value.averageRating),
+                                        initialRating: 5,
+                                        // _courseC.detailCourse
+                                        //             .value.averageRating ==
+                                        //         '0'
+                                        //     ? 5.0
+                                        // : double.parse(_courseC.detailCourse
+                                        //     .value.averageRating),
                                         allowHalfRating: true,
                                         itemPadding: const EdgeInsets.symmetric(
                                             horizontal: 0.8),

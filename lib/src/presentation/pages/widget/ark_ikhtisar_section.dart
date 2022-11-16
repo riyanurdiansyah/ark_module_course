@@ -1,5 +1,7 @@
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
+import 'package:ark_module_course/utils/app_color.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -58,9 +60,10 @@ class ArkIkhtisarSection extends StatelessWidget {
                             horizontal: 12, vertical: 6),
                         child: Text(
                           _courseC.detailCourse.value.peluangKarir[index],
-                          style: AppStyleText.styleSourceSansPro(
+                          style: const TextStyle(
+                            fontFamily: 'SourceSansPro',
                             fontSize: 11.5,
-                            color: const Color(0xFF54565B),
+                            color: Color(0xFF54565B),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -95,10 +98,11 @@ class ArkIkhtisarSection extends StatelessWidget {
                             Flexible(
                               child: Text(
                                 'Terdapat ${_courseC.detailCourse.value.lowongan.jumlahLowongan} lowongan yang dipasang untuk posisi akuntansi dalam ${_courseC.detailCourse.value.lowongan.endDateLowongan!.difference(_courseC.detailCourse.value.lowongan.startDateLowongan!).inDays} hari',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 10.5,
                                   height: 1.5,
-                                  color: const Color(0xFF5A5C60),
+                                  color: Color(0xFF5A5C60),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -128,10 +132,11 @@ class ArkIkhtisarSection extends StatelessWidget {
                                   name: '',
                                 ).format(int.parse(_courseC.detailCourse.value.lowongan.gajiMax ?? "0")).replaceAll('jt', 'juta')}',
                                 maxLines: 3,
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 10.5,
                                   height: 1.5,
-                                  color: const Color(0xFF5A5C60),
+                                  color: Color(0xFF5A5C60),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
