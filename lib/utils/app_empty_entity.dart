@@ -1,3 +1,4 @@
+import 'package:ark_module_course/src/domain/entities/course_coin_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_flag_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
@@ -44,6 +45,11 @@ final CourseDataEntity courseEmpty = CourseDataEntity(
     reference: "",
   ),
   ygAkanDipelajariWeb: const [],
+  coin: CourseCoinEntity(
+    coinFlag: "1",
+    coinDescription: "",
+    coinValue: "",
+  ),
 );
 
 final CourseRevampDetailEntity courseRevampDetailEntity =
