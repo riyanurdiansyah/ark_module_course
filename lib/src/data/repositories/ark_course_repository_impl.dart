@@ -106,7 +106,8 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       String slug) async {
     try {
       final response = await dataSource.getDetailCourseRevamp(slug);
-      log('RESPONSE ARK COURSE REPO ${response.data}');
+      log('RESPONSE ARK COURSE REPO $response');
+
       return Right(response);
     } catch (e) {
       log("ERROR COURSE REPO GET COURSE REVAMP DETAIL: ${e.toString()}");

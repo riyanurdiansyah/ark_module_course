@@ -71,12 +71,21 @@ class ArkCourseController extends GetxController {
   final Rx<CourseRevampDetailEntity> _detailCourseRevamp =
       courseRevampDetailEntity.obs;
   Rx<CourseRevampDetailEntity> get detailCourseRevamp => _detailCourseRevamp;
+
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;
 
   final Rx<CurriculumEntity> _curriculum =
       CurriculumEntity(success: false, data: []).obs;
   Rx<CurriculumEntity> get curriculum => _curriculum;
+  var listTitle = <CurriculumDataEntity>[].obs;
+  var listUnit = <CurriculumDataEntity>[].obs;
+  var tempList = <CurriculumDataEntity>[].obs;
+  var duration = 0.obs;
+  var penyelesaianKelas = 0.obs;
+
+  var totalUnit = 0.obs;
+  var totalKuis = 0.obs;
 
   final Rx<UserStatusEntity> _userStatus = UserStatusEntity(
           userId: 0, userStatus: "", userExpiry: "", isExpired: false)
@@ -120,13 +129,18 @@ class ArkCourseController extends GetxController {
     await _setup();
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
+      log('THIS IS COURSE JRC');
     }
+    if (_detailCourse.value.courseFlag.revamp == "1") {
+      _getCourseRevamp();
 
-    _getCourseRevamp();
-    _getCourseRevampDetail();
+      _getCourseRevampDetail();
+      log('THIS IS COURSE REVAMP');
+    }
 
     fetchUserStatus();
     fetchCurriculums();
+    fetchCurriculumsCourseRevamp();
     fetchUlasan(_ratingPage.value);
     _fetchListIdSimiliarClass();
     await _changeLoading(false);
@@ -190,7 +204,9 @@ class ArkCourseController extends GetxController {
       log('ERROR DETAIL COURSE $l');
       return ExceptionHandle.execute(l);
     }, (r) {
-      log('RESPONSE DETAIL COURSE REVAMP ${r.data}');
+      for (int i = 0; i < r.data[0].course!.fasilitator!.length; i++) {
+        log("FASILITATOR ${r.data[0].course!.fasilitator![i].name}");
+      }
       return _detailCourseRevamp.value = r;
     });
   }
@@ -330,6 +346,43 @@ class ArkCourseController extends GetxController {
       (data) => _curriculum.value = data,
     );
     await _changeLoadingCurriculum(false);
+  }
+
+  Future<void> fetchCurriculumsCourseRevamp() async {
+    _changeLoadingCurriculum(true);
+    final response = await _useCase.getCurriculums(
+        _detailCourse.value.id.toString(), _token.value);
+    response.fold((l) => ExceptionHandle.execute(l), (r) {
+      List<int> unitDurations = [];
+      int tempId = 0;
+      // FOR EXPANDABLE UNIT
+      for (int i = 0; i < r.data.length; i++) {
+        if (r.data[i].type == "unit" || r.data[i].type == "quiz") {
+          r.data[i].idParent = tempId;
+          listUnit.add(r.data[i]);
+        } else {
+          tempId++;
+          r.data[i].idParent = tempId;
+          listTitle.add(r.data[i]);
+        }
+        tempList.add(r.data[i]);
+
+        if (r.data[i].type == "unit") {
+          unitDurations.insert(0, r.data[i].duration);
+        }
+      }
+
+      for (int i = 0; i < unitDurations.length; i++) {
+        duration.value = unitDurations[i];
+      }
+      penyelesaianKelas.value = Duration(seconds: duration.value).inHours +
+          const Duration(minutes: 120).inHours;
+      totalUnit.value = unitDurations.length;
+      log('TOTAL UNIT $totalUnit');
+      log('PENYELESAIAN KELAS $penyelesaianKelas');
+      log('DURATION $duration');
+      return _curriculum.value = r;
+    });
   }
 
   void _fetchListIdSimiliarClass() async {

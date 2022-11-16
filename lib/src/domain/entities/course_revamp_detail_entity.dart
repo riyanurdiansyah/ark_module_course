@@ -34,10 +34,10 @@ class CourseRevampDetailEntity {
 
 class CourseRevampDataDetailEntity {
   CourseRevampDataDetailEntity({
-    required this.course,
+    this.course,
   });
 
-  Course course;
+  Course? course;
 
   factory CourseRevampDataDetailEntity.fromJson(Map<String, dynamic> json) =>
       CourseRevampDataDetailEntity(
@@ -45,7 +45,7 @@ class CourseRevampDataDetailEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        "course": course.toJson(),
+        "course": course!.toJson(),
       };
 }
 
@@ -105,55 +105,55 @@ class Course {
     required this.metaKeyword,
   });
 
-  int id;
-  String name;
-  String subtitle;
-  String courseSlug;
-  int dateCreated;
-  int dateUpdated;
-  String status;
-  String price;
-  String productId;
-  String regularPrice;
-  String iosPrice;
-  String salePrice;
-  int totalStudents;
-  String seats;
-  bool startDate;
-  String averageRating;
-  String ratingCount;
-  String courseDurationTime;
-  String featuredImage;
+  int? id;
+  String? name;
+  String? subtitle;
+  String? courseSlug;
+  int? dateCreated;
+  int? dateUpdated;
+  String? status;
+  String? price;
+  String? productId;
+  String? regularPrice;
+  String? iosPrice;
+  String? salePrice;
+  int? totalStudents;
+  String? seats;
+  bool? startDate;
+  String? averageRating;
+  String? ratingCount;
+  String? courseDurationTime;
+  String? featuredImage;
   List<Category> categories;
-  String description;
-  PurpleInstructor instructor;
-  String tagKursus;
-  CourseFlag courseFlag;
+  String? description;
+  PurpleInstructor? instructor;
+  String? tagKursus;
+  CourseFlag? courseFlag;
   dynamic courseDuration;
-  String sertifikatFrameUrl;
-  List<String> peluangKarir;
-  String tujuanUmum;
-  String tujuanKhusus;
-  List<String> ygAkanDipelajariWeb;
-  List<String> skillYgAkanDiperolehWeb;
-  String ygAkanDipelajari;
-  String skillYgAkanDiperoleh;
-  String sasaranKelompok;
-  String sasaranKompetensi;
-  String standarKompetensi;
-  Lowongan lowongan;
-  Coin coin;
-  bool od;
-  int enableFaceRecog;
-  List<MpLink> mpLinks;
-  List<InstructorElement> instructors;
-  List<Fasilitator> fasilitator;
-  String ikhtisar;
-  String descriptionInstruktur;
-  String sertifikatKelulusanDesc;
-  String pmoKategori;
-  String sesiKonsultasi;
-  String thumbnailSquare;
+  String? sertifikatFrameUrl;
+  List<String>? peluangKarir;
+  String? tujuanUmum;
+  String? tujuanKhusus;
+  List<String>? ygAkanDipelajariWeb;
+  List<String>? skillYgAkanDiperolehWeb;
+  String? ygAkanDipelajari;
+  String? skillYgAkanDiperoleh;
+  String? sasaranKelompok;
+  String? sasaranKompetensi;
+  String? standarKompetensi;
+  Lowongan? lowongan;
+  Coin? coin;
+  bool? od;
+  int? enableFaceRecog;
+  List<MpLink>? mpLinks;
+  List<InstructorElement>? instructors;
+  List<Fasilitator>? fasilitator;
+  String? ikhtisar;
+  String? descriptionInstruktur;
+  String? sertifikatKelulusanDesc;
+  String? pmoKategori;
+  String? sesiKonsultasi;
+  String? thumbnailSquare;
   dynamic metaTitle;
   dynamic metaDescription;
   dynamic metaKeyword;
@@ -163,8 +163,8 @@ class Course {
         name: json["name"],
         subtitle: json["subtitle"],
         courseSlug: json["course_slug"],
-        dateCreated: json["date_created"],
-        dateUpdated: json["date_updated"],
+        dateCreated: json["date_created"] ?? "",
+        dateUpdated: json["date_updated"] ?? "",
         status: json["status"],
         price: json["price"],
         productId: json["product_id"],
@@ -202,8 +202,10 @@ class Course {
         coin: Coin.fromJson(json["coin"]),
         od: json["od"],
         enableFaceRecog: json["enable_face_recog"],
-        mpLinks:
-            List<MpLink>.from(json["mp_links"].map((x) => MpLink.fromJson(x))),
+        mpLinks: json["mp_links"] == null
+            ? []
+            : List<MpLink>.from(
+                json["mp_links"].map((x) => MpLink.fromJson(x))),
         instructors: List<InstructorElement>.from(
             json["instructors"].map((x) => InstructorElement.fromJson(x))),
         fasilitator: List<Fasilitator>.from(
@@ -214,7 +216,7 @@ class Course {
         pmoKategori: json["pmo_kategori"],
         sesiKonsultasi: json["sesi_konsultasi"],
         thumbnailSquare: json["thumbnail_square"],
-        metaTitle: json["meta_title"],
+        metaTitle: json["meta_title"] == null ? null : json['meta_title'],
         metaDescription: json["meta_description"],
         metaKeyword: json["meta_keyword"],
       );
@@ -241,30 +243,30 @@ class Course {
         "featured_image": featuredImage,
         "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
         "description": description,
-        "instructor": instructor.toJson(),
+        "instructor": instructor!.toJson(),
         "tag_kursus": tagKursus,
-        "course_flag": courseFlag.toJson(),
+        "course_flag": courseFlag!.toJson(),
         "course_duration": courseDuration,
         "sertifikat_frame_url": sertifikatFrameUrl,
-        "peluang_karir": List<dynamic>.from(peluangKarir.map((x) => x)),
+        "peluang_karir": List<dynamic>.from(peluangKarir!.map((x) => x)),
         "tujuan_umum": tujuanUmum,
         "tujuan_khusus": tujuanKhusus,
         "yg_akan_dipelajari_web":
-            List<dynamic>.from(ygAkanDipelajariWeb.map((x) => x)),
+            List<dynamic>.from(ygAkanDipelajariWeb!.map((x) => x)),
         "skill_yg_akan_diperoleh_web":
-            List<dynamic>.from(skillYgAkanDiperolehWeb.map((x) => x)),
+            List<dynamic>.from(skillYgAkanDiperolehWeb!.map((x) => x)),
         "yg_akan_dipelajari": ygAkanDipelajari,
         "skill_yg_akan_diperoleh": skillYgAkanDiperoleh,
         "sasaran_kelompok": sasaranKelompok,
         "sasaran_kompetensi": sasaranKompetensi,
         "standar_kompetensi": standarKompetensi,
-        "lowongan": lowongan.toJson(),
-        "coin": coin.toJson(),
+        "lowongan": lowongan!.toJson(),
+        "coin": coin!.toJson(),
         "od": od,
         "enable_face_recog": enableFaceRecog,
-        "mp_links": List<dynamic>.from(mpLinks.map((x) => x.toJson())),
-        "instructors": List<dynamic>.from(instructors.map((x) => x.toJson())),
-        "fasilitator": List<dynamic>.from(fasilitator.map((x) => x.toJson())),
+        "mp_links": List<dynamic>.from(mpLinks!.map((x) => x.toJson())),
+        "instructors": List<dynamic>.from(instructors!.map((x) => x.toJson())),
+        "fasilitator": List<dynamic>.from(fasilitator!.map((x) => x.toJson())),
         "ikhtisar": ikhtisar,
         "description_instruktur": descriptionInstruktur,
         "sertifikat_kelulusan_desc": sertifikatKelulusanDesc,
@@ -348,7 +350,7 @@ class CourseFlag {
         whatsapp: json["whatsapp"],
         prakerja: json["prakerja"],
         revamp: json["revamp"],
-        jrc: json["jrc"],
+        jrc: json["jrc"] == null ? "" : json["jrc"],
         group: json["group"],
       );
 
@@ -480,7 +482,7 @@ class InstructorElement {
         averageRating: json["average_rating"],
         studentCount: json["student_count"],
         courseCount: json["course_count"],
-        bio: json["bio"],
+        bio: json["bio"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

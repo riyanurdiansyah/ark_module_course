@@ -42,6 +42,7 @@ class CurriculumDataEntity {
     required this.marks,
     required this.arkQuizType,
     required this.passingCertificatePosttest,
+    this.idParent,
   });
 
   final int key;
@@ -57,6 +58,7 @@ class CurriculumDataEntity {
   final String marks;
   final String arkQuizType;
   final String passingCertificatePosttest;
+  int? idParent;
 
   CurriculumDataEntity copyWith({
     int? key,
