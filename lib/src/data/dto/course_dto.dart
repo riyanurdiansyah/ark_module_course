@@ -66,6 +66,7 @@ class CourseDataDTO extends CourseDataEntity {
     required super.lowongan,
     required super.ygAkanDipelajariWeb,
     required super.coin,
+    required super.productId,
   });
 
   factory CourseDataDTO.fromJson(Map<String, dynamic> json) => CourseDataDTO(
@@ -155,5 +156,6 @@ class CourseDataDTO extends CourseDataEntity {
         coin: json['coin'] == null
             ? CourseCoinDTO(coinFlag: "1", coinDescription: "", coinValue: "")
             : CourseCoinDTO.fromJson(json["coin"]),
+        productId: json["product_id"],
       );
 }

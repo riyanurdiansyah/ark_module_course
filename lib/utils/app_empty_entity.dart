@@ -50,6 +50,7 @@ final CourseDataEntity courseEmpty = CourseDataEntity(
     coinDescription: "",
     coinValue: "",
   ),
+  productId: "",
 );
 
 final CourseRevampDetailEntity courseRevampDetailEntity =
