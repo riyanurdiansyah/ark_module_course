@@ -9,6 +9,7 @@ export 'src/presentation/pages/widget/ark_ikhtisar_section.dart';
 export 'src/presentation/pages/widget/ark_ulasan_section.dart';
 export 'src/presentation/pages/widget/ark_row_with_two_widget.dart';
 export 'src/presentation/pages/widget/ark_tab_title_for_class_page.dart';
+export 'src/presentation/pages/ark_course_revamp/ark_course_revamp_page.dart';
 
 export 'src/domain/repositories/ark_course_repository.dart';
 

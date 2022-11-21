@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
@@ -75,6 +74,9 @@ class ArkCourseController extends GetxController {
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;
 
+  final Rx<int> _tabIndexRevamp = 0.obs;
+  Rx<int> get tabIndexRevamp => _tabIndexRevamp;
+
   final Rx<CurriculumEntity> _curriculum =
       CurriculumEntity(success: false, data: []).obs;
   Rx<CurriculumEntity> get curriculum => _curriculum;
@@ -86,6 +88,9 @@ class ArkCourseController extends GetxController {
 
   var totalUnit = 0.obs;
   var totalKuis = 0.obs;
+
+  // FOR COURSE REVAMP
+  var isExpandedCourseRevamp = false.obs;
 
   final Rx<UserStatusEntity> _userStatus = UserStatusEntity(
           userId: 0, userStatus: "", userExpiry: "", isExpired: false)
@@ -131,12 +136,15 @@ class ArkCourseController extends GetxController {
       _getCourseDetailJRC();
       log('THIS IS COURSE JRC');
     }
-    if (_detailCourse.value.courseFlag.revamp == "1") {
-      _getCourseRevamp();
+    // if (_detailCourse.value.courseFlag.revamp == "1") {
+    //   _getCourseRevamp();
+    //   _getCourseRevampDetail();
 
-      _getCourseRevampDetail();
-      log('THIS IS COURSE REVAMP');
-    }
+    //   log('THIS IS COURSE REVAMP');
+    // }
+    _getCourseRevamp();
+    _getCourseRevampDetail();
+    log('COURSE REVAMP');
 
     fetchUserStatus();
     fetchCurriculums();
@@ -177,6 +185,7 @@ class ArkCourseController extends GetxController {
     }
     if (_detailCourse.value.courseFlag.revamp == "1") {
       _getCourseRevamp();
+      _getCourseRevampDetail();
     }
     fetchUserStatus();
     fetchCurriculums();
@@ -201,12 +210,10 @@ class ArkCourseController extends GetxController {
     final response =
         await _useCase.getDetailCourseRevamp(_detailCourse.value.courseSlug);
     response.fold((l) {
-      log('ERROR DETAIL COURSE $l');
+      log('ERROR DETAIL COURSE REVAMP $l');
       return ExceptionHandle.execute(l);
     }, (r) {
-      for (int i = 0; i < r.data[0].course!.fasilitator!.length; i++) {
-        log("FASILITATOR ${r.data[0].course!.fasilitator![i].name}");
-      }
+      log('SUCCESS DETAIL COURSE REVAMP ${r.data}');
       return _detailCourseRevamp.value = r;
     });
   }
@@ -329,7 +336,10 @@ class ArkCourseController extends GetxController {
       (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
-      (data) => _userStatus.value = data,
+      (data) {
+        log('FETCH USER STATUS ${data.userStatus}');
+        return _userStatus.value = data;
+      },
     );
     await _changeLoadingUserStatus(false);
   }

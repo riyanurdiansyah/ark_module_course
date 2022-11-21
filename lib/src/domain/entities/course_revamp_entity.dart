@@ -77,7 +77,9 @@ class CourseRevampDataEntity {
         idKomentar: json["idKomentar"],
         stringSertifikat: json["stringSertifikat"],
         kategoriUtama: json["kategoriUtama"],
-        pekerjaan: Pekerjaan.fromJson(json["pekerjaan"]),
+        pekerjaan: json['pekerjaan'] == null
+            ? Pekerjaan(lowongan: '', gajiRendah: '', gajiTinggi: '', hari: '')
+            : Pekerjaan.fromJson(json["pekerjaan"]),
         rating: Rating.fromJson(json["rating"]),
         judul: json["judul"],
         subJudul: json["subJudul"] ?? "",

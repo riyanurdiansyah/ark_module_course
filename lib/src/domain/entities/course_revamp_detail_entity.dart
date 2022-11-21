@@ -350,7 +350,7 @@ class CourseFlag {
         whatsapp: json["whatsapp"],
         prakerja: json["prakerja"],
         revamp: json["revamp"],
-        jrc: json["jrc"] == null ? "" : json["jrc"],
+        jrc: json["jrc"] ?? "",
         group: json["group"],
       );
 

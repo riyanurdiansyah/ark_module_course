@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
@@ -114,10 +113,12 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
   @override
   Future<UlasanDTO> getUlasan(String courseId, int page) async {
-    final response =
-        await dio.get("$courseUrl/$courseId/reviews", queryParameters: {
-      "page": page,
-    });
+    final response = await dio.get(
+      "$courseUrl/$courseId/reviews",
+      queryParameters: {
+        "page": page,
+      },
+    );
     int code = response.statusCode ?? 500;
     // log("CHECK RES ULASAN : ${response.data}");
     if (code == 200) {
@@ -151,6 +152,11 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
   Future<CourseRevampDetailEntity> getDetailCourseRevamp(String slug) async {
     final response = await dio.get(
       '$courseUrl/$slug/detail',
+      options: Options(
+        headers: {
+          'Accept': '*/*',
+        },
+      ),
     );
     int code = response.statusCode ?? 500;
     if (code == 200) {
