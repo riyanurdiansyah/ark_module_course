@@ -37,6 +37,8 @@ dependencies:
   shared_preferences: ^2.0.8
   shimmer: ^2.0.0
   url_launcher: ^6.0.12
+  flutter_sticky_header: ^0.6.4
+  font_awesome_flutter: ^10.1.0
   youtube_player_iframe:
     git:
       url: https://github.com/pkeliat/youtube_player_flutter.git
@@ -44,7 +46,6 @@ dependencies:
 
   flutter:
     sdk: flutter
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

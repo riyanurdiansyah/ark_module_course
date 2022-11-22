@@ -47,6 +47,7 @@ class CourseJrcDataEntity {
     required this.fasilitator,
     required this.instruktur,
     required this.daftarLoker,
+    required this.ikhtisar,
   });
 
   String courseId;
@@ -63,6 +64,7 @@ class CourseJrcDataEntity {
   FasilitatorJrcEntity fasilitator;
   List<InstrukturJrcEntity> instruktur;
   List<DaftarLokerJrcEntity> daftarLoker;
+  String ikhtisar;
 
   CourseJrcDataEntity copyWith({
     String? courseId,
@@ -79,6 +81,7 @@ class CourseJrcDataEntity {
     FasilitatorJrcEntity? fasilitator,
     List<InstrukturJrcEntity>? instruktur,
     List<DaftarLokerJrcEntity>? daftarLoker,
+    String? ikhtisar,
   }) =>
       CourseJrcDataEntity(
         courseId: courseId ?? this.courseId,
@@ -95,6 +98,7 @@ class CourseJrcDataEntity {
         fasilitator: fasilitator ?? this.fasilitator,
         instruktur: instruktur ?? this.instruktur,
         daftarLoker: daftarLoker ?? this.daftarLoker,
+        ikhtisar: ikhtisar ?? this.ikhtisar,
       );
 
   Map<String, dynamic> toJson() => {
@@ -112,5 +116,6 @@ class CourseJrcDataEntity {
         "fasilitator": fasilitator.toJson(),
         "instruktur": List<dynamic>.from(instruktur.map((x) => x.toJson())),
         "daftar_loker": List<dynamic>.from(daftarLoker.map((x) => x.toJson())),
+        "ikhtisar": ikhtisar,
       };
 }

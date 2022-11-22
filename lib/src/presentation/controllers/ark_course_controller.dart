@@ -85,9 +85,15 @@ class ArkCourseController extends GetxController {
   var tempList = <CurriculumDataEntity>[].obs;
   var duration = 0.obs;
   var penyelesaianKelas = 0.obs;
+  var paketKelas = [].obs;
 
   var totalUnit = 0.obs;
   var totalKuis = 0.obs;
+
+  // TAB JRC
+  var tabIndexJrc = 0.obs;
+  var isExpanded = false.obs;
+  var isExpandedInstructor = false.obs;
 
   // FOR COURSE REVAMP
   var isExpandedCourseRevamp = false.obs;
@@ -136,15 +142,15 @@ class ArkCourseController extends GetxController {
       _getCourseDetailJRC();
       log('THIS IS COURSE JRC');
     }
-    // if (_detailCourse.value.courseFlag.revamp == "1") {
-    //   _getCourseRevamp();
-    //   _getCourseRevampDetail();
+    if (_detailCourse.value.courseFlag.revamp == "1") {
+      _getCourseRevamp();
+      _getCourseRevampDetail();
 
-    //   log('THIS IS COURSE REVAMP');
-    // }
-    _getCourseRevamp();
-    _getCourseRevampDetail();
-    log('COURSE REVAMP');
+      log('THIS IS COURSE REVAMP');
+    }
+    // _getCourseRevamp();
+    // _getCourseRevampDetail();
+    // log('COURSE REVAMP');
 
     fetchUserStatus();
     fetchCurriculums();
@@ -353,7 +359,26 @@ class ArkCourseController extends GetxController {
       (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
-      (data) => _curriculum.value = data,
+      (data) {
+        List<int> unitDurations = [];
+        List quizes = [];
+        if (data.data.isNotEmpty) {
+          for (int i = 0; i < data.data.length; i++) {
+            if (data.data[i].type == 'unit') {
+              unitDurations.insert(0, data.data[i].duration);
+            } else if (data.data[i].type == 'quiz') {
+              quizes.insert(0, data.data[i].type);
+            }
+          }
+        }
+        for (int i = 0; i < unitDurations.length; i++) {
+          duration.value = unitDurations[i];
+        }
+        penyelesaianKelas.value = Duration(seconds: duration.value).inHours +
+            const Duration(minutes: 120).inHours;
+        totalUnit.value = unitDurations.length;
+        return _curriculum.value = data;
+      },
     );
     await _changeLoadingCurriculum(false);
   }

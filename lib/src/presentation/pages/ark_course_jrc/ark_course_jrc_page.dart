@@ -1,10 +1,14 @@
 import 'package:ark_module_course/ark_module_course.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/info_kursus_section_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_lowongan_karir_tab_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_tab_title_jrc.dart';
 import 'package:ark_module_course/utils/app_color.dart';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -16,6 +20,47 @@ class ArkCourseJrcPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? substractGaji(String gaji) {
+      //kalo satu digit
+      if (gaji.length == 7) {
+        final a = gaji.replaceRange(2, gaji.length, '');
+        //gak ada koma contoh : 8juta
+        if (a.contains('0')) {
+          final zzz = a.replaceAll('0', '');
+          return zzz;
+          //ada komanya contoh :4.5 juta
+        } else {
+          final zz = a.split('');
+          return ('${zz[0]}.${zz[1]}');
+        }
+
+        //kalo gaji dua digit
+      } else if (gaji.length == 8) {
+        final a = gaji.replaceRange(3, gaji.length, '');
+        //gak ada koma contoh : 12 juta
+        if (a.contains('0')) {
+          final zzz = a.replaceRange(2, a.length, '');
+          return zzz;
+          //ada komanya contoh :12.5 juta
+        } else {
+          final zz = a.split('');
+          return ('${zz[0]}${zz[1]}.${zz[2]}');
+        }
+      } else if (gaji.length == 9) {
+        final a = gaji.replaceRange(4, gaji.length, '');
+        //gak ada koma contoh : 200 juta
+        if (a.contains('0')) {
+          final zzz = a.replaceRange(3, a.length, '');
+          return zzz;
+          //ada komanya contoh :200.5 juta
+        } else {
+          final zz = a.split('');
+          return ('${zz[0]}${zz[1]}.${zz[2]}');
+        }
+      }
+      return '0';
+    }
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -260,9 +305,8 @@ class ArkCourseJrcPage extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 10),
 
-                                      ///TODO: BELUM DI HANDLE
-                                      // if (_courseC.detailCourse.value
-                                      //     .peluangKarir.isNotEmpty)
+                                      // if (_lcC.detailClass.value.data![0]
+                                      //     .course!.peluangKarir!.isNotEmpty)
                                       //   PeluangKarirJrc(
                                       //     listUsed: _lcC.detailClass.value
                                       //         .data![0].course!.peluangKarir!,
@@ -291,26 +335,33 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
-                                                    children: const [
-                                                      ///TODO: BELUM DIHANDLE
-                                                      // AppText.labelW700(
-                                                      //   '${_lcC.jrc.value.data!.totalLowongan} Lowongan',
-                                                      //   familiy:
-                                                      //       'SourceSansPro',
-                                                      //   13,
-                                                      //   kNewBlack1,
-                                                      //   maxLines: 3,
-                                                      //   height: 1.5,
-                                                      // ),
-                                                      // AppText.labelW400(
-                                                      //   'Lowongan yang tersedia untuk posisi ${_lcC.jrc.value.data!.subCategory} dalam 3 hari',
-                                                      //   familiy:
-                                                      //       'SourceSansPro',
-                                                      //   11,
-                                                      //   const Color(0xFF5A5C60),
-                                                      //   maxLines: 3,
-                                                      //   height: 1.5,
-                                                      // ),
+                                                    children: [
+                                                      Text(
+                                                        '${_courseC.detailCourseJRC.value.data.totalLowongan} Lowongan',
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              Color(0xff121315),
+                                                          fontFamily:
+                                                              'SourceSansPro',
+                                                          height: 1.5,
+                                                        ),
+                                                        maxLines: 3,
+                                                      ),
+                                                      Text(
+                                                        'Lowongan yang tersedia untuk posisi ${_courseC.detailCourseJRC.value.data.subCategory} dalam 3 hari',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'SourceSansPro',
+                                                          fontSize: 11,
+                                                          color: const Color(
+                                                              0xFF5A5C60),
+                                                          height: 1.5,
+                                                        ),
+                                                        maxLines: 3,
+                                                      ),
                                                     ]),
                                               ),
                                             ],
@@ -337,26 +388,32 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
-                                                    children: const [
-                                                      ///TODO: BELUM DIHANDLE
-                                                      // AppText.labelW700(
-                                                      //   'Rp${substractGaji(_lcC.jrc.value.data!.minGaji!)} - ${substractGaji(_lcC.jrc.value.data!.maxGaji!)} juta',
-                                                      //   familiy:
-                                                      //       'SourceSansPro',
-                                                      //   13,
-                                                      //   kNewBlack1,
-                                                      //   maxLines: 3,
-                                                      //   height: 1.5,
-                                                      // ),
-                                                      // AppText.labelW400(
-                                                      //   'Rata-rata gaji sebagai ${_lcC.jrc.value.data!.subCategory}',
-                                                      //   familiy:
-                                                      //       'SourceSansPro',
-                                                      //   11,
-                                                      //   const Color(0xFF5A5C60),
-                                                      //   maxLines: 3,
-                                                      //   height: 1.5,
-                                                      // ),
+                                                    children: [
+                                                      Text(
+                                                        'Rp${substractGaji(_courseC.detailCourseJRC.value.data.minGaji)} - ${substractGaji(_courseC.detailCourseJRC.value.data.maxGaji)} juta',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'SourceSansPro',
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: kNewBlack1,
+                                                          height: 1.5,
+                                                        ),
+                                                        maxLines: 3,
+                                                      ),
+                                                      Text(
+                                                        'Rata-rata gaji sebagai ${_courseC.detailCourseJRC.value.data.subCategory}',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: const Color(
+                                                              0xFF5A5C60),
+                                                          height: 1.5,
+                                                        ),
+                                                        maxLines: 3,
+                                                      ),
                                                     ]),
                                               ),
                                             ],
@@ -366,6 +423,113 @@ class ArkCourseJrcPage extends StatelessWidget {
                                           ),
                                         ],
                                       ),
+
+                                      ///TODO: BELUM DI HANDLE
+                                      // if (_courseC.detailCourse.value
+                                      //     .peluangKarir.isNotEmpty)
+                                      //   PeluangKarirJrc(
+                                      //     listUsed: _lcC.detailClass.value
+                                      //         .data![0].course!.peluangKarir!,
+                                      //   ),
+
+                                      // Column(
+                                      //   crossAxisAlignment:
+                                      //       CrossAxisAlignment.start,
+                                      //   children: [
+                                      //     Row(
+                                      //       crossAxisAlignment:
+                                      //           CrossAxisAlignment.start,
+                                      //       children: [
+                                      //         Padding(
+                                      //           padding: const EdgeInsets.only(
+                                      //               top: 7),
+                                      //           child: SvgPicture.asset(
+                                      //             'assets/svg/cv.svg',
+                                      //           ),
+                                      //         ),
+                                      //         const SizedBox(
+                                      //           width: 12,
+                                      //         ),
+                                      //         Expanded(
+                                      //           child: Column(
+                                      //               crossAxisAlignment:
+                                      //                   CrossAxisAlignment
+                                      //                       .start,
+                                      //               children: const [
+                                      //                 ///TODO: BELUM DIHANDLE
+                                      //                 // AppText.labelW700(
+                                      //                 //   '${_lcC.jrc.value.data!.totalLowongan} Lowongan',
+                                      //                 //   familiy:
+                                      //                 //       'SourceSansPro',
+                                      //                 //   13,
+                                      //                 //   kNewBlack1,
+                                      //                 //   maxLines: 3,
+                                      //                 //   height: 1.5,
+                                      //                 // ),
+                                      //                 // AppText.labelW400(
+                                      //                 //   'Lowongan yang tersedia untuk posisi ${_lcC.jrc.value.data!.subCategory} dalam 3 hari',
+                                      //                 //   familiy:
+                                      //                 //       'SourceSansPro',
+                                      //                 //   11,
+                                      //                 //   const Color(0xFF5A5C60),
+                                      //                 //   maxLines: 3,
+                                      //                 //   height: 1.5,
+                                      //                 // ),
+                                      //               ]),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //     const SizedBox(
+                                      //       height: 8,
+                                      //     ),
+                                      //     Row(
+                                      //       crossAxisAlignment:
+                                      //           CrossAxisAlignment.start,
+                                      //       children: [
+                                      //         Padding(
+                                      //           padding: const EdgeInsets.only(
+                                      //               top: 7),
+                                      //           child: SvgPicture.asset(
+                                      //             'assets/svg/salary.svg',
+                                      //           ),
+                                      //         ),
+                                      //         const SizedBox(
+                                      //           width: 10,
+                                      //         ),
+                                      //         Expanded(
+                                      //           child: Column(
+                                      //               crossAxisAlignment:
+                                      //                   CrossAxisAlignment
+                                      //                       .start,
+                                      //               children: const [
+                                      //                 ///TODO: BELUM DIHANDLE
+                                      //                 // AppText.labelW700(
+                                      //                 //   'Rp${substractGaji(_lcC.jrc.value.data!.minGaji!)} - ${substractGaji(_lcC.jrc.value.data!.maxGaji!)} juta',
+                                      //                 //   familiy:
+                                      //                 //       'SourceSansPro',
+                                      //                 //   13,
+                                      //                 //   kNewBlack1,
+                                      //                 //   maxLines: 3,
+                                      //                 //   height: 1.5,
+                                      //                 // ),
+                                      //                 // AppText.labelW400(
+                                      //                 //   'Rata-rata gaji sebagai ${_lcC.jrc.value.data!.subCategory}',
+                                      //                 //   familiy:
+                                      //                 //       'SourceSansPro',
+                                      //                 //   11,
+                                      //                 //   const Color(0xFF5A5C60),
+                                      //                 //   maxLines: 3,
+                                      //                 //   height: 1.5,
+                                      //                 // ),
+                                      //               ]),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //     const SizedBox(
+                                      //       height: 12,
+                                      //     ),
+                                      //   ],
+                                      // ),
 
                                       // if (_courseC.detailCourse.value
                                       //     .ygAkanDipelajariWeb!.isNotEmpty)
@@ -389,6 +553,64 @@ class ArkCourseJrcPage extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+            SliverStickyHeader(
+              header: Card(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero),
+                margin: EdgeInsets.zero,
+                elevation: 2,
+                child: Row(children: [
+                  ArkTabTitleJrc(
+                    tabIndex: _courseC.tabIndexJrc,
+                    indexCondition: 0,
+                    title: 'Info Kursus',
+                  ),
+                  ArkTabTitleJrc(
+                    tabIndex: _courseC.tabIndexJrc,
+                    indexCondition: 1,
+                    title: 'Kurikulum',
+                  ),
+                  ArkTabTitleJrc(
+                    tabIndex: _courseC.tabIndexJrc,
+                    indexCondition: 2,
+                    title: 'Ulasan',
+                  ),
+                  Expanded(
+                    child: ArkLowonganKarirTabJrc(
+                      indexCondition: 3,
+                      tabIndex: _courseC.tabIndexJrc,
+                    ),
+                  )
+                ]),
+              ),
+              sliver: SliverToBoxAdapter(
+                child: Container(
+                  color: kCanvasColor,
+                  // padding: const EdgeInsets.symmetric(horizontal: 15),
+                  width: Get.width,
+                  child: Obx(() {
+                    if (_courseC.tabIndexJrc.value == 0) {
+                      return ArkInfoKursusSectionJrc();
+                    } else if (_courseC.tabIndexJrc.value == 1) {
+                      // return KurikulumSectionJrc();
+                      return Center(
+                        child: Text('KURIKULUM SECTION'),
+                      );
+                    } else if (_courseC.tabIndexJrc.value == 2) {
+                      // return UlasanSectionJrc();
+                      return Center(
+                        child: Text('ULASAN SECTION'),
+                      );
+                    } else {
+                      // return LowonganKerjaSectionJrc();
+                      return Center(
+                        child: Text('LOWONGAN SECTION'),
+                      );
+                    }
+                  }),
                 ),
               ),
             ),

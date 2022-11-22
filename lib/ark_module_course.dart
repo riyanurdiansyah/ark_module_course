@@ -2,7 +2,7 @@ library ark_module_course;
 
 export 'src/presentation/controllers/ark_course_controller.dart';
 
-export 'src/presentation/pages/ark_course_jrc_page.dart';
+export 'src/presentation/pages/ark_course_jrc/ark_course_jrc_page.dart';
 export 'src/presentation/pages/ark_course_page.dart';
 export 'src/presentation/pages/widget/ark_kurikulum_section.dart';
 export 'src/presentation/pages/widget/ark_ikhtisar_section.dart';
