@@ -26,4 +26,6 @@ abstract class ArkCourseRemoteDataSource {
   Future<bool> removeFromFavorite(String courseId, String token);
 
   Future<bool> addToFavorite(String courseId, String token);
+
+  Future<CourseRevampDetailEntity> getDetailCourse(String courseId);
 }

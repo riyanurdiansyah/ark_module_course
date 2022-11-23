@@ -208,4 +208,19 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       'Error add to favorite ... failed connect to server',
     );
   }
+
+  @override
+  Future<CourseRevampDetailEntity> getDetailCourse(String courseId) async {
+    final response = await dio.get('$courseUrl/$courseId');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM GET DETAIL COURSE');
+      return CourseRevampDetailEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get Detail Course... failed connect to server',
+    );
+  }
 }

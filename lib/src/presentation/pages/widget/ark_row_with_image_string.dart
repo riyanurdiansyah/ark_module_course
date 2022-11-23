@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,11 +41,11 @@ class ArkRowWithImageAndDescription extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              imagePath == '' ? '' : imagePath,
+            CachedNetworkImage(
+              imageUrl: imagePath == '' ? '' : imagePath,
               width: 80,
               height: 80,
-              errorBuilder: (context, error, stackTrace) {
+              errorWidget: (context, error, stackTrace) {
                 return Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Image.asset(

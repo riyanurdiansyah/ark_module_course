@@ -34,4 +34,7 @@ abstract class ArkCourseRepository {
       String courseId, String token);
 
   Future<Either<Failure, bool>> addToFavorite(String courseId, String token);
+
+  Future<Either<Failure, CourseRevampDetailEntity>> getDetailCourse(
+      String courseId);
 }

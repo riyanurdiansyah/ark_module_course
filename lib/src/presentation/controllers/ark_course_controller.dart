@@ -72,6 +72,10 @@ class ArkCourseController extends GetxController {
       courseRevampDetailEntity.obs;
   Rx<CourseRevampDetailEntity> get detailCourseRevamp => _detailCourseRevamp;
 
+  final Rx<CourseRevampDetailEntity> _detailCourseBiasa =
+      courseRevampDetailEntity.obs;
+  Rx<CourseRevampDetailEntity> get detailCourseBiasa => _detailCourseBiasa;
+
   final Rx<int> _indexTabCourse = 0.obs;
   Rx<int> get indexTabCourse => _indexTabCourse;
 
@@ -156,7 +160,7 @@ class ArkCourseController extends GetxController {
     // _getCourseRevamp();
     // _getCourseRevampDetail();
     // log('COURSE REVAMP');
-
+    await _getDetailCourse();
     fetchUserStatus();
     fetchCurriculums();
     fetchCurriculumsCourseRevamp();
@@ -204,10 +208,11 @@ class ArkCourseController extends GetxController {
     fetchCurriculums();
     fetchUlasan(_ratingPage.value);
     _fetchListIdSimiliarClass();
+    await _getDetailCourse();
     await _changeLoading(false);
   }
 
-  Future _getCourseRevamp() async {
+  Future<void> _getCourseRevamp() async {
     _changeLoading(true);
 
     final response =
@@ -222,7 +227,7 @@ class ArkCourseController extends GetxController {
     await _changeLoading(false);
   }
 
-  Future _getCourseRevampDetail() async {
+  Future<void> _getCourseRevampDetail() async {
     _changeLoading(true);
 
     final response =
@@ -237,7 +242,19 @@ class ArkCourseController extends GetxController {
     await _changeLoading(false);
   }
 
-  Future _getCourseDetailJRC() async {
+  Future<void> _getDetailCourse() async {
+    _changeLoading(true);
+    final response =
+        await _useCase.getDetailCourse(_detailCourse.value.id.toString());
+    response.fold((l) => ExceptionHandle.execute(l), (r) {
+      log('RESPONSE SUCCESS FROM GET DETAIL COURSE ${r.data}');
+
+      return _detailCourseBiasa.value = r;
+    });
+    await _changeLoading(false);
+  }
+
+  Future<void> _getCourseDetailJRC() async {
     final response =
         await _useCase.getDetailCourseJRC(_detailCourse.value.courseSlug);
     response.fold(
@@ -387,6 +404,7 @@ class ArkCourseController extends GetxController {
         for (int i = 0; i < unitDurations.length; i++) {
           duration.value = unitDurations[i];
         }
+        totalKuis.value = quizes.length;
         penyelesaianKelas.value = Duration(seconds: duration.value).inHours +
             const Duration(minutes: 120).inHours;
         totalUnit.value = unitDurations.length;

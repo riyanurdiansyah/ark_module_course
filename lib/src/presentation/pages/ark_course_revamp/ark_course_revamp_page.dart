@@ -9,6 +9,8 @@ import 'package:ark_module_course/src/presentation/pages/ark_course_revamp/widge
 import 'package:ark_module_course/src/presentation/pages/widget/ark_button_reusable.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_mini_app_bar.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
+import 'package:ark_module_course/utils/app_shimmer.dart';
+import 'package:ark_module_course/widgets/ark_class_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
@@ -581,17 +583,109 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
                               }
                             }),
                           ),
-                          Container(
-                            color: kCanvasColor,
-                            child: Column(
-                              children: const [
-                                // TitleWithHorizontalSimiliarClass(
-                                //     listOfCard: _arkCC.similiarClass,
-                                //     title: 'Kelas Serupa'),
-                                // const SizedBox(height: 50)
-                              ],
-                            ),
-                          ),
+                          Obx(() {
+                            if (_arkCC.isLoadingSimiliar.value) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 35,
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20.0),
+                                    child: Text(
+                                      "Kelas Serupa",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 14),
+                                      child: Row(
+                                        children: List.generate(
+                                          5,
+                                          (index) => Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: AppShimmer.loadImage(
+                                              Get.size.width * 0.44,
+                                              200,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                ],
+                              );
+                            }
+                            if (_arkCC.similiarClass.isNotEmpty) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 35,
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20.0),
+                                    child: Text(
+                                      "Kelas Serupa",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 14),
+                                      child: Row(
+                                        children: List.generate(
+                                          _arkCC.similiarClass.length < 6
+                                              ? _arkCC.similiarClass.length
+                                              : 6,
+                                          (index) {
+                                            log('PRESSED');
+                                            return ArkClassCard(
+                                              course: _arkCC
+                                                  .similiarClass[index].course,
+                                              onTapClass: () => _arkCC
+                                                  .changeSourceCourse(_arkCC
+                                                      .similiarClass[index]),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                ],
+                              );
+                            }
+                            return const SizedBox(
+                              height: 25,
+                            );
+                          }),
                         ],
                       ),
                     ),

@@ -55,4 +55,8 @@ class ArkCourseUseCase {
   Future<Either<Failure, bool>> addToFavorite(
           String courseId, String token) async =>
       await repository.addToFavorite(courseId, token);
+
+  Future<Either<Failure, CourseRevampDetailEntity>> getDetailCourse(
+          String courseId) async =>
+      await repository.getDetailCourse(courseId);
 }

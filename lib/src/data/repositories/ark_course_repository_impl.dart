@@ -132,10 +132,23 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
   Future<Either<Failure, bool>> addToFavorite(
       String courseId, String token) async {
     try {
-      final response = await dataSource.addToFavorite(courseId, token);
+      await dataSource.addToFavorite(courseId, token);
       return right(true);
     } catch (e) {
       log("ERROR ADD TO FAVORITE: ${e.toString()}");
+
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CourseRevampDetailEntity>> getDetailCourse(
+      String courseId) async {
+    try {
+      final response = await dataSource.getDetailCourse(courseId);
+      return right(response);
+    } catch (e) {
+      log("ERROR GET DETAIL COURSE: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }

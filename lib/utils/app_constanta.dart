@@ -44,3 +44,12 @@ Options globalOptions({
     headers: headers ?? {},
   );
 }
+
+const List<Map<String, String>> fiturKelas = [
+  {'icon': 'assets/images/icon-online-kelas.svg', 'title': '100% Online'},
+  {
+    'icon': 'assets/images/icon-tersedia-app.svg',
+    'title': 'Tersedia dalam App dan Web'
+  },
+  {'icon': 'assets/images/icon-jadwal.svg', 'title': 'Jadwal fleksibel'},
+];
