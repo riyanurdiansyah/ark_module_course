@@ -8,6 +8,7 @@ import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_info
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_lowongan_karir_tab_jrc.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_tab_title_jrc.dart';
 import 'package:ark_module_course/utils/app_color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
@@ -233,13 +234,12 @@ class ArkCourseJrcPage extends StatelessWidget {
                                             ? 12.5
                                             : 18,
                                         ignoreGestures: true,
-                                        initialRating: 5,
-                                        // _courseC.detailCourse
-                                        //             .value.averageRating ==
-                                        //         '0'
-                                        //     ? 5.0
-                                        // : double.parse(_courseC.detailCourse
-                                        //     .value.averageRating),
+                                        initialRating: _courseC.detailCourse
+                                                    .value.averageRating ==
+                                                '0'
+                                            ? 5.0
+                                            : double.parse(_courseC.detailCourse
+                                                .value.averageRating),
                                         allowHalfRating: true,
                                         itemPadding: const EdgeInsets.symmetric(
                                             horizontal: 0.8),
@@ -282,11 +282,15 @@ class ArkCourseJrcPage extends StatelessWidget {
                                       expandedRightString: false,
                                       leftWidget: ClipRRect(
                                         borderRadius: BorderRadius.circular(30),
-                                        child: Image.network(
-                                            _courseC.detailCourse.value
-                                                .instructor.avatar.url,
-                                            width: 15,
-                                            height: 15),
+                                        child: CachedNetworkImage(
+                                          imageUrl: _courseC.detailCourse.value
+                                              .instructor.avatar.url,
+                                          errorWidget: (context, _, __) {
+                                            return const SizedBox();
+                                          },
+                                          width: 15,
+                                          height: 15,
+                                        ),
                                       ),
                                       rightString: _courseC
                                           .detailCourse.value.instructor.name,
@@ -295,276 +299,286 @@ class ArkCourseJrcPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // _courseC.detailCourse.value
-                            //         .peluangKarir!.isEmpty
-                            //     ? const SizedBox()
-                            //     :
-                            Card(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Level: Pemula',
-                                        style: TextStyle(
-                                            fontSize: 10.5,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color.fromRGBO(
-                                                131, 133, 137, 1)),
-                                      ),
-                                      const SizedBox(height: 10),
-
-                                      // if (_lcC.detailClass.value.data![0]
-                                      //     .course!.peluangKarir!.isNotEmpty)
-                                      //   PeluangKarirJrc(
-                                      //     listUsed: _lcC.detailClass.value
-                                      //         .data![0].course!.peluangKarir!,
-                                      //   ),
-
-                                      Column(
+                            _courseC.detailCourse.value.peluangKarir.isEmpty
+                                ? const SizedBox()
+                                : Card(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 7),
-                                                child: SvgPicture.asset(
-                                                  'assets/svg/cv.svg',
+                                          const Text(
+                                            'Level: Pemula',
+                                            style: TextStyle(
+                                                fontSize: 10.5,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromRGBO(
+                                                    131, 133, 137, 1)),
+                                          ),
+                                          const SizedBox(height: 10),
+
+                                          // if (_lcC.detailClass.value.data![0]
+                                          //     .course!.peluangKarir!.isNotEmpty)
+                                          //   PeluangKarirJrc(
+                                          //     listUsed: _lcC.detailClass.value
+                                          //         .data![0].course!.peluangKarir!,
+                                          //   ),
+
+                                          Obx(
+                                            () => Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 7),
+                                                      child: SvgPicture.asset(
+                                                        'assets/svg/cv.svg',
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 12,
+                                                    ),
+                                                    Expanded(
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              '${_courseC.detailCourseJRC.value.data.totalLowongan} Lowongan',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                                color: Color(
+                                                                    0xff121315),
+                                                                fontFamily:
+                                                                    'SourceSansPro',
+                                                                height: 1.5,
+                                                              ),
+                                                              maxLines: 3,
+                                                            ),
+                                                            Text(
+                                                              'Lowongan yang tersedia untuk posisi ${_courseC.detailCourseJRC.value.data.subCategory} dalam 3 hari',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontFamily:
+                                                                    'SourceSansPro',
+                                                                fontSize: 11,
+                                                                color: Color(
+                                                                    0xFF5A5C60),
+                                                                height: 1.5,
+                                                              ),
+                                                              maxLines: 3,
+                                                            ),
+                                                          ]),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '${_courseC.detailCourseJRC.value.data.totalLowongan} Lowongan',
-                                                        style: const TextStyle(
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          color:
-                                                              Color(0xff121315),
-                                                          fontFamily:
-                                                              'SourceSansPro',
-                                                          height: 1.5,
-                                                        ),
-                                                        maxLines: 3,
-                                                      ),
-                                                      Text(
-                                                        'Lowongan yang tersedia untuk posisi ${_courseC.detailCourseJRC.value.data.subCategory} dalam 3 hari',
-                                                        style: const TextStyle(
-                                                          fontFamily:
-                                                              'SourceSansPro',
-                                                          fontSize: 11,
-                                                          color:
-                                                              Color(0xFF5A5C60),
-                                                          height: 1.5,
-                                                        ),
-                                                        maxLines: 3,
-                                                      ),
-                                                    ]),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 7),
-                                                child: SvgPicture.asset(
-                                                  'assets/svg/salary.svg',
+                                                const SizedBox(
+                                                  height: 8,
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Rp${substractGaji(_courseC.detailCourseJRC.value.data.minGaji)} - ${substractGaji(_courseC.detailCourseJRC.value.data.maxGaji)} juta',
-                                                        style: const TextStyle(
-                                                          fontFamily:
-                                                              'SourceSansPro',
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: kNewBlack1,
-                                                          height: 1.5,
-                                                        ),
-                                                        maxLines: 3,
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 7),
+                                                      child: SvgPicture.asset(
+                                                        'assets/svg/salary.svg',
                                                       ),
-                                                      Text(
-                                                        'Rata-rata gaji sebagai ${_courseC.detailCourseJRC.value.data.subCategory}',
-                                                        style: const TextStyle(
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color:
-                                                              Color(0xFF5A5C60),
-                                                          height: 1.5,
-                                                        ),
-                                                        maxLines: 3,
-                                                      ),
-                                                    ]),
-                                              ),
-                                            ],
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Rp${substractGaji(_courseC.detailCourseJRC.value.data.minGaji)} - ${substractGaji(_courseC.detailCourseJRC.value.data.maxGaji)} juta',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontFamily:
+                                                                    'SourceSansPro',
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color:
+                                                                    kNewBlack1,
+                                                                height: 1.5,
+                                                              ),
+                                                              maxLines: 3,
+                                                            ),
+                                                            Text(
+                                                              'Rata-rata gaji sebagai ${_courseC.detailCourseJRC.value.data.subCategory}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 11,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Color(
+                                                                    0xFF5A5C60),
+                                                                height: 1.5,
+                                                              ),
+                                                              maxLines: 3,
+                                                            ),
+                                                          ]),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          const SizedBox(
-                                            height: 12,
-                                          ),
+
+                                          ///TODO: BELUM DI HANDLE
+                                          // if (_courseC.detailCourse.value
+                                          //     .peluangKarir.isNotEmpty)
+                                          //   PeluangKarirJrc(
+                                          //     listUsed: _lcC.detailClass.value
+                                          //         .data![0].course!.peluangKarir!,
+                                          //   ),
+
+                                          // Column(
+                                          //   crossAxisAlignment:
+                                          //       CrossAxisAlignment.start,
+                                          //   children: [
+                                          //     Row(
+                                          //       crossAxisAlignment:
+                                          //           CrossAxisAlignment.start,
+                                          //       children: [
+                                          //         Padding(
+                                          //           padding: const EdgeInsets.only(
+                                          //               top: 7),
+                                          //           child: SvgPicture.asset(
+                                          //             'assets/svg/cv.svg',
+                                          //           ),
+                                          //         ),
+                                          //         const SizedBox(
+                                          //           width: 12,
+                                          //         ),
+                                          //         Expanded(
+                                          //           child: Column(
+                                          //               crossAxisAlignment:
+                                          //                   CrossAxisAlignment
+                                          //                       .start,
+                                          //               children: const [
+                                          //                 ///TODO: BELUM DIHANDLE
+                                          //                 // AppText.labelW700(
+                                          //                 //   '${_lcC.jrc.value.data!.totalLowongan} Lowongan',
+                                          //                 //   familiy:
+                                          //                 //       'SourceSansPro',
+                                          //                 //   13,
+                                          //                 //   kNewBlack1,
+                                          //                 //   maxLines: 3,
+                                          //                 //   height: 1.5,
+                                          //                 // ),
+                                          //                 // AppText.labelW400(
+                                          //                 //   'Lowongan yang tersedia untuk posisi ${_lcC.jrc.value.data!.subCategory} dalam 3 hari',
+                                          //                 //   familiy:
+                                          //                 //       'SourceSansPro',
+                                          //                 //   11,
+                                          //                 //   const Color(0xFF5A5C60),
+                                          //                 //   maxLines: 3,
+                                          //                 //   height: 1.5,
+                                          //                 // ),
+                                          //               ]),
+                                          //         ),
+                                          //       ],
+                                          //     ),
+                                          //     const SizedBox(
+                                          //       height: 8,
+                                          //     ),
+                                          //     Row(
+                                          //       crossAxisAlignment:
+                                          //           CrossAxisAlignment.start,
+                                          //       children: [
+                                          //         Padding(
+                                          //           padding: const EdgeInsets.only(
+                                          //               top: 7),
+                                          //           child: SvgPicture.asset(
+                                          //             'assets/svg/salary.svg',
+                                          //           ),
+                                          //         ),
+                                          //         const SizedBox(
+                                          //           width: 10,
+                                          //         ),
+                                          //         Expanded(
+                                          //           child: Column(
+                                          //               crossAxisAlignment:
+                                          //                   CrossAxisAlignment
+                                          //                       .start,
+                                          //               children: const [
+                                          //                 ///TODO: BELUM DIHANDLE
+                                          //                 // AppText.labelW700(
+                                          //                 //   'Rp${substractGaji(_lcC.jrc.value.data!.minGaji!)} - ${substractGaji(_lcC.jrc.value.data!.maxGaji!)} juta',
+                                          //                 //   familiy:
+                                          //                 //       'SourceSansPro',
+                                          //                 //   13,
+                                          //                 //   kNewBlack1,
+                                          //                 //   maxLines: 3,
+                                          //                 //   height: 1.5,
+                                          //                 // ),
+                                          //                 // AppText.labelW400(
+                                          //                 //   'Rata-rata gaji sebagai ${_lcC.jrc.value.data!.subCategory}',
+                                          //                 //   familiy:
+                                          //                 //       'SourceSansPro',
+                                          //                 //   11,
+                                          //                 //   const Color(0xFF5A5C60),
+                                          //                 //   maxLines: 3,
+                                          //                 //   height: 1.5,
+                                          //                 // ),
+                                          //               ]),
+                                          //         ),
+                                          //       ],
+                                          //     ),
+                                          //     const SizedBox(
+                                          //       height: 12,
+                                          //     ),
+                                          //   ],
+                                          // ),
+
+                                          // if (_courseC.detailCourse.value
+                                          //     .ygAkanDipelajariWeb!.isNotEmpty)
+                                          //   CardWithIconForDescription(
+                                          //       'Yang Akan Dipelajari',
+                                          //       _courseC.detailCourse.value
+                                          //           .ygAkanDipelajariWeb),
+                                          // const SizedBox(height: 22),
+                                          // if (_courseC.detailCourse.value
+                                          //     .skillYgAkanDiperolehWeb!.isNotEmpty)
+                                          //   CardForDescription(
+                                          //       'Skill yang Akan Diperoleh',
+                                          //       _courseC.detailCourse.value
+                                          //           .skillYgAkanDiperolehWeb!,
+                                          //       kNewBlack6)
                                         ],
                                       ),
-
-                                      ///TODO: BELUM DI HANDLE
-                                      // if (_courseC.detailCourse.value
-                                      //     .peluangKarir.isNotEmpty)
-                                      //   PeluangKarirJrc(
-                                      //     listUsed: _lcC.detailClass.value
-                                      //         .data![0].course!.peluangKarir!,
-                                      //   ),
-
-                                      // Column(
-                                      //   crossAxisAlignment:
-                                      //       CrossAxisAlignment.start,
-                                      //   children: [
-                                      //     Row(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Padding(
-                                      //           padding: const EdgeInsets.only(
-                                      //               top: 7),
-                                      //           child: SvgPicture.asset(
-                                      //             'assets/svg/cv.svg',
-                                      //           ),
-                                      //         ),
-                                      //         const SizedBox(
-                                      //           width: 12,
-                                      //         ),
-                                      //         Expanded(
-                                      //           child: Column(
-                                      //               crossAxisAlignment:
-                                      //                   CrossAxisAlignment
-                                      //                       .start,
-                                      //               children: const [
-                                      //                 ///TODO: BELUM DIHANDLE
-                                      //                 // AppText.labelW700(
-                                      //                 //   '${_lcC.jrc.value.data!.totalLowongan} Lowongan',
-                                      //                 //   familiy:
-                                      //                 //       'SourceSansPro',
-                                      //                 //   13,
-                                      //                 //   kNewBlack1,
-                                      //                 //   maxLines: 3,
-                                      //                 //   height: 1.5,
-                                      //                 // ),
-                                      //                 // AppText.labelW400(
-                                      //                 //   'Lowongan yang tersedia untuk posisi ${_lcC.jrc.value.data!.subCategory} dalam 3 hari',
-                                      //                 //   familiy:
-                                      //                 //       'SourceSansPro',
-                                      //                 //   11,
-                                      //                 //   const Color(0xFF5A5C60),
-                                      //                 //   maxLines: 3,
-                                      //                 //   height: 1.5,
-                                      //                 // ),
-                                      //               ]),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     const SizedBox(
-                                      //       height: 8,
-                                      //     ),
-                                      //     Row(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Padding(
-                                      //           padding: const EdgeInsets.only(
-                                      //               top: 7),
-                                      //           child: SvgPicture.asset(
-                                      //             'assets/svg/salary.svg',
-                                      //           ),
-                                      //         ),
-                                      //         const SizedBox(
-                                      //           width: 10,
-                                      //         ),
-                                      //         Expanded(
-                                      //           child: Column(
-                                      //               crossAxisAlignment:
-                                      //                   CrossAxisAlignment
-                                      //                       .start,
-                                      //               children: const [
-                                      //                 ///TODO: BELUM DIHANDLE
-                                      //                 // AppText.labelW700(
-                                      //                 //   'Rp${substractGaji(_lcC.jrc.value.data!.minGaji!)} - ${substractGaji(_lcC.jrc.value.data!.maxGaji!)} juta',
-                                      //                 //   familiy:
-                                      //                 //       'SourceSansPro',
-                                      //                 //   13,
-                                      //                 //   kNewBlack1,
-                                      //                 //   maxLines: 3,
-                                      //                 //   height: 1.5,
-                                      //                 // ),
-                                      //                 // AppText.labelW400(
-                                      //                 //   'Rata-rata gaji sebagai ${_lcC.jrc.value.data!.subCategory}',
-                                      //                 //   familiy:
-                                      //                 //       'SourceSansPro',
-                                      //                 //   11,
-                                      //                 //   const Color(0xFF5A5C60),
-                                      //                 //   maxLines: 3,
-                                      //                 //   height: 1.5,
-                                      //                 // ),
-                                      //               ]),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     const SizedBox(
-                                      //       height: 12,
-                                      //     ),
-                                      //   ],
-                                      // ),
-
-                                      // if (_courseC.detailCourse.value
-                                      //     .ygAkanDipelajariWeb!.isNotEmpty)
-                                      //   CardWithIconForDescription(
-                                      //       'Yang Akan Dipelajari',
-                                      //       _courseC.detailCourse.value
-                                      //           .ygAkanDipelajariWeb),
-                                      // const SizedBox(height: 22),
-                                      // if (_courseC.detailCourse.value
-                                      //     .skillYgAkanDiperolehWeb!.isNotEmpty)
-                                      //   CardForDescription(
-                                      //       'Skill yang Akan Diperoleh',
-                                      //       _courseC.detailCourse.value
-                                      //           .skillYgAkanDiperolehWeb!,
-                                      //       kNewBlack6)
-                                    ],
-                                  ),
-                                )),
+                                    )),
                           ],
                         ),
                       ),
@@ -613,19 +627,10 @@ class ArkCourseJrcPage extends StatelessWidget {
                       return ArkInfoKursusSectionJrc();
                     } else if (_courseC.tabIndexJrc.value == 1) {
                       return ArkKurikulumSectionJrc();
-                      // return Center(
-                      //   child: Text('KURIKULUM SECTION'),
-                      // );
                     } else if (_courseC.tabIndexJrc.value == 2) {
                       return ArkUlasanSectionJrc();
-                      // return Center(
-                      //   child: Text('ULASAN SECTION'),
-                      // );
                     } else {
                       return ArkLowonganKerjaSectionJrc();
-                      // return Center(
-                      //   child: Text('LOWONGAN SECTION'),
-                      // );
                     }
                   }),
                 ),

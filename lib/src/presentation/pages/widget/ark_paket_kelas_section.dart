@@ -40,26 +40,32 @@ class ArkPaketKelasSection extends StatelessWidget {
         'icon': 'assets/images/icon-sertifikat.svg',
         'title': 'Sertifikat elektronik'
       },
-    ];
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text(
-        "Paket Pelatihan",
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 10),
-      for (int i = 0; i < paketKelas.length; i++)
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            children: [
-              SvgPicture.asset(paketKelas[i]['icon']!, width: 14, height: 14),
-              const SizedBox(width: 8),
-              Text(paketKelas[i]['title']!,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 12))
-            ],
+    ].obs;
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Paket Pelatihan",
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-        ),
-    ]);
+          const SizedBox(height: 10),
+          for (int i = 0; i < paketKelas.length; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  SvgPicture.asset(paketKelas[i]['icon']!,
+                      width: 14, height: 14),
+                  const SizedBox(width: 8),
+                  Text(paketKelas[i]['title']!,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 12))
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }

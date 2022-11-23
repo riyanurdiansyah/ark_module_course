@@ -217,111 +217,113 @@ class _ArkIkhtisarSectionCourseRevampState
             height: 21,
           ),
           ArkCardForDescription(
-            'Peluang Karier',
+            'Peluang Kariers',
             _arkCC.courseRevamp.value.data.peluangKarir,
             const Color(0xffE5E6E9),
           ),
           const SizedBox(
             height: 21,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 90,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/images/cream_card.png',
-                        height: 90,
-                      ),
-                      Positioned(
-                        left: 13,
-                        top: 0,
-                        bottom: 0,
-                        right: 13,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '> ${_arkCC.courseRevamp.value.data.pekerjaan.lowongan}',
-                              style: const TextStyle(
-                                fontSize: 18.5,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xff1C1D20),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            const Text(
-                              'lowongan tersedia untuk posisi ini dalam 30 hari',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'SourceSansPro',
-                                color: Color(0xff54565B),
-                                height: 1.4,
-                              ),
-                            ),
-                          ],
+          Obx(
+            () => Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 90,
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/images/cream_card.png',
+                          height: 90,
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          left: 13,
+                          top: 0,
+                          bottom: 0,
+                          right: 13,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '> ${_arkCC.courseRevamp.value.data.pekerjaan.lowongan}',
+                                style: const TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff1C1D20),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              const Text(
+                                'lowongan tersedia untuk posisi ini dalam 30 hari',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'SourceSansPro',
+                                  color: Color(0xff54565B),
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 90,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/images/green_card.png',
-                        height: 90,
-                      ),
-                      Positioned(
-                        left: 13,
-                        top: 0,
-                        bottom: 0,
-                        right: 13,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Rp ${substractGaji(_arkCC.courseRevamp.value.data.pekerjaan.gajiRendah)} - ${substractGaji(_arkCC.courseRevamp.value.data.pekerjaan.gajiTinggi)} jt',
-                              style: const TextStyle(
-                                fontSize: 18.5,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xff1C1D20),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            const Text(
-                              'juta rata-rata gaji untuk\nprofesi ini',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'SourceSansPro',
-                                color: Color(0xff54565B),
-                                height: 1.4,
-                              ),
-                            ),
-                          ],
+                const SizedBox(
+                  width: 4,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: 90,
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/images/green_card.png',
+                          height: 90,
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          left: 13,
+                          top: 0,
+                          bottom: 0,
+                          right: 13,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Rp ${substractGaji(_arkCC.courseRevamp.value.data.pekerjaan.gajiRendah)} - ${substractGaji(_arkCC.courseRevamp.value.data.pekerjaan.gajiTinggi)} jt',
+                                style: const TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff1C1D20),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              const Text(
+                                'juta rata-rata gaji untuk\nprofesi ini',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'SourceSansPro',
+                                  color: Color(0xff54565B),
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Obx(
             () => _arkCC.isExpandedCourseRevamp.isTrue

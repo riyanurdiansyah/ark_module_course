@@ -23,9 +23,9 @@ class ArkInformasiKursusJrc extends StatelessWidget {
       {
         'icon': 'assets/images/icon-jumlah-video-ajar.svg',
         'title':
-            // '${_arkCourseC.detailCourseRevamp.value.data[0].course!.courseDurationTime!} hari akses kursus',
-            // TODO
-            '99999'
+            '${_arkCourseC.detailCourseBiasa.value.data[0].course!.courseDurationTime!} hari akses kursus',
+        // TODO
+        // '99999'
       },
       {
         'icon': 'assets/images/icon-durasi-kelas.svg',

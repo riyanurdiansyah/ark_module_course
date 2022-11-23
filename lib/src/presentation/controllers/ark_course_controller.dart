@@ -156,6 +156,7 @@ class ArkCourseController extends GetxController {
 
   @override
   void onInit() async {
+    _changeLoading(true);
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     await _setup();
     if (_detailCourse.value.courseFlag.jrc == "1") {
@@ -168,9 +169,6 @@ class ArkCourseController extends GetxController {
 
       log('THIS IS COURSE REVAMP');
     }
-    // _getCourseRevamp();
-    // _getCourseRevampDetail();
-    // log('COURSE REVAMP');
     await _getDetailCourse();
     fetchUserStatus();
     fetchCurriculums();
@@ -408,10 +406,12 @@ class ArkCourseController extends GetxController {
         'reguler_marketplace_${_detailCourse.value.mpLinks[i - 1].mpName}');
   }
 
+  // FOR CHANGE TAB
   void onChangeTab(int i) {
     _indexTabCourse.value = i;
   }
 
+  // FETCH USER STATUS
   void fetchUserStatus() async {
     _changeLoadingUserStatus(true);
     final response = await _useCase.getUserStatus(
@@ -429,6 +429,7 @@ class ArkCourseController extends GetxController {
     await _changeLoadingUserStatus(false);
   }
 
+  // FETCH CURRICULUMS
   void fetchCurriculums() async {
     _changeLoadingCurriculum(true);
     final response = await _useCase.getCurriculums(
@@ -457,12 +458,18 @@ class ArkCourseController extends GetxController {
         penyelesaianKelas.value = Duration(seconds: duration.value).inHours +
             const Duration(minutes: 120).inHours;
         totalUnit.value = unitDurations.length;
+        log('FETCH CURRICULUM $totalKuis');
+        log('FETCH CURRICULUM $penyelesaianKelas');
+        log('FETCH CURRICULUM $totalUnit');
+
         return _curriculum.value = data;
       },
     );
+
     await _changeLoadingCurriculum(false);
   }
 
+  // FETCH CURRICULUM COURSE REVAMP
   Future<void> fetchCurriculumsCourseRevamp() async {
     _changeLoadingCurriculum(true);
     final response = await _useCase.getCurriculums(
@@ -501,6 +508,7 @@ class ArkCourseController extends GetxController {
     });
   }
 
+  // FETCH SIMILIAR CLASS
   void _fetchListIdSimiliarClass() async {
     _changeLoadingSimiliar(true);
     final response = await _useCase.getListIdSimiliarClass(
@@ -569,10 +577,10 @@ class ArkCourseController extends GetxController {
   }
 
   // GET LAST UNIT
-  Future<int> getLastKeyUnit(int idCourse) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("last_key_$idCourse") ?? 1;
-  }
+  // Future<int> getLastKeyUnit(int idCourse) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getInt("last_key_$idCourse") ?? 1;
+  // }
 
   void onPrevUlasan() {
     _ratingPage.value--;
@@ -591,6 +599,8 @@ class ArkCourseController extends GetxController {
       ArkAppDialog.dialogJoinClass();
       await fetchCourseStatus();
       log('JOIN CLASS $id');
+      Get.back();
+
       // final indexFromPrefs = await getLastKeyUnit(id);
       // log('ini index form prefs $indexFromPrefs');
       // index.value = indexFromPrefs;
@@ -662,6 +672,7 @@ class ArkCourseController extends GetxController {
       // }
     } else {
       log("to ------> CheckoutPage");
+      Get.toNamed('/ark-checkout', arguments: detailCourse.value.toJson());
       // Get.to(() => CheckoutPage(
       //       isFlashSale: isFlashSale,
       //       slug: slug,

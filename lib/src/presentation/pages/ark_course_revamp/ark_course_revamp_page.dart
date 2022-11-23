@@ -9,6 +9,7 @@ import 'package:ark_module_course/src/presentation/pages/ark_course_revamp/widge
 import 'package:ark_module_course/src/presentation/pages/widget/ark_button_reusable.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_mini_app_bar.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
+import 'package:ark_module_course/utils/app_dialog.dart';
 import 'package:ark_module_course/utils/app_shimmer.dart';
 import 'package:ark_module_course/widgets/ark_class_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
+import 'package:share/share.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../../utils/app_color.dart';
@@ -177,16 +179,16 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
                 },
                 backIcon: Icons.arrow_back_sharp,
                 iconColor: Colors.white,
-                sizeBackIcon: 14,
+                sizeBackIcon: 22,
                 rightIcon: const Icon(
                   Icons.share_outlined,
                   color: Colors.white,
                   size: 17,
                 ),
                 onTapRigthIcon: () {
-                  // Share.share(
-                  //     'Ikuti kelas ${_arkCC.detailClassCourseRevamp.value.data![0].course!.name} di Arkademi https://arkademi.com/course/${_arkCC.detailClassCourseRevamp.value.data![0].course!.courseSlug}');
-                  // log('right icon');
+                  Share.share(
+                      'Ikuti kelas ${_arkCC.detailCourseRevamp.value.data[0].course!.name} di Arkademi https://arkademi.com/course/${_arkCC.detailCourseRevamp.value.data[0].course!.courseSlug}');
+                  log('right icon');
                 },
                 gradientColor: const [
                   Color(0xff139DD6),
@@ -693,292 +695,271 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
             bottomNavigationBar: Obx(() {
               if (_arkCC.isLoading.isTrue) {
                 return const SizedBox();
-              }
-              return Container(
-                width: Get.size.width,
-                padding: const EdgeInsets.only(
-                  top: 12,
-                  bottom: 17,
-                  left: 17,
-                  right: 17,
-                ),
-                decoration: BoxDecoration(
-                  color: kCanvasColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff1C1D20).withOpacity(0.1),
-                      blurRadius: 7,
-                      spreadRadius: 1,
-                      offset: const Offset(0, -3),
+              } else {
+                if (_arkCC.detailCourseRevamp.value.data.isEmpty) {
+                  return const SizedBox();
+                } else {
+                  return Container(
+                    width: Get.size.width,
+                    padding: const EdgeInsets.only(
+                      top: 12,
+                      bottom: 17,
+                      left: 17,
+                      right: 17,
                     ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 145,
-                          child: Column(
-                            children: [
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'id',
-                                  name: 'Rp ',
-                                  decimalDigits: 0,
-                                ).format(int.parse(_arkCC.detailCourseRevamp
-                                    .value.data[0].course!.price!)),
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color(0xff121315),
-                                ),
-                              ),
-                              _arkCC.detailCourseRevamp.value.data[0].course!
-                                          .price ==
-                                      _arkCC.detailCourseRevamp.value.data[0]
-                                          .course!.regularPrice
-                                  ? const SizedBox()
-                                  : Container(
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        NumberFormat.currency(
-                                          locale: 'id',
-                                          name: 'Rp ',
-                                          decimalDigits: 0,
-                                        ).format(
-                                          int.parse(_arkCC
-                                              .detailCourseRevamp
-                                              .value
-                                              .data[0]
-                                              .course!
-                                              .regularPrice!),
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xffEC173D),
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          decorationColor: Color(0xffEC173D),
-                                          decorationThickness: 1,
-                                        ),
-                                      ),
-                                    ),
-                            ],
-                          ),
+                    decoration: BoxDecoration(
+                      color: kCanvasColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xff1C1D20).withOpacity(0.1),
+                          blurRadius: 7,
+                          spreadRadius: 1,
+                          offset: const Offset(0, -3),
                         ),
-                        const Spacer(),
-                        _arkCC.detailCourseRevamp.value.data[0].course!.price ==
-                                _arkCC.detailCourseRevamp.value.data[0].course!
-                                    .regularPrice
-                            ? const SizedBox()
-                            : Row(
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 145,
+                              child: Column(
                                 children: [
-                                  Image.asset(
-                                    'assets/images/icon-money-and-love.png',
-                                    width: 21,
-                                  ),
-                                  const SizedBox(
-                                    width: 2,
-                                  ),
                                   Text(
-                                    'Hemat ${currencyFormatter.format(int.parse(hematPrice(int.parse(_arkCC.detailCourseRevamp.value.data[0].course!.regularPrice!), int.parse(_arkCC.detailCourseRevamp.value.data[0].course!.price!)).toString()))}',
+                                    NumberFormat.currency(
+                                      locale: 'id',
+                                      name: 'Rp ',
+                                      decimalDigits: 0,
+                                    ).format(int.parse(_arkCC.detailCourseRevamp
+                                        .value.data[0].course!.price!)),
                                     style: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff388E3C),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      color: Color(0xff121315),
                                     ),
                                   ),
+                                  _arkCC.detailCourseRevamp.value.data[0]
+                                              .course!.price ==
+                                          _arkCC.detailCourseRevamp.value
+                                              .data[0].course!.regularPrice
+                                      ? const SizedBox()
+                                      : Container(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                            NumberFormat.currency(
+                                              locale: 'id',
+                                              name: 'Rp ',
+                                              decimalDigits: 0,
+                                            ).format(
+                                              int.parse(_arkCC
+                                                  .detailCourseRevamp
+                                                  .value
+                                                  .data[0]
+                                                  .course!
+                                                  .regularPrice!),
+                                            ),
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xffEC173D),
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                              decorationColor:
+                                                  Color(0xffEC173D),
+                                              decorationThickness: 1,
+                                            ),
+                                          ),
+                                        ),
                                 ],
                               ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      children: [
-                        Material(
-                          child: InkWell(
-                            onTap: () {
-                              if (_arkCC.isFav.value) {
-                                _arkCC.removeFromFavorite(context);
-                              } else {
-                                log(_arkCC.token.value);
-                                _arkCC.addToFavorite(context);
-                              }
-                              mixpanel!.getPeople().append(
-                                  "Wishlist",
-                                  _arkCC.detailCourseRevamp.value.data[0]
-                                      .course!.id
-                                      .toString());
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: const Color(0xffD3D4D6),
-                                ),
-                              ),
-                              padding: const EdgeInsets.all(14),
-                              child: Center(
-                                  child: Obx(() => _arkCC.isFav.value
-                                      ? const Icon(
-                                          CupertinoIcons.heart_fill,
-                                          color: Colors.red,
-                                          size: 21,
-                                        )
-                                      : const Icon(
-                                          CupertinoIcons.heart,
-                                          size: 21,
-                                          color: Color(0xff333539),
-                                        ))
-                                  // Icon(
-                                  //   Icons.favorite_outline,
-                                  // size: 21,
-                                  // color: Color(0xff333539),
-                                  // ),
-                                  ),
                             ),
-                          ),
+                            const Spacer(),
+                            _arkCC.detailCourseRevamp.value.data[0].course!
+                                        .price ==
+                                    _arkCC.detailCourseRevamp.value.data[0]
+                                        .course!.regularPrice
+                                ? const SizedBox()
+                                : Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/icon-money-and-love.png',
+                                        width: 21,
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        'Hemat ${currencyFormatter.format(int.parse(hematPrice(int.parse(_arkCC.detailCourseRevamp.value.data[0].course!.regularPrice!), int.parse(_arkCC.detailCourseRevamp.value.data[0].course!.price!)).toString()))}',
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff388E3C),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ],
                         ),
                         const SizedBox(
-                          width: 6.5,
+                          height: 8,
                         ),
-                        Expanded(
-                          child: ButtonReusableWidgets(
-                            // width: Get.size.width,
-                            isOutlinedButton: false,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 14.5,
-                              horizontal: Get.size.height < 600 ? 30 : 59,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                            onPressed: _arkCC.isLogin.value == true
-                                ? () async {
-                                    // if (_arkCC.detailClassCourseRevamp.value.data![0].course!
-                                    //         .status !=
-                                    //     'publish') {
-                                    //   ScaffoldMessenger.of(context).showSnackBar(
-                                    //     AppSnackbar.defaultSnackbar(
-                                    //       'Kelas ini akan segera hadir',
-                                    //     ),
-                                    //   );
-                                    // }
-                                    // else {
-                                    if (widget.slug != '') {
-                                      mixpanel!.track(
-                                          'atc btn gabung coursepage',
-                                          properties: {
-                                            'tracker number': widget.slug
-                                          });
-                                      await AppFirebaseAnalyticsService().addLog(
-                                          'atc_btnmblclickgabung_${widget.slug}_coursepage');
-                                    }
-                                    _arkCC.joinClass(
-                                        widget.isFlashSale, widget.slug!);
-                                    // Get.defaultDialog(
-                                    //   onWillPop: () async => false,
-                                    //   barrierDismissible: false,
-                                    //   title: "",
-                                    //   middleText: "",
-                                    //   content: Padding(
-                                    //     padding:
-                                    //         const EdgeInsets.only(bottom: 15),
-                                    //     child: Column(
-                                    //       children: [
-                                    //         const CircularProgressIndicator(),
-                                    //         const SizedBox(
-                                    //           height: 25,
-                                    //         ),
-                                    //         AppText.labelW600(
-                                    //           "Memuat data...",
-                                    //           14,
-                                    //           Colors.grey.shade600,
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // );
-                                    // await _arkCC.fetchCourseStatus(_arkCC
-                                    //     .detailClass.value.data![0].course!.id!);
-                                    // final indexFromPrefs =
-                                    //     await _arkCC.getLastKeyUnit(_arkCC.detailClass
-                                    //         .value.data![0].course!.id!);
-                                    // log(
-                                    //     'ini index form prefs $indexFromPrefs');
-                                    // _arkCC.index.value = indexFromPrefs;
-                                    // await _arkCC.fetchCourseItem(int.parse(_arkCC
-                                    //     .courseStatus
-                                    //     .value
-                                    //     .data!
-                                    //     .courseitems![_arkCC.index.value]
-                                    //     .id!));
-                                    // Get.back();
-                                    // Get.to(
-                                    //   () => StartClassPage(),
-                                    //   arguments: {
-                                    //     'route': 'course-revamp',
-                                    //   },
-                                    // );
+                        Row(
+                          children: [
+                            Material(
+                              child: InkWell(
+                                onTap: () {
+                                  if (_arkCC.isFav.value) {
+                                    _arkCC.removeFromFavorite(context);
+                                  } else {
+                                    log(_arkCC.token.value);
+                                    _arkCC.addToFavorite(context);
                                   }
-                                : () {
-                                    // TODO ROUTE TO LOGIN
-                                    Get.toNamed(
-                                      '/signin',
-                                    );
-                                    // Get.to(
-                                    //   () => LoginPage(
-                                    //     routes:
-                                    //         "${AppRouteName.checkout}/${_arkCC.detailClassCourseRevamp.value.data![0].course!.id}",
-                                    //   ),
-                                    // );
-                                  },
-                            // () {},
-                            isGradient: const LinearGradient(
-                              end: Alignment.topRight,
-                              begin: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xff159FE0),
-                                Color(0xff0977BE),
-                              ],
+                                  mixpanel!.getPeople().append(
+                                      "Wishlist",
+                                      _arkCC.detailCourseRevamp.value.data[0]
+                                          .course!.id
+                                          .toString());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: const Color(0xffD3D4D6),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.all(14),
+                                  child: Center(
+                                      child: Obx(() => _arkCC.isFav.value
+                                          ? const Icon(
+                                              CupertinoIcons.heart_fill,
+                                              color: Colors.red,
+                                              size: 21,
+                                            )
+                                          : const Icon(
+                                              CupertinoIcons.heart,
+                                              size: 21,
+                                              color: Color(0xff333539),
+                                            ))
+                                      // Icon(
+                                      //   Icons.favorite_outline,
+                                      // size: 21,
+                                      // color: Color(0xff333539),
+                                      // ),
+                                      ),
+                                ),
+                              ),
                             ),
-                            title: _arkCC.detailCourseBiasa.value.data[0]
-                                        .course!.status !=
-                                    'publish'
-                                ? "SEGERA HADIR"
-                                : _arkCC.isExpired.value == true
-                                    ? "Kadaluarsa"
-                                    : _arkCC.userStatus.value.userStatus == "1"
-                                        ? "Mulai Pelatihan"
+                            const SizedBox(
+                              width: 6.5,
+                            ),
+                            Expanded(
+                              child: ButtonReusableWidgets(
+                                // width: Get.size.width,
+                                isOutlinedButton: false,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 14.5,
+                                  horizontal: Get.size.height < 600 ? 30 : 59,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                                onPressed: _arkCC.isLogin.value == true
+                                    ? () async {
+                                        if (_arkCC.detailCourseRevamp.value
+                                                .data[0].course!.status !=
+                                            'publish') {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            ArkAppDialog.defaultSnackbar(
+                                              'Kelas ini akan segera hadir',
+                                            ),
+                                          );
+                                        } else {
+                                          if (widget.slug != '') {
+                                            mixpanel!.track(
+                                                'atc btn gabung coursepage',
+                                                properties: {
+                                                  'tracker number': widget.slug
+                                                });
+                                            await AppFirebaseAnalyticsService()
+                                                .addLog(
+                                                    'atc_btnmblclickgabung_${widget.slug}_coursepage');
+                                          }
+                                          _arkCC.joinClass(
+                                              widget.isFlashSale, widget.slug!);
+
+// TODO ROUTE TO START CLASS PAGE
+                                          // Get.to(
+                                          //   () => StartClassPage(),
+                                          //   arguments: {
+                                          //     'route': 'course-revamp',
+                                          //   },
+                                          // );
+                                        }
+                                      }
+                                    : () {
+                                        // TODO ROUTE TO LOGIN
+                                        Get.toNamed(
+                                          '/signin',
+                                        );
+                                        // Get.to(
+                                        //   () => LoginPage(
+                                        //     routes:
+                                        //         "${AppRouteName.checkout}/${_arkCC.detailClassCourseRevamp.value.data![0].course!.id}",
+                                        //   ),
+                                        // );
+                                      },
+                                // () {},
+                                isGradient: const LinearGradient(
+                                  end: Alignment.topRight,
+                                  begin: Alignment.bottomLeft,
+                                  colors: [
+                                    Color(0xff159FE0),
+                                    Color(0xff0977BE),
+                                  ],
+                                ),
+                                title: _arkCC.detailCourseBiasa.value.data[0]
+                                            .course!.status !=
+                                        'publish'
+                                    ? "SEGERA HADIR"
+                                    : _arkCC.isExpired.value == true
+                                        ? "Kadaluarsa"
                                         : _arkCC.userStatus.value.userStatus ==
-                                                    "2" &&
-                                                _arkCC.isExpired.value == false
-                                            ? "Lanjutkan"
-                                            : (_arkCC.userStatus.value
-                                                                .userStatus ==
-                                                            "3" ||
-                                                        _arkCC.userStatus.value
-                                                                .userStatus ==
-                                                            "4") &&
+                                                "1"
+                                            ? "Mulai Pelatihan"
+                                            : _arkCC.userStatus.value
+                                                            .userStatus ==
+                                                        "2" &&
                                                     _arkCC.isExpired.value ==
                                                         false
-                                                ? "Terselesaikan"
-                                                : "IKUT SERTIFIKASI",
-                            titleStyle: const TextStyle(
-                              fontSize: 14.5,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
+                                                ? "Lanjutkan"
+                                                : (_arkCC.userStatus.value
+                                                                    .userStatus ==
+                                                                "3" ||
+                                                            _arkCC
+                                                                    .userStatus
+                                                                    .value
+                                                                    .userStatus ==
+                                                                "4") &&
+                                                        _arkCC.isExpired
+                                                                .value ==
+                                                            false
+                                                    ? "Terselesaikan"
+                                                    : "IKUT SERTIFIKASI",
+                                titleStyle: const TextStyle(
+                                  fontSize: 14.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              );
+                  );
+                }
+              }
             }),
           );
         }

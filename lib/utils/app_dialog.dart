@@ -30,6 +30,25 @@ class ArkAppDialog {
     );
   }
 
+  static defaultSnackbar(
+    String title,
+  ) {
+    return SnackBar(
+      content: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 13,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      backgroundColor: Colors.grey.shade800,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
   static defaultSnackbarWithAction(
     String title,
     label,

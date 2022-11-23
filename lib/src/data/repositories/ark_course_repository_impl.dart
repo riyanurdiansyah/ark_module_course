@@ -25,7 +25,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final course = await dataSource.getDetailCourseJRC(slug);
       return Right(course);
     } catch (e) {
-      log("ERROR HOME REPO GET CATEGORY: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET CATEGORY: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -37,7 +37,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final status = await dataSource.getUserStatus(slug, token);
       return Right(status);
     } catch (e) {
-      log("ERROR HOME REPO GET USER STATUS: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET USER STATUS: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -49,7 +49,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final curriculums = await dataSource.getCurriculums(courseId, token);
       return Right(curriculums);
     } catch (e) {
-      log("ERROR HOME REPO GET CURRICULUMS: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET CURRICULUMS: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -61,7 +61,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final listId = await dataSource.getListIdSimiliarClass(categoryId);
       return Right(listId);
     } catch (e) {
-      log("ERROR HOME REPO GET LIST ID TRENDING COURSE: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET LIST ID TRENDING COURSE: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -73,7 +73,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final course = await dataSource.getSimiliarClass(listId);
       return Right(course);
     } catch (e) {
-      log("ERROR HOME REPO GET COURSE FROM LIST: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET COURSE FROM LIST: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -85,7 +85,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final ulasan = await dataSource.getUlasan(courseId, page);
       return Right(ulasan);
     } catch (e) {
-      log("ERROR HOME REPO GET ULASAN: ${e.toString()}");
+      log("ERROR REPO IMPL HOME REPO GET ULASAN: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -97,7 +97,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final courseRevamp = await dataSource.getCourseRevamp(slug);
       return Right(courseRevamp);
     } catch (e) {
-      log("ERROR COURSE REPO GET COURSE REVAMP: ${e.toString()}");
+      log("ERROR REPO IMPL COURSE REPO GET COURSE REVAMP: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -111,7 +111,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
 
       return Right(response);
     } catch (e) {
-      log("ERROR COURSE REPO GET COURSE REVAMP DETAIL: ${e.toString()}");
+      log("ERROR REPO IMPL COURSE REPO GET COURSE REVAMP DETAIL: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }
@@ -124,7 +124,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final response = await dataSource.removeFromFavorite(courseId, token);
       return right(response);
     } catch (e) {
-      log("ERROR REMOVE FROM FAVORITE: ${e.toString()}");
+      log("ERROR REPO IMPL REMOVE FROM FAVORITE: ${e.toString()}");
       return ExceptionHandleResponse.execute(e);
     }
   }
@@ -136,7 +136,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       await dataSource.addToFavorite(courseId, token);
       return right(true);
     } catch (e) {
-      log("ERROR ADD TO FAVORITE: ${e.toString()}");
+      log("ERROR REPO IMPL ADD TO FAVORITE: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }
@@ -147,9 +147,11 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       String courseId) async {
     try {
       final response = await dataSource.getDetailCourse(courseId);
+      log("SUCCESS IMPL REPO IMPL GET DETAIL COURSE: ${response.data}");
+
       return right(response);
     } catch (e) {
-      log("ERROR GET DETAIL COURSE: ${e.toString()}");
+      log("ERROR REPO IMPL REPO IMPL GET DETAIL COURSE: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }
@@ -162,7 +164,7 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       final response = await dataSource.getCourseStatus(courseId);
       return right(response);
     } catch (e) {
-      log("ERROR GET COURSE STATUS: ${e.toString()}");
+      log("ERROR REPO IMPL GET COURSE STATUS: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }
