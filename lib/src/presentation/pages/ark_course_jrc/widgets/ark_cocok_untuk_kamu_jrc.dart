@@ -5,7 +5,7 @@ class ArkCocokUntukKamu extends StatelessWidget {
   List<String>? listUsed;
   final String title;
 
-  ArkCocokUntukKamu(this.title, this.listUsed);
+  ArkCocokUntukKamu(this.title, this.listUsed, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -12,6 +12,8 @@ class ArkLowonganKerjaSectionJrc extends StatelessWidget {
   final _arkCourseC = Get.find<ArkCourseController>();
   final isLoading = false.obs;
 
+  ArkLowonganKerjaSectionJrc({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(

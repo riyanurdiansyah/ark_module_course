@@ -10,6 +10,8 @@ import 'package:url_launcher/url_launcher_string.dart';
 class ArkInfoKursusBodyJrc extends StatelessWidget {
   final _arkCourseC = Get.find<ArkCourseController>();
 
+  ArkInfoKursusBodyJrc({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     String data = _arkCourseC.detailCourse.value.description;

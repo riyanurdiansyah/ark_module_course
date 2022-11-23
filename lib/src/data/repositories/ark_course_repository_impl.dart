@@ -6,6 +6,7 @@ import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entit
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
@@ -149,6 +150,19 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       return right(response);
     } catch (e) {
       log("ERROR GET DETAIL COURSE: ${e.toString()}");
+
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ArkCourseStatusEntity>> getCourseStatus(
+      String courseId) async {
+    try {
+      final response = await dataSource.getCourseStatus(courseId);
+      return right(response);
+    } catch (e) {
+      log("ERROR GET COURSE STATUS: ${e.toString()}");
 
       return ExceptionHandleResponse.execute(e);
     }

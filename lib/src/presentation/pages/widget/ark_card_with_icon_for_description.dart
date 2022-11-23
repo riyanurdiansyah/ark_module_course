@@ -7,7 +7,8 @@ class ArkCardWithIconForDescription extends StatelessWidget {
 
   final String title;
 
-  ArkCardWithIconForDescription(this.title, this.listUsed);
+  ArkCardWithIconForDescription(this.title, this.listUsed, {Key? key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

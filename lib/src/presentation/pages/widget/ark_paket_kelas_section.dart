@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class ArkPaketKelasSection extends StatelessWidget {
   final _arkCourseC = Get.find<ArkCourseController>();
 
+  ArkPaketKelasSection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     List<Map<String, String>> paketKelas = [

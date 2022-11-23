@@ -7,7 +7,9 @@ class ArkMapWithIconForDescription extends StatelessWidget {
   final List listUsed;
 
   const ArkMapWithIconForDescription(
-      this.title, this.listUsed, this.isFiturKelas);
+      this.title, this.listUsed, this.isFiturKelas,
+      {Key? key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_kurikulum_sction_jrc.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_lowongan_kerja_section_jrc.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class ArkCourseJrcPage extends StatelessWidget {
@@ -23,6 +26,7 @@ class ArkCourseJrcPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FOR SUBSTRACT GAJI
     String? substractGaji(String gaji) {
       //kalo satu digit
       if (gaji.length == 7) {
@@ -91,8 +95,8 @@ class ArkCourseJrcPage extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () {
-              // Share.share(
-              //     'Ikuti kelas ${_courseC.detailCourse.value.name} di Arkademi https://arkademi.com/course/${_courseC.detailCourse.value.courseSlug}');
+              Share.share(
+                  'Ikuti kelas ${_courseC.detailCourse.value.name} di Arkademi https://arkademi.com/course/${_courseC.detailCourse.value.courseSlug}');
             },
             child: Image.asset(
               'assets/images/job_ready_course/share.png',
@@ -105,6 +109,16 @@ class ArkCourseJrcPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
+              if (_courseC.isFav.value) {
+                _courseC.removeFromFavorite(context);
+              } else {
+                log(_courseC.token.value);
+                _courseC.addToFavorite(context);
+              }
+              // mixpanel!.getPeople().append(
+              //     "Wishlist",
+              //     _courseC.detailCourseRevamp.value.data[0].course!.id
+              //         .toString());
               // if (_lcC.isFav.value) {
               //   _lcC.removeFromWishlist(
               //       _courseC.detailCourse.value.id
@@ -411,8 +425,8 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                           fontSize: 11,
                                                           fontWeight:
                                                               FontWeight.w400,
-                                                          color: const Color(
-                                                              0xFF5A5C60),
+                                                          color:
+                                                              Color(0xFF5A5C60),
                                                           height: 1.5,
                                                         ),
                                                         maxLines: 3,

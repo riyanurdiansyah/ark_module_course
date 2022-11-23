@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 class ArkKurikulumSectionJrc extends StatelessWidget {
   final _arkCourseC = Get.find<ArkCourseController>();
 
+  ArkKurikulumSectionJrc({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(

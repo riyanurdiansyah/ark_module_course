@@ -10,6 +10,7 @@ import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
 import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
 import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
 import 'package:ark_module_course/utils/app_url.dart';
 
@@ -172,6 +173,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
   @override
   Future<bool> removeFromFavorite(String courseId, String token) async {
+    await dioInterceptor(dio, token);
     final response = await dio.delete('$courseUrl/$courseId/removeFavorites');
     int code = response.statusCode ?? 500;
     if (code == 200) {
@@ -191,11 +193,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
     final response = await dio.post(
       '$courseUrl/$courseId/addFavorites',
-      options: globalOptions(
-        headers: {
-          "Authorization": token,
-        },
-      ),
+      options: globalOptions(),
     );
     int code = response.statusCode ?? 500;
     if (code == 200) {
@@ -221,6 +219,22 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get Detail Course... failed connect to server',
+    );
+  }
+
+  @override
+  Future<ArkCourseStatusEntity> getCourseStatus(String courseId) async {
+    final response = await dio.get('$apiCourseUrl/coursestatus/$courseId');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM GET COURSE STATUS');
+
+      ArkCourseStatusEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error get course status ... failed connect to server',
     );
   }
 }

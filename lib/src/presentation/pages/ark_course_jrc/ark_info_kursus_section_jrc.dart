@@ -19,6 +19,8 @@ import 'package:get/get.dart';
 class ArkInfoKursusSectionJrc extends StatelessWidget {
   final _arkCourseC = Get.find<ArkCourseController>();
 
+  ArkInfoKursusSectionJrc({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     log('IKHTISAR ${_arkCourseC.detailCourseRevamp.value.data[0].course!.ikhtisar!}');

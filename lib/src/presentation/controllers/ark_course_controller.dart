@@ -8,6 +8,7 @@ import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entit
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
@@ -29,6 +30,10 @@ class ArkCourseController extends GetxController {
 
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
+
+  // FOR EXPIRED
+  final Rx<bool> _isExpired = false.obs;
+  Rx<bool> get isExpired => _isExpired;
 
   final Rx<bool> _isLoadingUlasan = true.obs;
   Rx<bool> get isLoadingUlasan => _isLoadingUlasan;
@@ -59,6 +64,9 @@ class ArkCourseController extends GetxController {
 
   late SharedPreferences _prefs;
 
+  final Rx<ArkCourseStatusEntity> _courseStatus = ArkCourseStatusEntity().obs;
+  Rx<ArkCourseStatusEntity> get courseStatus => _courseStatus;
+
   final RxList<CourseParseEntity> _similiarClass = <CourseParseEntity>[].obs;
   RxList<CourseParseEntity> get similiarClass => _similiarClass;
 
@@ -86,31 +94,33 @@ class ArkCourseController extends GetxController {
       CurriculumEntity(success: false, data: []).obs;
   Rx<CurriculumEntity> get curriculum => _curriculum;
 
-  //FAVORITE
-  var isFav = false.obs;
-
-  var listTitle = <CurriculumDataEntity>[].obs;
-  var listUnit = <CurriculumDataEntity>[].obs;
-  var tempList = <CurriculumDataEntity>[].obs;
-  var duration = 0.obs;
-  var penyelesaianKelas = 0.obs;
-  var paketKelas = [].obs;
-
-  var totalUnit = 0.obs;
-  var totalKuis = 0.obs;
-
-  // TAB JRC
-  var tabIndexJrc = 0.obs;
-  var isExpanded = false.obs;
-  var isExpandedInstructor = false.obs;
-
-  // FOR COURSE REVAMP
-  var isExpandedCourseRevamp = false.obs;
-
   final Rx<UserStatusEntity> _userStatus = UserStatusEntity(
           userId: 0, userStatus: "", userExpiry: "", isExpired: false)
       .obs;
   Rx<UserStatusEntity> get userStatus => _userStatus;
+
+  //FAVORITE
+  RxBool isFav = false.obs;
+
+  // FOR DATA ON COURSE PAGE
+  RxList<CurriculumDataEntity> listTitle = <CurriculumDataEntity>[].obs;
+  RxList<CurriculumDataEntity> listUnit = <CurriculumDataEntity>[].obs;
+  RxList<CurriculumDataEntity> tempList = <CurriculumDataEntity>[].obs;
+  RxInt duration = 0.obs;
+  RxInt penyelesaianKelas = 0.obs;
+  RxList<dynamic> paketKelas = [].obs;
+  RxInt totalUnit = 0.obs;
+  RxInt totalKuis = 0.obs;
+
+  // TAB JRC
+  RxInt tabIndexJrc = 0.obs;
+  RxBool isExpanded = false.obs;
+  RxBool isExpandedInstructor = false.obs;
+
+  // FOR COURSE REVAMP
+  RxBool isExpandedCourseRevamp = false.obs;
+
+  // FOR CHECK STATUS USER
 
   late YoutubePlayerController ytController;
 
@@ -146,6 +156,7 @@ class ArkCourseController extends GetxController {
 
   @override
   void onInit() async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     await _setup();
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
@@ -168,6 +179,11 @@ class ArkCourseController extends GetxController {
     _fetchListIdSimiliarClass();
     await _changeLoading(false);
     super.onInit();
+  }
+
+  // CHANGE STATUS EXPIRED
+  void changeExpired(bool value) {
+    _isExpired.value = value;
   }
 
   void fetchUlasan(int page) async {
@@ -237,6 +253,15 @@ class ArkCourseController extends GetxController {
       return ExceptionHandle.execute(l);
     }, (r) {
       log('SUCCESS DETAIL COURSE REVAMP ${r.data}');
+
+      if (userStatus.value.userExpiry != '') {
+        final expiryTotal = int.parse(userStatus.value.userExpiry);
+        if (DateTime.now().millisecondsSinceEpoch / 1000 < expiryTotal) {
+          changeExpired(false);
+        } else {
+          changeExpired(true);
+        }
+      }
       return _detailCourseRevamp.value = r;
     });
     await _changeLoading(false);
@@ -249,6 +274,14 @@ class ArkCourseController extends GetxController {
     response.fold((l) => ExceptionHandle.execute(l), (r) {
       log('RESPONSE SUCCESS FROM GET DETAIL COURSE ${r.data}');
 
+      if (userStatus.value.userExpiry != '') {
+        final expiryTotal = int.parse(userStatus.value.userExpiry);
+        if (DateTime.now().millisecondsSinceEpoch / 1000 < expiryTotal) {
+          changeExpired(false);
+        } else {
+          changeExpired(true);
+        }
+      }
       return _detailCourseBiasa.value = r;
     });
     await _changeLoading(false);
@@ -264,6 +297,22 @@ class ArkCourseController extends GetxController {
 
         ///IF RESPONSE SUCCESS
         (data) {
+      if (userStatus.value.userExpiry != '') {
+        final expiryTotal = int.parse(userStatus.value.userExpiry);
+        if (DateTime.now().millisecondsSinceEpoch / 1000 < expiryTotal) {
+          changeExpired(false);
+        } else {
+          changeExpired(true);
+        }
+      }
+      // if (isExpired.value == false) {
+      //   if (route == 'false') {
+      //     Get.off(() => ClassPageJobReady(
+      //           slug: slug,
+      //           useGetBack: useGetBack,
+      //         ));
+      //   }
+      // }
       _detailCourseJRC.value = data;
     });
   }
@@ -510,6 +559,21 @@ class ArkCourseController extends GetxController {
     });
   }
 
+  // GET COURSE STATUS
+  Future<void> fetchCourseStatus() async {
+    final response =
+        await _useCase.getCourseStatus(_detailCourse.value.id.toString());
+    response.fold((l) => ExceptionHandle.execute(l), (r) {
+      return _courseStatus.value = r;
+    });
+  }
+
+  // GET LAST UNIT
+  Future<int> getLastKeyUnit(int idCourse) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("last_key_$idCourse") ?? 1;
+  }
+
   void onPrevUlasan() {
     _ratingPage.value--;
     fetchUlasan(_ratingPage.value);
@@ -518,5 +582,91 @@ class ArkCourseController extends GetxController {
   void onNextUlasan() {
     _ratingPage.value++;
     fetchUlasan(_ratingPage.value);
+  }
+
+  // JOIN CLASS FUNCTION
+  void joinClass(bool isFlashSale, String slug, {bool? fromPushNotif}) async {
+    int? id = detailCourse.value.id;
+    if (userStatus.value.userStatus != "" && isExpired.value == false) {
+      ArkAppDialog.dialogJoinClass();
+      await fetchCourseStatus();
+      log('JOIN CLASS $id');
+      // final indexFromPrefs = await getLastKeyUnit(id);
+      // log('ini index form prefs $indexFromPrefs');
+      // index.value = indexFromPrefs;
+      // await fetchCourseItem(
+      //     int.parse(courseStatus.value.data!.courseitems![index.value].id!));
+      // Get.back();
+
+      // if (detailClass.value.data![0].course!.courseFlag!.jrc == '1') {
+      //   if (courseStatus.value.data!.courseitems![index.value].homework ==
+      //       '1') {
+      //     Get.off(() => const HomeWorkJobReadyCourse());
+      //   } else if (courseStatus
+      //           .value.data!.courseitems![index.value].ujianAkhir ==
+      //       '1') {
+      //     Get.off(() => const UjianAkhirJobReadyCourse());
+      //   } else if (courseStatus
+      //           .value.data!.courseitems![index.value].evaluasiHomework ==
+      //       '1') {
+      //     Get.off(() => const EvaluasiHomeWork());
+      //   } else if (detailSeries.value.message!.content!
+      //       .contains('proprofsgames')) {
+      //     Get.off(GameUnit(
+      //         url: splitProprofsGameUrl(),
+      //         attachment: const [],
+      //         duration: courseStatus
+      //             .value.data!.courseitems![index.value].duration!));
+      //   } else if (curriculum.value.data![index.value].type ==
+      //           TypeCuricullum.quiz &&
+      //       detailSeries.value.message!.meta!.questions!.isNotEmpty) {
+      //     AppPrint.debugPrint("to ------> QuizPage");
+      //     AppFirebaseAnalyticsService().addCurrentScreen("quiz_page");
+      //     Get.off(() => const QuizPage(false));
+      //   } else if (curriculum.value.data![index.value].type ==
+      //           TypeCuricullum.quiz &&
+      //       detailSeries.value.message!.meta!.questions!.isEmpty) {
+      //     AppPrint.debugPrint("to ------> QuizDonePage");
+      //     AppFirebaseAnalyticsService().addCurrentScreen("quiz_done_page");
+      //     Get.off(() => QuizDonePage());
+      //   } else if (curriculum.value.data![index.value].type ==
+      //       TypeCuricullum.unit) {
+      //     // TEMP
+      //     // PURBO
+      //     // Get.off(() => const StartClassPage());
+      //     Get.off(() => const StartClassPageJobReadyCourse());
+
+      //     AppPrint.debugPrint("to ------> StartClassPageJobReady");
+      //     AppFirebaseAnalyticsService().addCurrentScreen("start_class_page");
+      //   }
+      // } else {
+      //   if (curriculum.value.data![index.value].type == TypeCuricullum.quiz &&
+      //       detailSeries.value.message!.meta!.questions!.isNotEmpty) {
+      //     AppPrint.debugPrint("to ------> QuizPage");
+      //     AppFirebaseAnalyticsService().addCurrentScreen("quiz_page");
+      //     Get.off(() => const QuizPage(false));
+      //   } else if (curriculum.value.data![index.value].type ==
+      //           TypeCuricullum.quiz &&
+      //       detailSeries.value.message!.meta!.questions!.isEmpty) {
+      //     AppPrint.debugPrint("to ------> QuizDonePage");
+      //     AppFirebaseAnalyticsService().addCurrentScreen("quiz_done_page");
+      //     Get.off(() => QuizDonePage());
+      //   } else {
+      //     Get.off(
+      //       () => const StartClassPage(),
+      //       arguments: {
+      //         'route': slug,
+      //       },
+      //     );
+      //   }
+      // }
+    } else {
+      log("to ------> CheckoutPage");
+      // Get.to(() => CheckoutPage(
+      //       isFlashSale: isFlashSale,
+      //       slug: slug,
+      //       fromPushNotif: fromPushNotif,
+      //     ));
+    }
   }
 }

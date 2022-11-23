@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ArkUlasanSectionJrc extends StatelessWidget {
+  ArkUlasanSectionJrc({Key? key}) : super(key: key);
+
   final _arkCourseC = Get.find<ArkCourseController>();
   List reviewUsed = [];
 

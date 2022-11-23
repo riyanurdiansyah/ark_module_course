@@ -31,7 +31,7 @@ class _ArkUlasanSectionCouseRevampState
                 child: CircularProgressIndicator(),
               ),
             )
-          : _arkCC.ulasan.value.data == null
+          : _arkCC.ulasan.value.data.data.isEmpty
               ? Container(
                   height: 200,
                   width: Get.size.width,
@@ -95,7 +95,7 @@ class _ArkUlasanSectionCouseRevampState
                                             borderRadius:
                                                 BorderRadius.circular(9),
                                             border: Border.all(
-                                                color: Color(0xffC9CBCF)),
+                                                color: const Color(0xffC9CBCF)),
                                           ),
                                         ),
                                         _arkCC

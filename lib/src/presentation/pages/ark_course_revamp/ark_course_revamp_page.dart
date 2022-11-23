@@ -856,83 +856,87 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
                               horizontal: Get.size.height < 600 ? 30 : 59,
                             ),
                             borderRadius: BorderRadius.circular(5),
-                            onPressed:
-                                // _spfC.isLogin.value == true
-                                //     ? () async {
-                                //         // if (_arkCC.detailClassCourseRevamp.value.data![0].course!
-                                //         //         .status !=
-                                //         //     'publish') {
-                                //         //   ScaffoldMessenger.of(context).showSnackBar(
-                                //         //     AppSnackbar.defaultSnackbar(
-                                //         //       'Kelas ini akan segera hadir',
-                                //         //     ),
-                                //         //   );
-                                //         // }
-                                //         // else {
-                                //         if (widget.slug != '') {
-                                //           mixpanel!.track('atc btn gabung coursepage',
-                                //               properties: {
-                                //                 'tracker number': widget.slug
-                                //               });
-                                //           await AppFirebaseAnalyticsService().addLog(
-                                //               'atc_btnmblclickgabung_${widget.slug}_coursepage');
-                                //         }
-                                //         _arkCC.joinClass(
-                                //             widget.isFlashSale, widget.slug!);
-                                //         // Get.defaultDialog(
-                                //         //   onWillPop: () async => false,
-                                //         //   barrierDismissible: false,
-                                //         //   title: "",
-                                //         //   middleText: "",
-                                //         //   content: Padding(
-                                //         //     padding:
-                                //         //         const EdgeInsets.only(bottom: 15),
-                                //         //     child: Column(
-                                //         //       children: [
-                                //         //         const CircularProgressIndicator(),
-                                //         //         const SizedBox(
-                                //         //           height: 25,
-                                //         //         ),
-                                //         //         AppText.labelW600(
-                                //         //           "Memuat data...",
-                                //         //           14,
-                                //         //           Colors.grey.shade600,
-                                //         //         ),
-                                //         //       ],
-                                //         //     ),
-                                //         //   ),
-                                //         // );
-                                //         // await _arkCC.fetchCourseStatus(_arkCC
-                                //         //     .detailClass.value.data![0].course!.id!);
-                                //         // final indexFromPrefs =
-                                //         //     await _arkCC.getLastKeyUnit(_arkCC.detailClass
-                                //         //         .value.data![0].course!.id!);
-                                //         // log(
-                                //         //     'ini index form prefs $indexFromPrefs');
-                                //         // _arkCC.index.value = indexFromPrefs;
-                                //         // await _arkCC.fetchCourseItem(int.parse(_arkCC
-                                //         //     .courseStatus
-                                //         //     .value
-                                //         //     .data!
-                                //         //     .courseitems![_arkCC.index.value]
-                                //         //     .id!));
-                                //         // Get.back();
-                                //         // Get.to(
-                                //         //   () => StartClassPage(),
-                                //         //   arguments: {
-                                //         //     'route': 'course-revamp',
-                                //         //   },
-                                //         // );
-                                //       }
-                                //     : () {
-                                //         Get.to(
-                                //           () => LoginPage(
-                                //             routes:
-                                //                 "${AppRouteName.checkout}/${_arkCC.detailClassCourseRevamp.value.data![0].course!.id}",
-                                //           ),
-                                //         );
-                                //       },
-                                () {},
+                            onPressed: _arkCC.isLogin.value == true
+                                ? () async {
+                                    // if (_arkCC.detailClassCourseRevamp.value.data![0].course!
+                                    //         .status !=
+                                    //     'publish') {
+                                    //   ScaffoldMessenger.of(context).showSnackBar(
+                                    //     AppSnackbar.defaultSnackbar(
+                                    //       'Kelas ini akan segera hadir',
+                                    //     ),
+                                    //   );
+                                    // }
+                                    // else {
+                                    if (widget.slug != '') {
+                                      mixpanel!.track(
+                                          'atc btn gabung coursepage',
+                                          properties: {
+                                            'tracker number': widget.slug
+                                          });
+                                      await AppFirebaseAnalyticsService().addLog(
+                                          'atc_btnmblclickgabung_${widget.slug}_coursepage');
+                                    }
+                                    _arkCC.joinClass(
+                                        widget.isFlashSale, widget.slug!);
+                                    // Get.defaultDialog(
+                                    //   onWillPop: () async => false,
+                                    //   barrierDismissible: false,
+                                    //   title: "",
+                                    //   middleText: "",
+                                    //   content: Padding(
+                                    //     padding:
+                                    //         const EdgeInsets.only(bottom: 15),
+                                    //     child: Column(
+                                    //       children: [
+                                    //         const CircularProgressIndicator(),
+                                    //         const SizedBox(
+                                    //           height: 25,
+                                    //         ),
+                                    //         AppText.labelW600(
+                                    //           "Memuat data...",
+                                    //           14,
+                                    //           Colors.grey.shade600,
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // );
+                                    // await _arkCC.fetchCourseStatus(_arkCC
+                                    //     .detailClass.value.data![0].course!.id!);
+                                    // final indexFromPrefs =
+                                    //     await _arkCC.getLastKeyUnit(_arkCC.detailClass
+                                    //         .value.data![0].course!.id!);
+                                    // log(
+                                    //     'ini index form prefs $indexFromPrefs');
+                                    // _arkCC.index.value = indexFromPrefs;
+                                    // await _arkCC.fetchCourseItem(int.parse(_arkCC
+                                    //     .courseStatus
+                                    //     .value
+                                    //     .data!
+                                    //     .courseitems![_arkCC.index.value]
+                                    //     .id!));
+                                    // Get.back();
+                                    // Get.to(
+                                    //   () => StartClassPage(),
+                                    //   arguments: {
+                                    //     'route': 'course-revamp',
+                                    //   },
+                                    // );
+                                  }
+                                : () {
+                                    // TODO ROUTE TO LOGIN
+                                    Get.toNamed(
+                                      '/signin',
+                                    );
+                                    // Get.to(
+                                    //   () => LoginPage(
+                                    //     routes:
+                                    //         "${AppRouteName.checkout}/${_arkCC.detailClassCourseRevamp.value.data![0].course!.id}",
+                                    //   ),
+                                    // );
+                                  },
+                            // () {},
                             isGradient: const LinearGradient(
                               end: Alignment.topRight,
                               begin: Alignment.bottomLeft,
@@ -941,28 +945,28 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
                                 Color(0xff0977BE),
                               ],
                             ),
-                            title:
-                                // _arkCC.detailClass.value.data![0].course!
-                                //             .status !=
-                                //         'publish'
-                                //     ? "SEGERA HADIR"
-                                //     : _arkCC.isExpired.value == true
-                                //         ? "Kadaluarsa"
-                                //         : _arkCC.userStatus.value.userStatus == "1"
-                                //             ? "Mulai Pelatihan"
-                                //             : _arkCC.userStatus.value.userStatus ==
-                                //                         "2" &&
-                                //                     _arkCC.isExpired.value == false
-                                //                 ? "Lanjutkan"
-                                //                 : (_arkCC.userStatus.value.userStatus ==
-                                //                                 "3" ||
-                                //                             _arkCC.userStatus.value
-                                //                                     .userStatus ==
-                                //                                 "4") &&
-                                //                         _arkCC.isExpired.value == false
-                                //                     ? "Terselesaikan"
-                                //                     : "IKUT SERTIFIKASI",
-                                "IKUT SERTIFIKASI",
+                            title: _arkCC.detailCourseBiasa.value.data[0]
+                                        .course!.status !=
+                                    'publish'
+                                ? "SEGERA HADIR"
+                                : _arkCC.isExpired.value == true
+                                    ? "Kadaluarsa"
+                                    : _arkCC.userStatus.value.userStatus == "1"
+                                        ? "Mulai Pelatihan"
+                                        : _arkCC.userStatus.value.userStatus ==
+                                                    "2" &&
+                                                _arkCC.isExpired.value == false
+                                            ? "Lanjutkan"
+                                            : (_arkCC.userStatus.value
+                                                                .userStatus ==
+                                                            "3" ||
+                                                        _arkCC.userStatus.value
+                                                                .userStatus ==
+                                                            "4") &&
+                                                    _arkCC.isExpired.value ==
+                                                        false
+                                                ? "Terselesaikan"
+                                                : "IKUT SERTIFIKASI",
                             titleStyle: const TextStyle(
                               fontSize: 14.5,
                               fontWeight: FontWeight.w800,
