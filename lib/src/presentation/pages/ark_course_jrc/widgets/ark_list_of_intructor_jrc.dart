@@ -45,7 +45,7 @@ class ArkListOfInstructorJrc extends StatelessWidget {
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: Image.network(
-                                  listUsed[i].avatarInstruktur!,
+                                  listUsed[i].avatarInstruktur,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.fill,
@@ -59,7 +59,7 @@ class ArkListOfInstructorJrc extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    listUsed[i].namaInstruktur!,
+                                    listUsed[i].namaInstruktur,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -85,7 +85,7 @@ class ArkListOfInstructorJrc extends StatelessWidget {
                                         AppFirebaseAnalyticsService().addLog(
                                             'mbl_prj_jrc_p1_click_btn_linkedin_inst');
                                         launchUrl(Uri.parse(
-                                            listUsed[i].linkedinInstruktur!));
+                                            listUsed[i].linkedinInstruktur));
                                       },
                                       child: Image.asset(
                                         'assets/images/job_ready_course/logo_linkedin.png',
@@ -102,7 +102,7 @@ class ArkListOfInstructorJrc extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           top: 1, bottom: 5),
                                       child: Text(
-                                        listUsed[i].positionInstruktur!,
+                                        listUsed[i].positionInstruktur,
                                         style: const TextStyle(
                                             color: kNewBlack3,
                                             fontFamily: 'SourceSansPro',
@@ -110,7 +110,7 @@ class ArkListOfInstructorJrc extends StatelessWidget {
                                       ),
                                     ),
                               Text(
-                                listUsed[i].descriptionInstruktur!,
+                                listUsed[i].descriptionInstruktur,
                                 style: const TextStyle(
                                     fontFamily: 'SourceSansPro',
                                     color: kNewBlack2b),

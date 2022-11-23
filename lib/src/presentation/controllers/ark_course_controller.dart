@@ -12,6 +12,7 @@ import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/lowongan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
+import 'package:ark_module_course/utils/app_dialog.dart';
 import 'package:ark_module_course/utils/app_empty_entity.dart';
 
 import 'package:flutter/material.dart';
@@ -80,6 +81,10 @@ class ArkCourseController extends GetxController {
   final Rx<CurriculumEntity> _curriculum =
       CurriculumEntity(success: false, data: []).obs;
   Rx<CurriculumEntity> get curriculum => _curriculum;
+
+  //FAVORITE
+  var isFav = false.obs;
+
   var listTitle = <CurriculumDataEntity>[].obs;
   var listUnit = <CurriculumDataEntity>[].obs;
   var tempList = <CurriculumDataEntity>[].obs;
@@ -193,7 +198,9 @@ class ArkCourseController extends GetxController {
       _getCourseRevamp();
       _getCourseRevampDetail();
     }
+
     fetchUserStatus();
+
     fetchCurriculums();
     fetchUlasan(_ratingPage.value);
     _fetchListIdSimiliarClass();
@@ -201,6 +208,8 @@ class ArkCourseController extends GetxController {
   }
 
   Future _getCourseRevamp() async {
+    _changeLoading(true);
+
     final response =
         await _useCase.getCourseRevamp(_detailCourse.value.courseSlug);
     response.fold(
@@ -210,9 +219,12 @@ class ArkCourseController extends GetxController {
         return _courseRevamp.value = r;
       },
     );
+    await _changeLoading(false);
   }
 
   Future _getCourseRevampDetail() async {
+    _changeLoading(true);
+
     final response =
         await _useCase.getDetailCourseRevamp(_detailCourse.value.courseSlug);
     response.fold((l) {
@@ -222,6 +234,7 @@ class ArkCourseController extends GetxController {
       log('SUCCESS DETAIL COURSE REVAMP ${r.data}');
       return _detailCourseRevamp.value = r;
     });
+    await _changeLoading(false);
   }
 
   Future _getCourseDetailJRC() async {
@@ -287,6 +300,10 @@ class ArkCourseController extends GetxController {
     _isLoadingUlasan.value = val;
   }
 
+  Future _changeLoading(bool val) async {
+    _isLoading.value = val;
+  }
+
   void _ytListen() {
     ytController.listen((event) {
       if (event.playerState == PlayerState.playing) {
@@ -301,10 +318,6 @@ class ArkCourseController extends GetxController {
         );
       }
     });
-  }
-
-  Future _changeLoading(bool val) async {
-    _isLoading.value = val;
   }
 
   bool get checkVideoOrImage {
@@ -387,7 +400,7 @@ class ArkCourseController extends GetxController {
     _changeLoadingCurriculum(true);
     final response = await _useCase.getCurriculums(
         _detailCourse.value.id.toString(), _token.value);
-    response.fold((l) => ExceptionHandle.execute(l), (r) {
+    response.fold((l) => ExceptionHandle.execute(l), (r) async {
       List<int> unitDurations = [];
       int tempId = 0;
       // FOR EXPANDABLE UNIT
@@ -416,6 +429,7 @@ class ArkCourseController extends GetxController {
       log('TOTAL UNIT $totalUnit');
       log('PENYELESAIAN KELAS $penyelesaianKelas');
       log('DURATION $duration');
+      await _changeLoading(false);
       return _curriculum.value = r;
     });
   }
@@ -450,6 +464,32 @@ class ArkCourseController extends GetxController {
     );
 
     await _changeLoadingSimiliar(false);
+  }
+
+  void removeFromFavorite(BuildContext context) async {
+    final response = await _useCase.removeFromFavorite(
+        detailCourse.value.id.toString(), _token.value);
+    response.fold((l) => ExceptionHandle.execute(l), (r) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          ArkAppDialog.defaultSnackbarWithAction(
+              'Berhasil menghapus kelas ${_detailCourseRevamp.value.data[0].course?.name ?? ""} kedalam wishlist',
+              'Lihat',
+              () {}));
+      return isFav.value = r;
+    });
+  }
+
+  void addToFavorite(BuildContext context) async {
+    final response = await _useCase.addToFavorite(
+        _detailCourse.value.id.toString(), _token.value);
+    response.fold((l) => ExceptionHandle.execute(l), (r) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          ArkAppDialog.defaultSnackbarWithAction(
+              'Berhasil menambahkan kelas ${_detailCourseRevamp.value.data[0].course?.name ?? ""} kedalam wishlist',
+              'Lihat',
+              () {}));
+      return isFav.value = r;
+    });
   }
 
   void onPrevUlasan() {

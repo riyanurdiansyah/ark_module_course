@@ -115,4 +115,29 @@ class ArkCourseRepositoryImpl implements ArkCourseRepository {
       return ExceptionHandleResponse.execute(e);
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> removeFromFavorite(
+      String courseId, String token) async {
+    try {
+      final response = await dataSource.removeFromFavorite(courseId, token);
+      return right(response);
+    } catch (e) {
+      log("ERROR REMOVE FROM FAVORITE: ${e.toString()}");
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> addToFavorite(
+      String courseId, String token) async {
+    try {
+      final response = await dataSource.addToFavorite(courseId, token);
+      return right(true);
+    } catch (e) {
+      log("ERROR ADD TO FAVORITE: ${e.toString()}");
+
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
 }

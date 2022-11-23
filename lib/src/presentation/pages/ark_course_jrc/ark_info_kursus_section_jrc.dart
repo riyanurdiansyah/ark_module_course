@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/services/firebase_analytics.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_apa_yang_didapatkan_jrc.dart';
@@ -19,6 +21,7 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('IKHTISAR ${_arkCourseC.detailCourseRevamp.value.data[0].course!.ikhtisar!}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,9 +112,9 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
                                 height: 135,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8),
-                                child: Text('IKHTISAR',
-                                    // _arkCourseC.detailCourseJRC.value.data![0].course!
-                                    //     .ikhtisar!,
+                                child: Text(
+                                    _arkCourseC.detailCourseRevamp.value.data[0]
+                                        .course!.ikhtisar!,
                                     style: const TextStyle(
                                         fontFamily: 'SourceSansPro',
                                         color: kNewBlack2b,
@@ -191,21 +194,20 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ArkFasilitatorJrcWidget(
-                imagePath: _arkCourseC
-                    .detailCourseJRC.value.data!.fasilitator!.avatar!,
-                name:
-                    _arkCourseC.detailCourseJRC.value.data!.fasilitator!.name!,
+                imagePath:
+                    _arkCourseC.detailCourseJRC.value.data.fasilitator.avatar,
+                name: _arkCourseC.detailCourseJRC.value.data.fasilitator.name,
                 position: _arkCourseC
-                    .detailCourseJRC.value.data!.fasilitator!.namaPerusahaan!,
+                    .detailCourseJRC.value.data.fasilitator.namaPerusahaan,
                 desc: _arkCourseC
-                    .detailCourseJRC.value.data!.fasilitator!.deskripsi!,
+                    .detailCourseJRC.value.data.fasilitator.deskripsi,
                 instagramUrl: _arkCourseC
-                    .detailCourseJRC.value.data!.fasilitator!.instagram!,
-                linkedinUrl: _arkCourseC
-                    .detailCourseJRC.value.data!.fasilitator!.linkedin!,
+                    .detailCourseJRC.value.data.fasilitator.instagram,
+                linkedinUrl:
+                    _arkCourseC.detailCourseJRC.value.data.fasilitator.linkedin,
               ),
               const SizedBox(height: 10),
-              _arkCourseC.detailCourseJRC.value.data!.instruktur!.length > 1
+              _arkCourseC.detailCourseJRC.value.data.instruktur.length > 1
                   ? Column(
                       children: [
                         Obx(
@@ -215,21 +217,21 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
                                       .detailCourseJRC.value.data.instruktur)
                               : ArkInstructorJrcWidget(
                                   desc: _arkCourseC.detailCourseJRC.value.data
-                                      .instruktur![0].descriptionInstruktur!,
+                                      .instruktur[0].descriptionInstruktur,
                                   instagramUrl: _arkCourseC
                                       .detailCourseJRC
                                       .value
                                       .data
-                                      .instruktur![0]
-                                      .instagramInstruktur!,
+                                      .instruktur[0]
+                                      .instagramInstruktur,
                                   linkedinUrl: _arkCourseC.detailCourseJRC.value
-                                      .data.instruktur![0].linkedinInstruktur!,
+                                      .data.instruktur[0].linkedinInstruktur,
                                   position: _arkCourseC.detailCourseJRC.value
-                                      .data.instruktur![0].positionInstruktur!,
+                                      .data.instruktur[0].positionInstruktur,
                                   imagePath: _arkCourseC.detailCourseJRC.value
-                                      .data.instruktur![0].avatarInstruktur!,
+                                      .data.instruktur[0].avatarInstruktur,
                                   name: _arkCourseC.detailCourseJRC.value.data
-                                      .instruktur![0].namaInstruktur!,
+                                      .instruktur[0].namaInstruktur,
                                 ),
                         ),
                         Obx(
@@ -266,21 +268,21 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
                         )
                       ],
                     )
-                  : _arkCourseC.detailCourseJRC.value.data.instruktur!.length ==
+                  : _arkCourseC.detailCourseJRC.value.data.instruktur.length ==
                           1
                       ? ArkInstructorJrcWidget(
                           desc: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].descriptionInstruktur!,
+                              .instruktur[0].descriptionInstruktur,
                           instagramUrl: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].instagramInstruktur!,
+                              .instruktur[0].instagramInstruktur,
                           linkedinUrl: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].linkedinInstruktur!,
+                              .instruktur[0].linkedinInstruktur,
                           position: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].positionInstruktur!,
+                              .instruktur[0].positionInstruktur,
                           imagePath: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].avatarInstruktur!,
+                              .instruktur[0].avatarInstruktur,
                           name: _arkCourseC.detailCourseJRC.value.data
-                              .instruktur![0].namaInstruktur!,
+                              .instruktur[0].namaInstruktur,
                         )
                       : const SizedBox()
             ],

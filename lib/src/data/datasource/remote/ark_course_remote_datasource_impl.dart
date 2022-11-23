@@ -169,4 +169,43 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       'Error Get Detail Course Revamp ... failed connect to server',
     );
   }
+
+  @override
+  Future<bool> removeFromFavorite(String courseId, String token) async {
+    final response = await dio.delete('$courseUrl/$courseId/removeFavorites');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM REMOVE FROM WISHLIST');
+      return false;
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error remove from favorite ... failed connect to server',
+    );
+  }
+
+  @override
+  Future<bool> addToFavorite(String courseId, String token) async {
+    await dioInterceptor(dio, token);
+
+    final response = await dio.post(
+      '$courseUrl/$courseId/addFavorites',
+      options: globalOptions(
+        headers: {
+          "Authorization": token,
+        },
+      ),
+    );
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM ADD TO WISHLIST');
+      return true;
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error add to favorite ... failed connect to server',
+    );
+  }
 }

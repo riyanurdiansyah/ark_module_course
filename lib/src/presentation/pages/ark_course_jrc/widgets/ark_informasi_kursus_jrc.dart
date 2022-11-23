@@ -23,17 +23,17 @@ class ArkInformasiKursusJrc extends StatelessWidget {
       {
         'icon': 'assets/images/icon-jumlah-video-ajar.svg',
         'title':
-            // '${_arkCourseC.detailCourseJRC.value.data.courseDurationTime!} hari akses kursus',
+            // '${_arkCourseC.detailCourseRevamp.value.data[0].course!.courseDurationTime!} hari akses kursus',
             // TODO
             '99999'
       },
       {
         'icon': 'assets/images/icon-durasi-kelas.svg',
-        'title': '${_arkCourseC.totalUnit} video ajar'
+        'title': '${_arkCourseC.totalUnit.value} video ajar'
       },
       {
         'icon': 'assets/images/icon-jumlah-kuis.svg',
-        'title': '${_arkCourseC.totalKuis} kuis latihan'
+        'title': '${_arkCourseC.totalKuis.value} kuis latihan'
       },
       {'icon': 'assets/images/icon-materi-pdf.svg', 'title': 'Materi PDF'},
       {

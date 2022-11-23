@@ -47,4 +47,12 @@ class ArkCourseUseCase {
   Future<Either<Failure, UlasanEntity>> getUlasan(
           String courseId, int page) async =>
       await repository.getUlasan(courseId, page);
+
+  Future<Either<Failure, bool>> removeFromFavorite(
+          String courseId, String token) async =>
+      await repository.removeFromFavorite(courseId, token);
+
+  Future<Either<Failure, bool>> addToFavorite(
+          String courseId, String token) async =>
+      await repository.addToFavorite(courseId, token);
 }

@@ -1,5 +1,8 @@
 import 'package:ark_module_course/ark_module_course.dart';
-import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/info_kursus_section_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_kurikulum_sction_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_lowongan_kerja_section_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_ulasan_section_jrc.dart';
+import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/ark_info_kursus_section_jrc.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_lowongan_karir_tab_jrc.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_tab_title_jrc.dart';
 import 'package:ark_module_course/utils/app_color.dart';
@@ -352,12 +355,12 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                       ),
                                                       Text(
                                                         'Lowongan yang tersedia untuk posisi ${_courseC.detailCourseJRC.value.data.subCategory} dalam 3 hari',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontFamily:
                                                               'SourceSansPro',
                                                           fontSize: 11,
-                                                          color: const Color(
-                                                              0xFF5A5C60),
+                                                          color:
+                                                              Color(0xFF5A5C60),
                                                           height: 1.5,
                                                         ),
                                                         maxLines: 3,
@@ -391,7 +394,7 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                     children: [
                                                       Text(
                                                         'Rp${substractGaji(_courseC.detailCourseJRC.value.data.minGaji)} - ${substractGaji(_courseC.detailCourseJRC.value.data.maxGaji)} juta',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontFamily:
                                                               'SourceSansPro',
                                                           fontSize: 13,
@@ -404,7 +407,7 @@ class ArkCourseJrcPage extends StatelessWidget {
                                                       ),
                                                       Text(
                                                         'Rata-rata gaji sebagai ${_courseC.detailCourseJRC.value.data.subCategory}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 11,
                                                           fontWeight:
                                                               FontWeight.w400,
@@ -595,20 +598,20 @@ class ArkCourseJrcPage extends StatelessWidget {
                     if (_courseC.tabIndexJrc.value == 0) {
                       return ArkInfoKursusSectionJrc();
                     } else if (_courseC.tabIndexJrc.value == 1) {
-                      // return KurikulumSectionJrc();
-                      return Center(
-                        child: Text('KURIKULUM SECTION'),
-                      );
+                      return ArkKurikulumSectionJrc();
+                      // return Center(
+                      //   child: Text('KURIKULUM SECTION'),
+                      // );
                     } else if (_courseC.tabIndexJrc.value == 2) {
-                      // return UlasanSectionJrc();
-                      return Center(
-                        child: Text('ULASAN SECTION'),
-                      );
+                      return ArkUlasanSectionJrc();
+                      // return Center(
+                      //   child: Text('ULASAN SECTION'),
+                      // );
                     } else {
-                      // return LowonganKerjaSectionJrc();
-                      return Center(
-                        child: Text('LOWONGAN SECTION'),
-                      );
+                      return ArkLowonganKerjaSectionJrc();
+                      // return Center(
+                      //   child: Text('LOWONGAN SECTION'),
+                      // );
                     }
                   }),
                 ),

@@ -29,4 +29,9 @@ abstract class ArkCourseRepository {
       List<String> listId);
 
   Future<Either<Failure, UlasanEntity>> getUlasan(String courseId, int page);
+
+  Future<Either<Failure, bool>> removeFromFavorite(
+      String courseId, String token);
+
+  Future<Either<Failure, bool>> addToFavorite(String courseId, String token);
 }

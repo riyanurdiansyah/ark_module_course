@@ -154,10 +154,10 @@ class ArkInfoKursusBodyJrc extends StatelessWidget {
                       ' ')
                 HeaderandBody(
                     header: 'Standar kompetensi',
-                    body: _arkCourseC.detailCourseRevamp.value.data![0].course!
+                    body: _arkCourseC.detailCourseRevamp.value.data[0].course!
                         .standarKompetensi!),
-              if (_arkCourseC.detailCourseRevamp.value.data != null &&
-                  _arkCourseC.detailCourseRevamp.value.data![0].course!
+              if (_arkCourseC.detailCourseRevamp.value.data.isEmpty &&
+                  _arkCourseC.detailCourseRevamp.value.data[0].course!
                           .courseDurationTime !=
                       "")
                 HeaderandBody(

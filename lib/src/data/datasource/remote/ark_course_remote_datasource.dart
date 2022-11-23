@@ -22,4 +22,8 @@ abstract class ArkCourseRemoteDataSource {
   Future<List<CourseParseDTO>> getSimiliarClass(List<String> listId);
 
   Future<UlasanDTO> getUlasan(String courseId, int page);
+
+  Future<bool> removeFromFavorite(String courseId, String token);
+
+  Future<bool> addToFavorite(String courseId, String token);
 }
