@@ -1,7 +1,10 @@
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_card_for_description.dart';
+import 'package:ark_module_course/src/presentation/pages/widget/ark_paket_kelas_section.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_row_with_image_string.dart';
+import 'package:ark_module_course/src/presentation/pages/widget/ark_skill_yang_anda_peroleh.dart';
 import 'package:ark_module_course/utils/app_color.dart';
+import 'package:ark_module_course/utils/app_constanta.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,58 +64,6 @@ class _ArkIkhtisarSectionCourseRevampState
       }
       return null;
     }
-
-    List<Map<String, String>> fiturKursus = [
-      {
-        'icon': 'assets/images/icon-online.png',
-        'title': '100%\nonline',
-      },
-      {
-        'icon': 'assets/images/icon-belajar-lewat-app.png',
-        'title': 'Belajar lewat\n App atau Web',
-      },
-      {
-        'icon': 'assets/images/icon-sertifikat-elektronik.png',
-        'title': 'Sertifikat\nelektronik',
-      },
-      {
-        'icon': 'assets/images/icon-jadwal-belajar.png',
-        'title': 'Jadwal belajar\nkapan saja',
-      },
-    ];
-
-    List<Map<String, String>> yangAndaDapat = [
-      {
-        'icon': 'assets/images/icon-kursus-sertifikasi.svg',
-        'title': 'Kursus sertifikasi 100% full online'
-      },
-      {
-        'icon': 'assets/images/icon-durasi-materi.svg',
-        'title': 'Rata-rata penyelesaian ${_arkCC.penyelesaianKelas.value} jam'
-      },
-      {
-        'icon': 'assets/images/icon-durasi-kelas.svg',
-        'title': '${_arkCC.totalUnit.value} Video ajar'
-      },
-      {
-        'icon': 'assets/images/icon-jumlah-video-ajar.svg',
-        'title':
-            '${_arkCC.detailCourseRevamp.value.data[0].course!.courseDurationTime} hari akses kelas',
-      },
-      {
-        'icon': 'assets/images/icon-jumlah-kuis.svg',
-        'title': '${_arkCC.totalKuis} kuis latihan',
-      },
-      {
-        'icon': 'assets/images/icon-materi-pdf.svg',
-        'title': 'Materi PDF',
-      },
-      {
-        'icon': 'assets/images/icon-sertifikat.svg',
-        'title':
-            'Sertifikat elektronik ${_arkCC.detailCourseRevamp.value.data[0].course!.name}'
-      },
-    ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -174,50 +125,12 @@ class _ArkIkhtisarSectionCourseRevampState
           const SizedBox(
             height: 21,
           ),
-          Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const Text(
-              'Skill yang Akan Anda Peroleh',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 22),
-              child: Wrap(
-                children: [
-                  for (int i = 0;
-                      i <
-                          _arkCC.detailCourseRevamp.value.data[0].course!
-                              .skillYgAkanDiperolehWeb!.length;
-                      i++)
-                    Container(
-                      margin:
-                          const EdgeInsets.only(top: 3, bottom: 3, right: 7),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: const Color(0xffF0F2F5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 5),
-                        child: Text(
-                          _arkCC.detailCourseRevamp.value.data[0].course!
-                              .skillYgAkanDiperolehWeb![i],
-                          style: const TextStyle(
-                            color: kNewBlack2a,
-                            fontFamily: 'SourceSansPro',
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            )
-          ]),
+          ArkSkillYangAndaPerolahRevamp(),
           const SizedBox(
             height: 21,
           ),
           ArkCardForDescription(
-            'Peluang Kariers',
+            'Peluang Karier',
             _arkCC.courseRevamp.value.data.peluangKarir,
             const Color(0xffE5E6E9),
           ),
@@ -411,165 +324,136 @@ class _ArkIkhtisarSectionCourseRevampState
             height: 30,
           ),
           Obx(
-            () => _arkCC.isExpandedCourseRevamp.isTrue
+            () => _arkCC.isLoadingCurriculums.isTrue
                 ? const SizedBox()
-                : Card(
-                    color: kCanvasColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      side: const BorderSide(
-                        color: Color(0xffC9CBCF),
-                        width: 0.69,
-                      ),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                        left: 17,
-                        right: 17,
-                        bottom: 21,
-                        top: 29,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Yang Anda Dapat',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xff1C1D20),
-                            ),
+                : _arkCC.isExpandedCourseRevamp.isTrue
+                    ? const SizedBox()
+                    : Card(
+                        color: kCanvasColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                          side: const BorderSide(
+                            color: Color(0xffC9CBCF),
+                            width: 0.69,
                           ),
-                          const SizedBox(
-                            height: 15,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                            left: 17,
+                            right: 17,
+                            bottom: 21,
+                            top: 29,
                           ),
-                          for (int i = 0; i < yangAndaDapat.length; i++)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 6),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SvgPicture.asset(yangAndaDapat[i]['icon']!,
-                                      color: const Color(0xff45474A),
-                                      width: 14,
-                                      height: 14),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      yangAndaDapat[i]['title']!,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ArkPaketKelasSection(
+                                isCourseRevamp: true,
+                              ),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              const Text(
+                                'Fitur Kelas',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff1C1D20),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Wrap(
+                                runSpacing: 9,
+                                children: List.generate(
+                                  fiturKursus.length,
+                                  (index) => Wrap(
+                                    children: [
+                                      Container(
+                                        width: Get.size.width > 400
+                                            ? Get.size.width * 0.4
+                                            : 141,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.bottomLeft,
+                                                  end: Alignment.topRight,
+                                                  colors: [
+                                                    Color(0xffEFF1F3),
+                                                    Color(0xffFBFCFD),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  fiturKursus[index]['icon']!,
+                                                  height: 17,
+                                                  width: 18,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 9,
+                                            ),
+                                            Text(
+                                              fiturKursus[index]['title']!,
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff45484D),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      maxLines: 2,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          const Text(
-                            'Fitur Kelas',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xff1C1D20),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Wrap(
-                            runSpacing: 9,
-                            children: List.generate(
-                              fiturKursus.length,
-                              (index) => Wrap(
-                                children: [
-                                  Container(
-                                    width: Get.size.width > 400
-                                        ? Get.size.width * 0.4
-                                        : 141,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            gradient: const LinearGradient(
-                                              begin: Alignment.bottomLeft,
-                                              end: Alignment.topRight,
-                                              colors: [
-                                                Color(0xffEFF1F3),
-                                                Color(0xffFBFCFD),
-                                              ],
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              fiturKursus[index]['icon']!,
-                                              height: 17,
-                                              width: 18,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 9,
-                                        ),
-                                        Text(
-                                          fiturKursus[index]['title']!,
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff45484D),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          const Text(
-                            'e-Certificate',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xff1C1D20),
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 12.5),
-                          if (_arkCC.detailCourseRevamp.value.data[0].course!
-                                  .sertifikatFrameUrl !=
-                              '')
-                            Column(
-                              children: [
-                                Center(
-                                  child: Image.network(
-                                    _arkCC.detailCourseRevamp.value.data[0]
-                                        .course!.sertifikatFrameUrl!,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const SizedBox();
-                                    },
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          const SizedBox(
-                            height: 20,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              const Text(
+                                'e-Certificate',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff1C1D20),
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(height: 12.5),
+                              if (_arkCC.detailCourseRevamp.value.data[0]
+                                      .course!.sertifikatFrameUrl !=
+                                  '')
+                                Column(
+                                  children: [
+                                    Center(
+                                      child: Image.network(
+                                        _arkCC.detailCourseRevamp.value.data[0]
+                                            .course!.sertifikatFrameUrl!,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const SizedBox();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
           ),
           const SizedBox(
             height: 40,

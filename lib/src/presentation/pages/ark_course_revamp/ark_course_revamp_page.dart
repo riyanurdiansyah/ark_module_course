@@ -43,9 +43,8 @@ class ArkCourseRevamp extends StatefulWidget {
 class _ArkCourseRevampState extends State<ArkCourseRevamp>
     with SingleTickerProviderStateMixin {
   final _arkCC = Get.find<ArkCourseController>();
-  // final _spfC = Get.put(SpfController());
   late TabController _tabController;
-  final key1 = GlobalKey();
+  // final key1 = GlobalKey();
 
   Mixpanel? mixpanel = Mixpanel('da7470a04f3b091c8a1860f0b1f52956');
   YoutubePlayerController? ytController;
@@ -119,46 +118,43 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
               AppFirebaseAnalyticsService().addLog('thumbnail_video_click');
             }
           }
-          if (widget.slug == 'resultJobCourseMatch') {
-            AppFirebaseAnalyticsService().addCurrentScreen(
-                "course_page_jcm_${_arkCC.detailCourseRevamp.value.data[0].course!.name}");
-            // } else {
-            //   AppFirebaseAnalyticsService().addCurrentScreen(
-            //       "course_page_${_arkCC.detailCourseRevamp.value.data[0].course!.name}");
-            // }
-          }
-
-          // mixpanel
-          // mixpanel!.track('Page View', properties: {
-          //   'Page Name': 'Course Page',
-          //   'Course Name': _arkCC.detailCourseRevamp.value.data[0].course!.name
-          // });
-          // log('TEST STATUS : ${_arkCC.userStatus.value.userStatus}');
-          // log(
-          //     'TEST COIN FLAG : ${_arkCC.detailCourseRevamp.value.data![0].course!.coin!.coinFlag}');
-
-          // if (_arkCC.userStatus.value.userStatus == '') {
-          //   Future.delayed(Duration.zero, () async {
-          //     final _listFlag = await DBHelper.getTablePopUpCoin(
-          //       'popup_coin',
-          //       [
-          //         'id_user',
-          //         'tag',
-          //       ],
-          //     );
-          //     log("LIST FLAG : $_listFlag");
-          //     log(
-          //         'TEST FLAG LENG : ${_listFlag.where((e) => e['tag'] == 'course').toList().length}');
-          //     if (_listFlag
-          //         .where((e) => e['tag'] == 'course')
-          //         .toList()
-          //         .isEmpty) {
-          //       WidgetsBinding.instance.addPostFrameCallback(
-          //         (_) => ArkaShowCaseWidget.of(context)!.startShowCase([key1]),
-          //       );
-          //     }
-          //   });
+          // if (widget.slug == 'resultJobCourseMatch') {
+          //   AppFirebaseAnalyticsService().addCurrentScreen(
+          //       "course_page_jcm_${_arkCC.detailCourseRevamp.value.data[0].course!.name}");
+          // } else {
+          //   AppFirebaseAnalyticsService().addCurrentScreen(
+          //       "course_page_${_arkCC.detailCourseRevamp.value.data[0].course!.name}");
           // }
+
+          mixpanel!.track('Page View', properties: {
+            'Page Name': 'Course Page',
+            'Course Name': _arkCC.detailCourseRevamp.value.data[0].course!.name
+          });
+          log('TEST STATUS : ${_arkCC.userStatus.value.userStatus}');
+          log('TEST COIN FLAG : ${_arkCC.detailCourseRevamp.value.data[0].course!.coin!.coinFlag}');
+
+          if (_arkCC.userStatus.value.userStatus == '') {
+            Future.delayed(Duration.zero, () async {
+              // final _listFlag = await DBHelper.getTablePopUpCoin(
+              //   'popup_coin',
+              //   [
+              //     'id_user',
+              //     'tag',
+              //   ],
+              // );
+              // log("LIST FLAG : $_listFlag");
+              // log(
+              //     'TEST FLAG LENG : ${_listFlag.where((e) => e['tag'] == 'course').toList().length}');
+              // if (_listFlag
+              //     .where((e) => e['tag'] == 'course')
+              //     .toList()
+              //     .isEmpty) {
+              //   WidgetsBinding.instance.addPostFrameCallback(
+              //     (_) => ArkaShowCaseWidget.of(context)!.startShowCase([key1]),
+              //   );
+              // }
+            });
+          }
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size(Get.size.width, 50),
@@ -214,7 +210,7 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
               },
               child: _arkCC.detailCourseRevamp.value.data.isEmpty
                   ? const Center(
-                      child: Text('Oopps.. Something Wrong'),
+                      child: CircularProgressIndicator(),
                     )
                   : SingleChildScrollView(
                       child: Column(
@@ -734,10 +730,19 @@ class _ArkCourseRevampState extends State<ArkCourseRevamp>
                                       decimalDigits: 0,
                                     ).format(int.parse(_arkCC.detailCourseRevamp
                                         .value.data[0].course!.price!)),
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                    style: TextStyle(
+                                      fontSize: _arkCC
+                                                  .detailCourseRevamp
+                                                  .value
+                                                  .data[0]
+                                                  .course!
+                                                  .price!
+                                                  .length >=
+                                              7
+                                          ? 20
+                                          : 24,
                                       fontWeight: FontWeight.w800,
-                                      color: Color(0xff121315),
+                                      color: const Color(0xff121315),
                                     ),
                                   ),
                                   _arkCC.detailCourseRevamp.value.data[0]

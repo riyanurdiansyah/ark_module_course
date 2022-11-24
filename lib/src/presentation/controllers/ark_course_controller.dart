@@ -211,8 +211,10 @@ class ArkCourseController extends GetxController {
     }
     if (_detailCourse.value.courseFlag.jrc == "1") {
       _getCourseDetailJRC();
+      log('HIT JRC FROM SIMILIAR CLASS');
     }
     if (_detailCourse.value.courseFlag.revamp == "1") {
+      log('HIT REVAMP FROM SIMILIAR CLASS');
       _getCourseRevamp();
       _getCourseRevampDetail();
     }
@@ -503,6 +505,7 @@ class ArkCourseController extends GetxController {
       log('TOTAL UNIT $totalUnit');
       log('PENYELESAIAN KELAS $penyelesaianKelas');
       log('DURATION $duration');
+
       await _changeLoading(false);
       return _curriculum.value = r;
     });

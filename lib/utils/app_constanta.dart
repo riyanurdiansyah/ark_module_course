@@ -53,3 +53,22 @@ const List<Map<String, String>> fiturKelas = [
   },
   {'icon': 'assets/images/icon-jadwal.svg', 'title': 'Jadwal fleksibel'},
 ];
+
+List<Map<String, String>> fiturKursus = [
+  {
+    'icon': 'assets/images/icon-online.png',
+    'title': '100%\nonline',
+  },
+  {
+    'icon': 'assets/images/icon-belajar-lewat-app.png',
+    'title': 'Belajar lewat\n App atau Web',
+  },
+  {
+    'icon': 'assets/images/icon-sertifikat-elektronik.png',
+    'title': 'Sertifikat\nelektronik',
+  },
+  {
+    'icon': 'assets/images/icon-jadwal-belajar.png',
+    'title': 'Jadwal belajar\nkapan saja',
+  },
+];
