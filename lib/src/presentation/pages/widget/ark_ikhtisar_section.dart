@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_card_with_icon_for_description.dart';
 import 'package:ark_module_course/src/presentation/pages/widget/ark_ikhtisar_body.dart';
@@ -19,6 +21,7 @@ class ArkIkhtisarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('paket kelas ${_courseC.paketKelas.length}');
     return Obx(
       () => _courseC.isLoading.isTrue
           ? const Center(
@@ -286,73 +289,76 @@ class ArkIkhtisarSection extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 20,
-                                        bottom: 25,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
-                                          color: const Color.fromRGBO(
-                                              249, 252, 255, 1),
-                                          border: Border.all(
-                                              width: 0.3, color: kNewBlack3)),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 15),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ArkPaketKelasSection(),
-                                          const SizedBox(height: 22),
-                                          const ArkMapWithIconForDescription(
-                                              'Fitur Pelatihan',
-                                              fiturKelas,
-                                              true),
-                                          const SizedBox(height: 22),
-                                          const Text('E-Sertifikat',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                          const SizedBox(height: 10),
-                                          if (_courseC
-                                                  .detailCourseBiasa
-                                                  .value
-                                                  .data[0]
-                                                  .course!
-                                                  .sertifikatFrameUrl !=
-                                              '')
-                                            Column(
-                                              children: [
-                                                Center(
-                                                  child: Image.network(
-                                                    _courseC
-                                                        .detailCourseBiasa
-                                                        .value
-                                                        .data[0]
-                                                        .course!
-                                                        .sertifikatFrameUrl!,
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return const SizedBox();
-                                                    },
-                                                  ),
-                                                ),
-                                                const Center(
-                                                  child: Text(
-                                                    'Sertifikat Penyelesaian',
-                                                    style: TextStyle(
-                                                      fontSize: 9,
-                                                      color: Color.fromRGBO(
-                                                          131, 133, 137, 1),
+                                    if (_courseC.detailCourseBiasa.value.data
+                                        .isNotEmpty)
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                          top: 20,
+                                          bottom: 25,
+                                        ),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            color: const Color.fromRGBO(
+                                                249, 252, 255, 1),
+                                            border: Border.all(
+                                                width: 0.3, color: kNewBlack3)),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 15),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ArkPaketKelasSection(),
+                                            const SizedBox(height: 22),
+                                            const ArkMapWithIconForDescription(
+                                                'Fitur Pelatihan',
+                                                fiturKelas,
+                                                true),
+                                            const SizedBox(height: 22),
+                                            const Text('E-Sertifikat',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 10),
+                                            if (_courseC
+                                                    .detailCourseBiasa
+                                                    .value
+                                                    .data[0]
+                                                    .course!
+                                                    .sertifikatFrameUrl !=
+                                                '')
+                                              Column(
+                                                children: [
+                                                  Center(
+                                                    child: Image.network(
+                                                      _courseC
+                                                          .detailCourseBiasa
+                                                          .value
+                                                          .data[0]
+                                                          .course!
+                                                          .sertifikatFrameUrl!,
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return const SizedBox();
+                                                      },
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                        ],
+                                                  const Center(
+                                                    child: Text(
+                                                      'Sertifikat Penyelesaian',
+                                                      style: TextStyle(
+                                                        fontSize: 9,
+                                                        color: Color.fromRGBO(
+                                                            131, 133, 137, 1),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
                                     ArkRowWithImageAndDescription(
                                         imagePath: _courseC
                                             .detailCourseBiasa

@@ -27,7 +27,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
     final response = await dio.get("$courseUrl/$slug/jrc");
     int code = response.statusCode ?? 500;
     if (code == 200) {
-      log('RESPONSE FROM COURSE REVAMP ${response.data}');
+      log('RESPONSE FROM COURSE JRC ${response.data}');
       return CourseJrcDTO.fromJson(response.data);
     }
     return ExceptionHandleResponseAPI.execute(

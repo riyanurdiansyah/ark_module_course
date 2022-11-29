@@ -99,6 +99,9 @@ class ArkCourseController extends GetxController {
       .obs;
   Rx<UserStatusEntity> get userStatus => _userStatus;
 
+  RxList<Map<String, String>> paketKelas = <Map<String, String>>[].obs;
+  RxList<Map<String, String>> yangAndaDapat = <Map<String, String>>[].obs;
+
   //FAVORITE
   RxBool isFav = false.obs;
 
@@ -108,7 +111,6 @@ class ArkCourseController extends GetxController {
   RxList<CurriculumDataEntity> tempList = <CurriculumDataEntity>[].obs;
   RxInt duration = 0.obs;
   RxInt penyelesaianKelas = 0.obs;
-  RxList<dynamic> paketKelas = [].obs;
   RxInt totalUnit = 0.obs;
   RxInt totalKuis = 0.obs;
 
@@ -151,7 +153,6 @@ class ArkCourseController extends GetxController {
   late ArkCourseUseCase _useCase;
   late ArkCourseRepositoryImpl _repository;
   late ArkCourseRemoteDataSourceImpl _dataSource;
-
   late ScrollController scrollControllerPage;
 
   @override
@@ -179,26 +180,6 @@ class ArkCourseController extends GetxController {
     super.onInit();
   }
 
-  // CHANGE STATUS EXPIRED
-  void changeExpired(bool value) {
-    _isExpired.value = value;
-  }
-
-  void fetchUlasan(int page) async {
-    _changeLoadingUlasan(true);
-    final response =
-        await _useCase.getUlasan(_detailCourse.value.id.toString(), page);
-
-    response.fold(
-      ///IF RESPONSE IS ERROR
-      (fail) => ExceptionHandle.execute(fail),
-
-      ///IF RESPONSE SUCCESS
-      (data) => _ulasan.value = data,
-    );
-    await _changeLoadingUlasan(false);
-  }
-
   void changeSourceCourse(CourseParseEntity simClass) async {
     _changeLoading(true);
     _ratingPage.value = 1;
@@ -220,12 +201,32 @@ class ArkCourseController extends GetxController {
     }
 
     fetchUserStatus();
-
     fetchCurriculums();
+    fetchCurriculumsCourseRevamp();
     fetchUlasan(_ratingPage.value);
     _fetchListIdSimiliarClass();
-    await _getDetailCourse();
+    _getDetailCourse();
     await _changeLoading(false);
+  }
+
+  // CHANGE STATUS EXPIRED
+  void changeExpired(bool value) {
+    _isExpired.value = value;
+  }
+
+  void fetchUlasan(int page) async {
+    _changeLoadingUlasan(true);
+    final response =
+        await _useCase.getUlasan(_detailCourse.value.id.toString(), page);
+
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) => ExceptionHandle.execute(fail),
+
+      ///IF RESPONSE SUCCESS
+      (data) => _ulasan.value = data,
+    );
+    await _changeLoadingUlasan(false);
   }
 
   Future<void> _getCourseRevamp() async {
@@ -460,6 +461,36 @@ class ArkCourseController extends GetxController {
         penyelesaianKelas.value = Duration(seconds: duration.value).inHours +
             const Duration(minutes: 120).inHours;
         totalUnit.value = unitDurations.length;
+        paketKelas = [
+          {
+            'icon': 'assets/images/icon-durasi-materi.svg',
+            'title': duration.value <= 3600
+                ? 'Durasi materi ${duration.value} menit'
+                : 'Durasi materi ${duration.value} jam'
+          },
+          {
+            'icon': 'assets/images/icon-durasi-materi.svg',
+            'title': 'Rata-rata penyelesaian ${penyelesaianKelas.value} jam'
+          },
+          {
+            'icon': 'assets/images/icon-durasi-kelas.svg',
+            'title':
+                '${detailCourseBiasa.value.data[0].course?.courseDurationTime ?? ""} hari akses kelas',
+          },
+          {
+            'icon': 'assets/images/icon-jumlah-video-ajar.svg',
+            'title': '$totalUnit Video ajar'
+          },
+          {
+            'icon': 'assets/images/icon-jumlah-kuis.svg',
+            'title': '$totalKuis kuis'
+          },
+          {'icon': 'assets/images/icon-materi-pdf.svg', 'title': 'Materi PDF'},
+          {
+            'icon': 'assets/images/icon-sertifikat.svg',
+            'title': 'Sertifikat elektronik'
+          },
+        ].obs;
         log('FETCH CURRICULUM $totalKuis');
         log('FETCH CURRICULUM $penyelesaianKelas');
         log('FETCH CURRICULUM $totalUnit');
@@ -505,6 +536,38 @@ class ArkCourseController extends GetxController {
       log('TOTAL UNIT $totalUnit');
       log('PENYELESAIAN KELAS $penyelesaianKelas');
       log('DURATION $duration');
+      yangAndaDapat = [
+        {
+          'icon': 'assets/images/icon-kursus-sertifikasi.svg',
+          'title': 'Kursus sertifikasi 100% full online'
+        },
+        {
+          'icon': 'assets/images/icon-durasi-materi.svg',
+          'title': 'Rata-rata penyelesaian ${penyelesaianKelas.value} jam'
+        },
+        {
+          'icon': 'assets/images/icon-durasi-kelas.svg',
+          'title': '${totalUnit.value} Video ajar'
+        },
+        {
+          'icon': 'assets/images/icon-jumlah-video-ajar.svg',
+          'title':
+              '${detailCourseRevamp.value.data[0].course?.courseDurationTime ?? ""} hari akses kelas',
+        },
+        {
+          'icon': 'assets/images/icon-jumlah-kuis.svg',
+          'title': '${totalKuis} kuis latihan',
+        },
+        {
+          'icon': 'assets/images/icon-materi-pdf.svg',
+          'title': 'Materi PDF',
+        },
+        {
+          'icon': 'assets/images/icon-sertifikat.svg',
+          'title':
+              'Sertifikat elektronik ${detailCourseRevamp.value.data[0].course?.name}'
+        },
+      ].obs;
 
       await _changeLoading(false);
       return _curriculum.value = r;

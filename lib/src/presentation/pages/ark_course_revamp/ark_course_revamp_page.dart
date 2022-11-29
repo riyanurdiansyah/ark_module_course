@@ -42,7 +42,7 @@ class ArkCourseRevamp extends StatefulWidget {
 
 class _ArkCourseRevampState extends State<ArkCourseRevamp>
     with SingleTickerProviderStateMixin {
-  final _arkCC = Get.find<ArkCourseController>();
+  final _arkCC = Get.put(ArkCourseController());
   late TabController _tabController;
   // final key1 = GlobalKey();
 

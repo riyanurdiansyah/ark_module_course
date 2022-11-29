@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/services/firebase_analytics.dart';
 import 'package:ark_module_course/src/presentation/pages/ark_course_jrc/widgets/ark_apa_yang_didapatkan_jrc.dart';
@@ -115,7 +113,10 @@ class ArkInfoKursusSectionJrc extends StatelessWidget {
                                   height: 135,
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text("",
+                                  child: Text(
+                                      _arkCourseC.detailCourseBiasa.value
+                                              .data[0].course!.ikhtisar ??
+                                          "",
                                       style: const TextStyle(
                                           fontFamily: 'SourceSansPro',
                                           color: kNewBlack2b,

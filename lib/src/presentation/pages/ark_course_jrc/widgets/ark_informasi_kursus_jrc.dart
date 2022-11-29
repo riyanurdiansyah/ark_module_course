@@ -16,10 +16,11 @@ class ArkInformasiKursusJrc extends StatelessWidget {
             ? 'Durasi kursus ${_arkCourseC.duration.value} menit'
             : 'Durasi kursus ${_arkCourseC.duration.value} jam'
       },
-      // {
-      //   'icon': 'assets/images/icon-durasi-materi.svg',
-      //   'title': 'Rata-rata penyelesaian ${_lCC.penyelesaianKelas.value} jam'
-      // },
+      {
+        'icon': 'assets/images/icon-durasi-materi.svg',
+        'title':
+            'Rata-rata penyelesaian ${_arkCourseC.penyelesaianKelas.value} jam'
+      },
       {
         'icon': 'assets/images/icon-jumlah-video-ajar.svg',
         'title':
