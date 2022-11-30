@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_course/ark_module_course.dart';
 import 'package:ark_module_course/utils/app_color.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
@@ -133,7 +135,11 @@ class ArkJoinClassBtm extends StatelessWidget {
                     ),
                   ),
                   onPressed: () => Get.toNamed('/ark-checkout',
-                      arguments: _courseC.detailCourse.value.toJson()),
+                          arguments: _courseC.detailCourse.value.toJson())!
+                      .then((value) {
+                    log("BALIK LAGI");
+                    _courseC.fetchUserStatus();
+                  }),
                   child: const Text(
                     "GABUNG KE PELATIHAN",
                     style: TextStyle(
