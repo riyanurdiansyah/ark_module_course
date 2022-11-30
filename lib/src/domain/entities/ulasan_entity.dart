@@ -150,7 +150,7 @@ class UlasanDataEntity {
         commentContent: commentContent ?? this.commentContent,
         userId: userId ?? this.userId,
         nameAuthor: nameAuthor ?? this.nameAuthor,
-        avatarAuthor: avatarAuthor ?? this.avatarAuthor,
+        avatarAuthor: avatarAuthor == 'belum upload' ? '' : this.avatarAuthor,
         reviewTitle: reviewTitle ?? this.reviewTitle,
         reviewRating: reviewRating ?? this.reviewRating,
       );

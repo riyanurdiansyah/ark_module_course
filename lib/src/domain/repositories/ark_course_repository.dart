@@ -3,6 +3,7 @@ import 'package:ark_module_course/src/domain/entities/course_revamp_detail_entit
 import 'package:ark_module_course/src/domain/entities/course_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_jrc_entity.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 import 'package:ark_module_course/src/domain/entities/curriculum_entity.dart';
 import 'package:ark_module_course/src/domain/entities/ulasan_entity.dart';
 import 'package:ark_module_course/src/domain/entities/user_status_entity.dart';
@@ -29,4 +30,15 @@ abstract class ArkCourseRepository {
       List<String> listId);
 
   Future<Either<Failure, UlasanEntity>> getUlasan(String courseId, int page);
+
+  Future<Either<Failure, bool>> removeFromFavorite(
+      String courseId, String token);
+
+  Future<Either<Failure, bool>> addToFavorite(String courseId, String token);
+
+  Future<Either<Failure, CourseRevampDetailEntity>> getDetailCourse(
+      String courseId);
+
+  Future<Either<Failure, ArkCourseStatusEntity>> getCourseStatus(
+      String courseId);
 }

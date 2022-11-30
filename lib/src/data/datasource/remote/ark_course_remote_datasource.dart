@@ -5,6 +5,7 @@ import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
 import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
 import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 
 abstract class ArkCourseRemoteDataSource {
   Future<CourseJrcDTO> getDetailCourseJRC(String slug);
@@ -22,4 +23,12 @@ abstract class ArkCourseRemoteDataSource {
   Future<List<CourseParseDTO>> getSimiliarClass(List<String> listId);
 
   Future<UlasanDTO> getUlasan(String courseId, int page);
+
+  Future<bool> removeFromFavorite(String courseId, String token);
+
+  Future<bool> addToFavorite(String courseId, String token);
+
+  Future<CourseRevampDetailEntity> getDetailCourse(String courseId);
+
+  Future<ArkCourseStatusEntity> getCourseStatus(String courseId);
 }

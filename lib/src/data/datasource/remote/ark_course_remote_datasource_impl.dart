@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ark_module_course/ark_module_course.dart';
@@ -11,6 +10,7 @@ import 'package:ark_module_course/src/data/dto/curriculum_dto.dart';
 import 'package:ark_module_course/src/data/dto/ulasan_dto.dart';
 import 'package:ark_module_course/src/data/dto/user_status_dto.dart';
 import 'package:ark_module_course/src/domain/entities/course_revamp_entity.dart';
+import 'package:ark_module_course/src/domain/entities/course_status_entity.dart';
 import 'package:ark_module_course/utils/app_constanta.dart';
 import 'package:ark_module_course/utils/app_url.dart';
 
@@ -27,7 +27,7 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
     final response = await dio.get("$courseUrl/$slug/jrc");
     int code = response.statusCode ?? 500;
     if (code == 200) {
-      log('RESPONSE FROM COURSE REVAMP ${response.data}');
+      log('RESPONSE FROM COURSE JRC ${response.data}');
       return CourseJrcDTO.fromJson(response.data);
     }
     return ExceptionHandleResponseAPI.execute(
@@ -114,10 +114,12 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
 
   @override
   Future<UlasanDTO> getUlasan(String courseId, int page) async {
-    final response =
-        await dio.get("$courseUrl/$courseId/reviews", queryParameters: {
-      "page": page,
-    });
+    final response = await dio.get(
+      "$courseUrl/$courseId/reviews",
+      queryParameters: {
+        "page": page,
+      },
+    );
     int code = response.statusCode ?? 500;
     // log("CHECK RES ULASAN : ${response.data}");
     if (code == 200) {
@@ -151,6 +153,11 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
   Future<CourseRevampDetailEntity> getDetailCourseRevamp(String slug) async {
     final response = await dio.get(
       '$courseUrl/$slug/detail',
+      options: Options(
+        headers: {
+          'Accept': '*/*',
+        },
+      ),
     );
     int code = response.statusCode ?? 500;
     if (code == 200) {
@@ -161,6 +168,73 @@ class ArkCourseRemoteDataSourceImpl implements ArkCourseRemoteDataSource {
       code,
       response,
       'Error Get Detail Course Revamp ... failed connect to server',
+    );
+  }
+
+  @override
+  Future<bool> removeFromFavorite(String courseId, String token) async {
+    await dioInterceptor(dio, token);
+    final response = await dio.delete('$courseUrl/$courseId/removeFavorites');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM REMOVE FROM WISHLIST');
+      return false;
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error remove from favorite ... failed connect to server',
+    );
+  }
+
+  @override
+  Future<bool> addToFavorite(String courseId, String token) async {
+    await dioInterceptor(dio, token);
+
+    final response = await dio.post(
+      '$courseUrl/$courseId/addFavorites',
+      options: globalOptions(),
+    );
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM ADD TO WISHLIST');
+      return true;
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error add to favorite ... failed connect to server',
+    );
+  }
+
+  @override
+  Future<CourseRevampDetailEntity> getDetailCourse(String courseId) async {
+    final response = await dio.get('$courseUrl/$courseId');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM GET DETAIL COURSE');
+      return CourseRevampDetailEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Get Detail Course... failed connect to server',
+    );
+  }
+
+  @override
+  Future<ArkCourseStatusEntity> getCourseStatus(String courseId) async {
+    final response = await dio.get('$apiCourseUrl/coursestatus/$courseId');
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      log('RESPONSE FROM GET COURSE STATUS');
+
+      ArkCourseStatusEntity.fromJson(response.data);
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error get course status ... failed connect to server',
     );
   }
 }

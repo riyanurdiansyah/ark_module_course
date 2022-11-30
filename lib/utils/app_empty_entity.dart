@@ -107,5 +107,6 @@ final CourseJrcEntity courseJrcEmpty = CourseJrcEntity(
     ),
     instruktur: [],
     daftarLoker: [],
+    ikhtisar: "",
   ),
 );

@@ -36,6 +36,7 @@ class CourseJrcDataDTO extends CourseJrcDataEntity {
     required super.fasilitator,
     required super.instruktur,
     required super.daftarLoker,
+    required super.ikhtisar,
   });
 
   factory CourseJrcDataDTO.fromJson(Map<String, dynamic> json) {
@@ -56,6 +57,7 @@ class CourseJrcDataDTO extends CourseJrcDataEntity {
           json["instruktur"].map((x) => InstrukturJrcDTO.fromJson(x))),
       daftarLoker: List<DaftarLokerJrcDTO>.from(
           json["daftar_loker"].map((x) => DaftarLokerJrcDTO.fromJson(x))),
+      ikhtisar: "ikhtisar",
     );
   }
 }
